@@ -658,61 +658,9 @@
       "address": "0x8025334C",
       "evidence": "Whole original GXInit call graph independently frozen before named source; C argument setup and complete callee behavior agree; native full-body call ordinal/destination proof packet."
     },
-    "VMBASEInit": {
-      "address": "0x80245820",
-      "evidence": "Complete original target C call/typed operand and related pinned donor source, independently scoped reviewed; original provider retained. See SDK final-batch evidence rows for VM."
-    },
-    "__VMBASEGetVirtualAddr": {
-      "address": "0x80245B24",
-      "evidence": "Complete original target C call/typed operand and related pinned donor source, independently scoped reviewed; original provider retained. See SDK final-batch evidence rows for VM."
-    },
-    "__VMBASEIsPageChanged": {
-      "address": "0x80245A5C",
-      "evidence": "Complete original target C call/typed operand and related pinned donor source, independently scoped reviewed; original provider retained. See SDK final-batch evidence rows for VM."
-    },
-    "VMBASEClearPageTableEntry": {
-      "address": "0x80245980",
-      "evidence": "Complete original target C call/typed operand and related pinned donor source, independently scoped reviewed; original provider retained. See SDK final-batch evidence rows for VM."
-    },
-    "VMBASESetPageTableEntry": {
-      "address": "0x802458EC",
-      "evidence": "Complete original target C call/typed operand and related pinned donor source, independently scoped reviewed; original provider retained. See SDK final-batch evidence rows for VM."
-    },
-    "__VMBASEIsPageValid": {
-      "address": "0x80245A0C",
-      "evidence": "Complete original target C call/typed operand and related pinned donor source, independently scoped reviewed; original provider retained. See SDK final-batch evidence rows for VM."
-    },
-    "__VMBASEIsPageReferenced": {
-      "address": "0x80245A34",
-      "evidence": "Complete original target C call/typed operand and related pinned donor source, independently scoped reviewed; original provider retained. See SDK final-batch evidence rows for VM."
-    },
-    "__VMBASEIsPageLocked": {
-      "address": "0x80245B44",
-      "evidence": "Complete original target C call/typed operand and related pinned donor source, independently scoped reviewed; original provider retained. See SDK final-batch evidence rows for VM."
-    },
-    "VMBASESetPageReferenced": {
-      "address": "0x80245A84",
-      "evidence": "Complete original target C call/typed operand and related pinned donor source, independently scoped reviewed; original provider retained. See SDK final-batch evidence rows for VM."
-    },
     "__init_cpp": {
       "address": "0x8023E838",
       "evidence": "Actual complete startup C call at8023E824 reaches original84-byte ctor-table loop entry8023E838, known table802CC668. Logical SDK spelling from coherent OOT6e449e; void(void) call signature. Original target debug name not claimed; original body remains linked, no fake definition."
-    },
-    "__VMBASEInvalidateTLBEntry": {
-      "address": "0x80245B14",
-      "evidence": "Original target provider retained for calls from measured VMBase C. Complete target instructions at 0x80245B14 and pinned MVP 1a61d5adf81a14bef749c0b2b7e803aabc2f98b3 src/dolphin/vmbase/VMBase.c declarations support the accessed contract; no body or original handwritten assembly provenance claimed. See VMBase external evidence."
-    },
-    "__VMBASESetupExceptionHandlers": {
-      "address": "0x80245FD0",
-      "evidence": "Original target provider retained for calls from measured VMBase C. Complete target instructions at 0x80245FD0 and pinned MVP 1a61d5adf81a14bef749c0b2b7e803aabc2f98b3 src/dolphin/vmbase/VMBase.c declarations support the accessed contract; no body or original handwritten assembly provenance claimed. See VMBase external evidence."
-    },
-    "__VMBASESetupVMRegisters": {
-      "address": "0x80245F34",
-      "evidence": "Original target provider retained for calls from measured VMBase C. Complete target instructions at 0x80245F34 and pinned MVP 1a61d5adf81a14bef749c0b2b7e803aabc2f98b3 src/dolphin/vmbase/VMBase.c declarations support the accessed contract; no body or original handwritten assembly provenance claimed. See VMBase external evidence."
-    },
-    "__VMBASEInvalidateEntireTLB": {
-      "address": "0x80245EDC",
-      "evidence": "Original target provider retained for calls from measured VMBase C. Complete target instructions at 0x80245EDC and pinned MVP 1a61d5adf81a14bef749c0b2b7e803aabc2f98b3 src/dolphin/vmbase/VMBase.c declarations support the accessed contract; no body or original handwritten assembly provenance claimed. See VMBase external evidence."
     },
     "OpenBitStream__FP11BitStream_tPv15BitStreamMode_t": {
       "address": "0x80190ED4",
@@ -5176,6 +5124,25 @@
           "placement": ".sbss",
           "start": "0x803ED258",
           "end": "0x803ED268"
+        }
+      ]
+    },
+    {
+      "source": "src/dolphin/vmbase/VMBase.c",
+      "profile": "dolphin_vm_release",
+      "evidence": "evidence.tsv VMBase.c unit, compiler, function and data rows; all 30 functions exact under GC/1.3 (the VM library profile), promoted from comparison-only.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80245820",
+          "end": "0x8024648C"
+        },
+        {
+          "section": ".sbss",
+          "placement": ".sbss",
+          "start": "0x803ED268",
+          "end": "0x803ED284"
         }
       ]
     },
