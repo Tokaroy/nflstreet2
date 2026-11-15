@@ -2293,6 +2293,10 @@
     "_3Snd.MPEGuse_MMX": {
       "address": "0x80300044",
       "evidence": "evidence.tsv data and name rows for 0x80300044 (Snd::MPEGuse_MMX, a .data word read by OpenSynth of src/engine/lbmpeg.cpp; no file defines it yet, its initializer form is open)."
+    },
+    "SNDMIX_setwetgain": {
+      "address": "0x802763AC",
+      "evidence": "evidence.tsv function and name rows for 0x802763AC (SNDMIX_setwetgain, src/engine/smixer.c, comparison only); the fx-level function 0x80271BD4 (src/engine/cu_80271BD4.cpp) calls it (bl at 0x80271CF8)."
     }
   },
   "units": [
@@ -15908,6 +15912,25 @@
           "placement": ".text",
           "start": "0x8026696C",
           "end": "0x80266A2C"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/cu_80271BD4.cpp",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x80271BD4-0x80271D34 (fx-level slot, neutral file name src/engine/cu_80271BD4.cpp), its function row and source-form row, the data row of its .rodata floats 0x802C1D80-0x802C1D88, and the sound_cxx compiler rows 0x802714A8-0x8027CF9C; its one function is exact (written in the c18 wave) and linked.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80271BD4",
+          "end": "0x80271D34"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C1D80",
+          "end": "0x802C1D88"
         }
       ]
     },

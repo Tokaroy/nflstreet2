@@ -26412,6 +26412,32 @@
       ]
     },
     {
+      "source": "src/engine/cu_802714A8.cpp",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv provisional unit row 0x802714A8-0x80271624 (sound volume slot, neutral file name src/engine/cu_802714A8.cpp), the compiler and external rows 0x802714A8-0x80276DE4 and the function row of its one function; the literal pool 0x802B7A88-0x802B7A98 is its read-only data. Draft comparison only; original assembly remains linked.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x802714A8",
+          "end": "0x80271624"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B7A88",
+          "end": "0x802B7A98"
+        }
+      ],
+      "functions": [
+        {
+          "symbol": "fn_802714A8",
+          "start": "0x802714A8",
+          "end": "0x80271624"
+        }
+      ]
+    },
+    {
       "source": "src/engine/lbmpeg.cpp",
       "profile": "sound_cxx",
       "evidence": "evidence.tsv provisional unit row 0x80271624-0x80271B74 (src/engine/lbmpeg.cpp, GoldenEye: Rogue Agent and Medal of Honor: European Assault lbmpeg.cpp), the compiler, external and source-form rows 0x802714A8-0x80276DE4 and the function and name rows of every registered function; the vtable 0x802B7AB0 is this file's. Draft comparisons only; original assembly remains linked.",
