@@ -212,7 +212,7 @@ extern int gRandArrayIndex;
 unsigned int iSPCH_EACrandom(void);
 int fn_801B22E0(VoxBankHdr_t *, int, int *, int *);
 int fn_801B05E4(Work_801B10AC *, unsigned char *);
-char *fn_801B22B0(VoxBankHdr_t *, int);
+char *iSPCH_GetSampleParmAddr(VoxBankHdr_t *, int);
 int iSPCH_FindBank(unsigned int, int *);
 int iSPCH_FindSubBank(unsigned int, unsigned int, int *);
 int iSPCH_TestSubBankBounds(int, unsigned int);

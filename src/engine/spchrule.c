@@ -183,11 +183,14 @@ int fn_801B2250(Item_801AE3F4 *item, int index, unsigned int value, unsigned int
     return (b & value) == a;
 }
 
-char *fn_801B22B0(VoxBankHdr_t *p, int i)
+char *iSPCH_GetSampleParmAddr(VoxBankHdr_t *p, int i)
 {
     char *result = 0;
     if (i < p->mUnknown5) {
-        result = (char *)p->mRows + i * ((p->mUnknown4 & 127) + 2) + 2;
+        // FAKEMATCH: result stepped in three statements; one expression keeps the result out of r3
+        result = (char *)p->mRows;
+        result += i * ((p->mUnknown4 & 127) + 2);
+        result += 2;
     }
     return result;
 }

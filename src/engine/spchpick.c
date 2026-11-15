@@ -461,7 +461,7 @@ void fn_801B0B5C(SpchEventKey_t *key, Work_801B10AC *work, unsigned char *p)
                     if (!(fn_801AF84C(record, j)->mUnknown6 & 128)) {
                         int slot = work->mEntries[i].mUnknown4;
                         VoxBankHdr_t *bank = gVoxBanks[slot].mUnknown4;
-                        char *values = fn_801B22B0(bank, work->mValues[work->mEntries[i].mUnknownA]);
+                        char *values = iSPCH_GetSampleParmAddr(bank, work->mValues[work->mEntries[i].mUnknownA]);
                         if (values) {
                             int index = fn_801AF84C(record, j)->mUnknown6;
                             text[index] = values[j];
