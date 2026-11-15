@@ -32892,66 +32892,6 @@
       ]
     },
     {
-      "source": "src/engine/LLUIGTextureNode.c",
-      "profile": "engine_c",
-      "evidence": "evidence.tsv provisional unit row 0x802215B0-0x80221BF0 (src/engine/LLUIGTextureNode.c), its function and name rows and the file compiler row. Draft comparisons only; original assembly remains linked. The draft bodies use no compiled static data; 0x802215F0, 0x8022179C and 0x802219F0, the users of the .rodata 0x802B1F78-0x802B1FA0, have no body here.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x802215B0",
-          "end": "0x80221BF0"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "LLUIGTexNodeRoundToPowerOf2",
-          "start": "0x802215B0",
-          "end": "0x802215EC"
-        },
-        {
-          "symbol": "LLUIGTexNodeUpdate",
-          "start": "0x802215EC",
-          "end": "0x802215F0"
-        },
-        {
-          "symbol": "LLUIGTexNodeFreeImage",
-          "start": "0x80221738",
-          "end": "0x8022179C"
-        },
-        {
-          "symbol": "LLUIGSetColorChannel",
-          "start": "0x802218D4",
-          "end": "0x80221924"
-        },
-        {
-          "symbol": "LLUIGSetTexturing",
-          "start": "0x80221924",
-          "end": "0x802219F0"
-        },
-        {
-          "symbol": "LLUIGTexNodeGet",
-          "start": "0x80221BAC",
-          "end": "0x80221BD8"
-        },
-        {
-          "symbol": "LLUIGTexNodeGetPalette",
-          "start": "0x80221BD8",
-          "end": "0x80221BE0"
-        },
-        {
-          "symbol": "LLUIGTexNodeSetPalette",
-          "start": "0x80221BE0",
-          "end": "0x80221BE8"
-        },
-        {
-          "symbol": "LLUIGTexNodeSetCreateCallback",
-          "start": "0x80221BE8",
-          "end": "0x80221BF0"
-        }
-      ]
-    },
-    {
       "source": "src/engine/LLUIGFmv.c",
       "profile": "engine_c",
       "evidence": "evidence.tsv provisional unit row 0x80226498-0x80226F9C (src/engine/LLUIGFmv.c), its function and name rows and the file compiler row. Draft comparisons only; original assembly remains linked. All sixteen functions have bodies; LLUIGFmvInitTexture 0x802267D8 owns the measured .rodata 0x802B2058-0x802B2068 (data row), and the .sdata 0x803EBF80-0x803EBF88 stays original. _PackTile_RGBA8 0x80226E4C is the documented holdout (source-form row 0x80226E4C).",

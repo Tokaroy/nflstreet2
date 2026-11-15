@@ -177,7 +177,7 @@ void fn_8021F984(Node_80223874 *pNode, Int32 Item)
         if (!(pNode->Flags & 0x8000)) {
             fn_80220AD0(pNode, 0, Item);
         }
-        bTex = LLUIGTexNodeRegisterObj(Item);
+        bTex = LLUIGTexNodeRegisterObj((Texture_t *)Item);
     }
     if (pNode->Flags & 0x8000) {
         UIGDispListCall(&pNode->u.List);
@@ -252,7 +252,7 @@ void fn_80220AD0(Node_80223874 *pNode, Int32 a, Int32 Item)
             }
         }
     }
-    LLUIGSetClamp(First, Second);
+    LLUIGSetClamp(First, Second, (Texture_t *)Item);
 }
 
 Int32 fn_80220B4C(Int32 a, Int32 b)

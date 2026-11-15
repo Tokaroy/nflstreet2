@@ -2278,54 +2278,6 @@
       "address": "0x801E26FC",
       "evidence": "evidence.tsv function and name rows for 0x801E26FC (PerJoyDriverPollPADs in src/engine/PJoyDrvr.c, a comparison-only file); the linked src/engine/llperiph.c calls it and registers it as a callback, so it resolves to the original bytes."
     },
-    "LLUIGTexNodeUpdate": {
-      "address": "0x802215EC",
-      "evidence": "evidence.tsv function and name rows for 0x802215EC (LLUIGTexNodeUpdate, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."
-    },
-    "LLUIGTexNodeRoundToPowerOf2": {
-      "address": "0x802215B0",
-      "evidence": "evidence.tsv function and name rows for 0x802215B0 (LLUIGTexNodeRoundToPowerOf2, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."
-    },
-    "LLUIGTexNodeSetImage": {
-      "address": "0x802215F0",
-      "evidence": "evidence.tsv function and name rows for 0x802215F0 (LLUIGTexNodeSetImage, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."
-    },
-    "LLUIGTexNodeFreeImage": {
-      "address": "0x80221738",
-      "evidence": "evidence.tsv function and name rows for 0x80221738 (LLUIGTexNodeFreeImage, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."
-    },
-    "LLUIGTexNodeRegisterObj": {
-      "address": "0x8022179C",
-      "evidence": "evidence.tsv function and name rows for 0x8022179C (LLUIGTexNodeRegisterObj, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."
-    },
-    "LLUIGSetColorChannel": {
-      "address": "0x802218D4",
-      "evidence": "evidence.tsv function and name rows for 0x802218D4 (LLUIGSetColorChannel, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."
-    },
-    "LLUIGSetTexturing": {
-      "address": "0x80221924",
-      "evidence": "evidence.tsv function and name rows for 0x80221924 (LLUIGSetTexturing, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."
-    },
-    "LLUIGSetClamp": {
-      "address": "0x802219F0",
-      "evidence": "evidence.tsv function and name rows for 0x802219F0 (LLUIGSetClamp, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."
-    },
-    "LLUIGTexNodeGet": {
-      "address": "0x80221BAC",
-      "evidence": "evidence.tsv function and name rows for 0x80221BAC (LLUIGTexNodeGet, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."
-    },
-    "LLUIGTexNodeGetPalette": {
-      "address": "0x80221BD8",
-      "evidence": "evidence.tsv function and name rows for 0x80221BD8 (LLUIGTexNodeGetPalette, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."
-    },
-    "LLUIGTexNodeSetPalette": {
-      "address": "0x80221BE0",
-      "evidence": "evidence.tsv function and name rows for 0x80221BE0 (LLUIGTexNodeSetPalette, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."
-    },
-    "LLUIGTexNodeSetCreateCallback": {
-      "address": "0x80221BE8",
-      "evidence": "evidence.tsv function and name rows for 0x80221BE8 (LLUIGTexNodeSetCreateCallback, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."
-    },
     "LLUIGFmvProcess": {
       "address": "0x80226498",
       "evidence": "evidence.tsv function and name rows for 0x80226498 (LLUIGFmvProcess, src/engine/LLUIGFmv.c, comparison-only; original bytes)."
@@ -7279,6 +7231,48 @@
           "placement": ".text",
           "start": "0x80221314",
           "end": "0x802215B0"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/LLUIGTextureNode.c",
+      "profile": "engine_c",
+      "evidence": "evidence.tsv unit row 0x802215B0-0x80221BF0 (src/engine/LLUIGTextureNode.c), its compiler, function, name, source-form and data rows; all twelve functions exact, promoted from comparison-only, with the .rodata 0x802B1F78-0x802B1FA0 and the .sdata callback word 0x803EBF60-0x803EBF64. The three GX objects are COMMON symbols; the storage map places them at their evidenced extents (data rows 0x803E98C0, 0x803E98E0, 0x803E9900).",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x802215B0",
+          "end": "0x80221BF0"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B1F78",
+          "end": "0x802B1FA0"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EBF60",
+          "end": "0x803EBF64"
+        }
+      ],
+      "storage": [
+        {
+          "symbol": "LLUIGTexTexObj",
+          "start": "0x803E98C0",
+          "end": "0x803E98E0"
+        },
+        {
+          "symbol": "LLUIGTexTlutTexObj",
+          "start": "0x803E98E0",
+          "end": "0x803E9900"
+        },
+        {
+          "symbol": "LLUIGTexTlutObj",
+          "start": "0x803E9900",
+          "end": "0x803E990C"
         }
       ]
     },

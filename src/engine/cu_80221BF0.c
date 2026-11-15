@@ -623,7 +623,7 @@ void fn_80225958(Node_80223874 *pNode, Int32 Item)
         lbl_802F9FE0[1][1] = ((UIGTexNode_t *)Item)->unk_34;
         GXLoadTexMtxImm(lbl_802F9FE0, GX_TEXMTX0, GX_MTX2x4);
         fn_80225AAC(pNode, 0, Item);
-        bTex = LLUIGTexNodeRegisterObj(Item);
+        bTex = LLUIGTexNodeRegisterObj((Texture_t *)Item);
     }
     if (pNode->Flags & 0x8000) {
         UIGDispListCall(&pNode->u.List);
@@ -655,7 +655,7 @@ void fn_80225AAC(Node_80223874 *pNode, Int32 a, Int32 Item)
         First = 1;
         Second = 1;
     }
-    LLUIGSetClamp(First, Second);
+    LLUIGSetClamp(First, Second, (Texture_t *)Item);
 }
 
 void fn_80225AE4(void)
