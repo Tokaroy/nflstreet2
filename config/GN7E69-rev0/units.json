@@ -72,13 +72,14 @@
     },
     "path_cxx": {
       "flags": [
-        "-O2"
+        "-O2",
+        "-fno-weak"
       ],
       "include_dirs": [
         "include/libc"
       ],
       "language": "c++",
-      "evidence": "evidence.tsv compiler rows 0x8027D3AC-0x8027ED6C (src/engine/pathsnd.c) and 0x8027ED6C-0x8027EFAC (src/engine/pathreal5.c): the PATH sound files keep GoldenEye: Rogue Agent's and Medal of Honor: European Assault's .c names, whose symbols for these files are C++-mangled (PATH_vectortosnd__Fv, __Q24Path9PathToSnd, TaskService__Q24Path11PathToReal5ii), and the code uses virtual tables and constructors; -O2 with the default -G 8 follows the r13 small-data accesses of both ranges. The flags are the ones the same sources compiled with as src/engine/cu_8027D3AC.cpp (now pathsnd.c and pathreal5.c) under engine_c."
+      "evidence": "evidence.tsv compiler rows 0x8027D3AC-0x8027ED6C (src/engine/pathsnd.c) and 0x8027ED6C-0x8027EFAC (src/engine/pathreal5.c): the PATH sound files keep GoldenEye: Rogue Agent's and Medal of Honor: European Assault's .c names, whose symbols for these files are C++-mangled (PATH_vectortosnd__Fv, __Q24Path9PathToSnd, TaskService__Q24Path11PathToReal5ii), and the code uses virtual tables and constructors; -O2 with the default -G 8 follows the r13 small-data accesses of both ranges. The flags are the ones the same sources compiled with as src/engine/cu_8027D3AC.cpp (now pathsnd.c and pathreal5.c) under engine_c. -fno-weak (c18 wave) keeps the inline Path::IPathToReal destructor, its setters and both virtual tables of src/engine/pathreal5.c as that file own local code and .rodata, as the target places them; pathsnd.c measures the same 32 of 41 exact with and without it."
     },
     "engine_c_fastmath": {
       "flags": [
@@ -2321,6 +2322,14 @@
     "SNDPKTPLAYI_flushcallbackdata": {
       "address": "0x80279598",
       "evidence": "evidence.tsv function and name rows for 0x80279598 (SNDPKTPLAYI_flushcallbackdata, spktplay.c, registered in comparisons.json, original bytes linked); called by name from the src/engine/snddrv.c comparison bodies (c18 wave)."
+    },
+    "_Q24Path11IPathToReal.realimp": {
+      "address": "0x803EBB60",
+      "evidence": "evidence.tsv external row for 0x803EBB60 (Path::IPathToReal::realimp, GoldenEye symbol); its storage stays in the open src/engine/cu_801B2AD4.cpp area; src/engine/pathreal5.c references it by name."
+    },
+    "STREAM_overhead": {
+      "address": "0x801F685C",
+      "evidence": "evidence.tsv function and name rows for 0x801F685C (STREAM_overhead, comparison only until its file is linked); the linked src/engine/pathreal5.c calls it by name."
     }
   },
   "units": [
@@ -15821,6 +15830,25 @@
           "placement": ".data3",
           "start": "0x802C2370",
           "end": "0x802C2380"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/pathreal5.c",
+      "profile": "path_cxx",
+      "evidence": "evidence.tsv unit row 0x8027ED6C-0x8027EFAC (src/engine/pathreal5.c), its 14 function and name rows (GoldenEye: Rogue Agent mangled names), the Path::IPathToReal and Path::PathToReal5 type rows, the source-form row 0x8027ED6C-0x8027EFAC, the exact .rodata data row 0x802C2790-0x802C2838 with the two virtual-table rows, the external row of Path::IPathToReal::realimp 0x803EBB60 and the path_cxx compiler row 0x8027D3AC-0x8027EFAC; every function exact, completed in the c18 wave and linked.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8027ED6C",
+          "end": "0x8027EFAC"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C2790",
+          "end": "0x802C2838"
         }
       ]
     },

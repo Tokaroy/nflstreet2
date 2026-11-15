@@ -67,7 +67,7 @@ void fn_801B5CD0(int a);
 int fn_801B5FC0(int id, int a);
 void fn_8027D3AC(void);
 void fn_8027ECD8(void *p, int b);
-void fn_8027ED6C(void);
+extern "C++" void PATH_vectortoreal5(void);
 
 static int _PathfinderMatchMap(void *p, void *key, void *result)
 {
@@ -117,7 +117,7 @@ int PathfinderInit(PathfinderInitDesc_t *pDesc)
     _Pathfinder_pAllocator = new TiburonIAllocator13Impl(pDesc->mHeap);
     TagValuePair config;
     fn_801B2C18(_Pathfinder_pAllocator, &config);
-    fn_8027ED6C();
+    PATH_vectortoreal5();
     fn_8027D3AC();
     fn_801C1F94(&_Pathfinder_State, 0, sizeof(_Pathfinder_State));
     _Pathfinder_State.mpPool0 = (List_801C68FC *)fn_801C68FC(pDesc->mHeap, 0, 4, sizeof(PathfinderMap_t), 0, 0);
