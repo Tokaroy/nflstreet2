@@ -40,7 +40,7 @@ int SPCH_Init(int a, int b, int c)
         }
         fn_801AE808();
         fn_801AF544();
-        fn_801B2450();
+        iSPCH_InitBanks();
         fn_801AE8DC();
         gSPCH_Initialized = 0x01789A34;
         return 1;
@@ -53,7 +53,7 @@ void SPCH_Deinit(void)
     if (gSPCH_Initialized == 0x01789A34) {
         gSPCH_Initialized = 0;
         iSPCH_InitCallbacks();
-        fn_801B2468();
+        iSPCH_DisposeBanks();
         fn_801AE808();
     }
 }

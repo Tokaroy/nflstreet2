@@ -2245,6 +2245,22 @@
     "calcFIRCoeffs": {
       "address": "0x80279E74",
       "evidence": "evidence.tsv function and name rows for 0x80279E74 (calcFIRCoeffs, sfir.c, registered in comparisons.json, original bytes linked); referenced by the linked src/engine/sfhpffir8.c (SFILTER_modifyHPFFIR8)."
+    },
+    "gVoxBanks": {
+      "address": "0x803EBB00",
+      "evidence": "evidence.tsv data/name rows for 0x803EBB00 (target extent, related name); speech-library storage, original-owned."
+    },
+    "gUniqueBankHandle": {
+      "address": "0x803EBB04",
+      "evidence": "evidence.tsv data/name rows for 0x803EBB04 (target extent, related name); speech-library storage, original-owned."
+    },
+    "gNumBanks": {
+      "address": "0x803EBB08",
+      "evidence": "evidence.tsv data/name rows for 0x803EBB08 (target extent, related name); speech-library storage, original-owned."
+    },
+    "gBankCount": {
+      "address": "0x803EBB0C",
+      "evidence": "evidence.tsv data/name rows for 0x803EBB0C (target extent, related name); speech-library storage, original-owned."
     }
   },
   "units": [
@@ -20142,6 +20158,19 @@
           "placement": ".text",
           "start": "0x8026CA50",
           "end": "0x8026CAA8"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/spchbank.c",
+      "profile": "speech_cxx",
+      "evidence": "evidence.tsv unit row 0x801B23A0-0x801B2AD4 (src/engine/spchbank.c), its function, name, type and source-form rows (FAKEMATCH row 0x801B2898 and 0x801B24C8) and the speech_cxx compiler row; all 17 functions exact, promoted from comparison-only. The file defines no data: the four bank-table .sdata words it uses (gVoxBanks, gUniqueBankHandle, gNumBanks, gBankCount, 0x803EBB00-0x803EBB10) and gGameNum stay original-owned speech-library storage like gSPCH_Initialized, referenced through externals (their data and name rows).",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x801B23A0",
+          "end": "0x801B2AD4"
         }
       ]
     }

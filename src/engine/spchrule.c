@@ -183,7 +183,7 @@ int fn_801B2250(Item_801AE3F4 *item, int index, unsigned int value, unsigned int
     return (b & value) == a;
 }
 
-char *fn_801B22B0(RowBank_801AFE90 *p, int i)
+char *fn_801B22B0(VoxBankHdr_t *p, int i)
 {
     char *result = 0;
     if (i < p->mUnknown5) {
@@ -192,7 +192,7 @@ char *fn_801B22B0(RowBank_801AFE90 *p, int i)
     return result;
 }
 
-int fn_801B22E0(RowBank_801AFE90 *p, int i, int *a, int *b)
+int fn_801B22E0(VoxBankHdr_t *p, int i, int *a, int *b)
 {
     int result = 0;
     int count = p->mUnknown5;

@@ -28,7 +28,7 @@ struct Record_801AF75C {
     Entry_801AF84C mEntries[1];
 };
 
-struct RowBank_801AFE90 {
+struct VoxBankHdr_t {
     unsigned short mUnknown0;
     unsigned short mUnknown2;
     unsigned char mUnknown4;
@@ -52,9 +52,9 @@ struct Buffer_801AFF74 {
     unsigned char mValues[200];
 };
 
-struct Slot_801B2450 {
+struct VoxBankSlot_t {
     int mUnknown0;
-    RowBank_801AFE90 *mUnknown4;
+    VoxBankHdr_t *mUnknown4;
 };
 
 struct WorkEntry_801B0B18 {
@@ -200,22 +200,22 @@ extern int gDataRate;
 extern int lbl_803ECEA8;
 extern unsigned int lbl_803ECEAC;
 extern unsigned short lbl_803ECEB0;
-extern int lbl_803EBB04;
-extern int lbl_803EBB08;
-extern int lbl_803EBB0C;
-extern Slot_801B2450 *lbl_803EBB00;
+extern int gUniqueBankHandle;
+extern int gNumBanks;
+extern int gBankCount;
+extern VoxBankSlot_t *gVoxBanks;
 extern int lbl_802F475C[8];
 extern Channel_801B118C lbl_8037E294[8];
 extern unsigned int seedX[6];
 extern unsigned short gRandArray[32][2];
 extern int gRandArrayIndex;
 unsigned int iSPCH_EACrandom(void);
-int fn_801B22E0(RowBank_801AFE90 *, int, int *, int *);
+int fn_801B22E0(VoxBankHdr_t *, int, int *, int *);
 int fn_801B05E4(Work_801B10AC *, unsigned char *);
-char *fn_801B22B0(RowBank_801AFE90 *, int);
-int fn_801B2648(unsigned int, int *);
-int fn_801B26D8(unsigned int, unsigned int, int *);
-int fn_801B2798(int, unsigned int);
+char *fn_801B22B0(VoxBankHdr_t *, int);
+int iSPCH_FindBank(unsigned int, int *);
+int iSPCH_FindSubBank(unsigned int, unsigned int, int *);
+int iSPCH_TestSubBankBounds(int, unsigned int);
 
 unsigned int fn_801B2368(void);
 int iSPCH_Rand(int count, int category);
@@ -226,8 +226,8 @@ int fn_801B1368(unsigned int channel);
 void iSPCH_InitRandom(int seed);
 void fn_801B118C(void);
 void fn_801B192C(int a);
-void fn_801B2450(void);
-void fn_801B2468(void);
+void iSPCH_InitBanks(void);
+void iSPCH_DisposeBanks(void);
 
 void *fn_801AF4A8(int size);
 void fn_801AF500(void *p);

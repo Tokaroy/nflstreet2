@@ -27,7 +27,7 @@ void fn_801AF060(void);
 void fn_801AF5E4(int (*pA)(void), void (*pB)(void));
 void SPCH_SetRuleCallback(void *pFunc);
 void SPCH_Deinit(void);
-void fn_801B2A08(void *pData);
+void SPCH_AddBank(void *pData);
 void SPCH_AddEventDB(void *pData, int a);
 
 void fn_801F5C34(void);
@@ -88,7 +88,7 @@ void fn_801F5C34(void)
 
 void fn_801F5C6C(ResFile_t *pRes, unsigned int index)
 {
-    fn_801B2A08((void *)ResLoad(pRes, index, 1));
+    SPCH_AddBank((void *)ResLoad(pRes, index, 1));
 }
 
 void fn_801F5C94(ResFile_t *pRes, unsigned int index, int a)
