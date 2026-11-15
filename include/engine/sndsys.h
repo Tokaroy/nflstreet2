@@ -15,6 +15,7 @@
 #include "engine/cu_802714A8.h"
 #include "engine/sndvoice.h"
 #include "engine/mtdecf.h"
+#include "engine/eaxadecf.h"
 
 typedef struct Object_80277404 {
     Node_80279D90 mNode;
@@ -155,30 +156,6 @@ typedef struct SndRsfState_t {
     float m2C[4];
 } SndRsfState_t;
 
-typedef struct Pair_8027BFDC {
-    float m0;
-    float m4;
-} Pair_8027BFDC;
-
-typedef struct Block_8027BC18 {
-    int m0;
-    float m4;
-    float m8;
-    unsigned char *mC;
-    float *m10;
-} Block_8027BC18;
-
-typedef struct Struct_8027BE24 {
-    unsigned char mUnknown0[4];
-    int m4;
-    int m8;
-    int mC;
-    float *m10;
-    unsigned char mUnknown14[0x10];
-    float m24[28];
-    Block_8027BC18 m94;
-} Struct_8027BE24;
-
 typedef struct Bits_8027C078 {
     unsigned char *m0;
     unsigned int m4;
@@ -245,7 +222,7 @@ typedef struct SndPcmPacketUnpackFilter_t {
 
 typedef struct SndXaUnpackFilter_t {
     Node_80279D90 mNode;
-    Struct_8027BE24 *mpDecoder;
+    Snd::CEAXABLKDecf *mpDecoder;
     char *mpData;
     int mFrameCount;
     int mFramePosition;
@@ -253,7 +230,7 @@ typedef struct SndXaUnpackFilter_t {
 
 typedef struct Decoder_8027B7B0 {
     Node_80279D90 mNode;
-    Struct_8027BE24 *m1C;
+    Snd::CEAXABLKDecf *m1C;
     int m20;
     int m24;
     int m28;
@@ -271,7 +248,7 @@ typedef struct Decoder_8027B7B0 {
 
 typedef struct Decoder_8027BA6C {
     Node_80279D90 mNode;
-    Struct_8027BE24 *m1C;
+    Snd::CEAXABLKDecf *m1C;
     int m20;
     int m24;
     int m28;
@@ -302,13 +279,6 @@ void iSNDcalcpitch(int index);
 int SNDI_getb(unsigned char *p, int size);
 float SNDI_cos(float x);
 float SNDI_sin(float x);
-void *fn_8027BD68(int size);
-void fn_8027BD94(void *p);
-Struct_8027BE24 *fn_8027BDC0(void *memory);
-int fn_8027BDE8(Struct_8027BE24 *p, char *data, int size, int count);
-int fn_8027BE24(Struct_8027BE24 *p, float **dst, int count);
-Pair_8027BFDC fn_8027BFDC(Struct_8027BE24 *p);
-void fn_8027C00C(Struct_8027BE24 *p, Pair_8027BFDC *pair);
 void *fn_8027C020(int size);
 void fn_8027C04C(void *p);
 void calcFIRCoeffs(SndFirState_t *state, int type);

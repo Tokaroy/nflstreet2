@@ -11,7 +11,7 @@ int SFILTER_unpackxalf(Node_80279D90 *node, int count, float *a, float *b, int f
     volatile int spare;
     Decoder_8027B7B0 *decoder;
     float scratch[28];
-    Pair_8027BFDC state;
+    Snd::XAFSTATE state;
     float *discard;
     int total;
     int n;
@@ -23,11 +23,11 @@ int SFILTER_unpackxalf(Node_80279D90 *node, int count, float *a, float *b, int f
     if (decoder->m30 <= 2) {
         if (decoder->m40 == 0) {
             n = decoder->m44 / 28 * 28;
-            fn_8027BDE8(decoder->m1C, (char *)decoder->m34, n * 4, n);
+            decoder->m1C->Feed((char *)decoder->m34, n * 4, n);
             decoder->m40 = 1;
         }
         while (count != 0) {
-            got = fn_8027BE24(decoder->m1C, &b, count);
+            got = decoder->m1C->Decode(&b, count);
             b += got;
             decoder->m20 += got;
             total += got;
@@ -36,24 +36,24 @@ int SFILTER_unpackxalf(Node_80279D90 *node, int count, float *a, float *b, int f
                 n = decoder->m44 % 28;
                 pos = decoder->m44 - n;
                 decoder->m20 = pos;
-                fn_8027BDE8(decoder->m1C, (char *)decoder->m34 + pos / 28 * 15, (decoder->m48 - pos + 1) * 4,
+                decoder->m1C->Feed((char *)decoder->m34 + pos / 28 * 15, (decoder->m48 - pos + 1) * 4,
                             decoder->m48 - pos + 1);
                 if (decoder->m3C == 0) {
-                    state = fn_8027BFDC(decoder->m1C);
-                    decoder->m4C = state.m0;
-                    decoder->m50 = state.m4;
-                    got = fn_8027BE24(decoder->m1C, &b, count);
+                    state = decoder->m1C->GetState();
+                    decoder->m4C = state.mPrev1;
+                    decoder->m50 = state.mPrev2;
+                    got = decoder->m1C->Decode(&b, count);
                     b += got;
                     count -= got;
                     total += got;
                     decoder->m20 += got;
                     decoder->m3C = 1;
                 } else {
-                    state.m0 = decoder->m4C;
-                    state.m4 = decoder->m50;
-                    fn_8027C00C(decoder->m1C, &state);
+                    state.mPrev1 = decoder->m4C;
+                    state.mPrev2 = decoder->m50;
+                    decoder->m1C->SetState(&state);
                     discard = scratch;
-                    got = fn_8027BE24(decoder->m1C, &discard, n);
+                    got = decoder->m1C->Decode(&discard, n);
                     decoder->m20 += got;
                 }
             } else {
@@ -62,14 +62,14 @@ int SFILTER_unpackxalf(Node_80279D90 *node, int count, float *a, float *b, int f
         }
     } else {
         while (count > 0) {
-            got = fn_8027BE24(decoder->m1C, &b, count);
+            got = decoder->m1C->Decode(&b, count);
             b += got;
             decoder->m20 += got;
             count -= got;
             total += got;
             if (got < count) {
                 decoder->m20 = decoder->m24;
-                fn_8027BDE8(decoder->m1C, (char *)decoder->m2C, (decoder->m28 - decoder->m24 + 1) * 4,
+                decoder->m1C->Feed((char *)decoder->m2C, (decoder->m28 - decoder->m24 + 1) * 4,
                             decoder->m28 - decoder->m24 + 1);
             }
         }
@@ -88,7 +88,7 @@ void SFILTER_unpackxalfrestore(Node_80279D90 *node)
 
     decoder = (Decoder_8027B7B0 *)node;
     if (decoder->m1C != 0) {
-        fn_8027BD94(decoder->m1C);
+        delete decoder->m1C;
     }
 }
 
@@ -105,7 +105,7 @@ void SFILTER_unpackxalfinit(Node_80279D90 *node, Params_80275F80 *params)
     decoder->m30 = params->m24;
     decoder->m24 = params->m10;
     decoder->m28 = params->m14;
-    decoder->m1C = fn_8027BDC0(fn_8027BD68(168));
+    decoder->m1C = new Snd::CEAXABLKDecf;
     params->m28 = SFILTER_unpackgetframexalf;
     if (decoder->m30 <= 2) {
         decoder->m34 = params->m0;
@@ -115,7 +115,7 @@ void SFILTER_unpackxalfinit(Node_80279D90 *node, Params_80275F80 *params)
         decoder->m44 = params->m10;
         decoder->m48 = params->m14;
     } else {
-        fn_8027BDE8(decoder->m1C, (char *)params->m0, decoder->m24 * 4, decoder->m24);
+        decoder->m1C->Feed((char *)params->m0, decoder->m24 * 4, decoder->m24);
     }
 }
 

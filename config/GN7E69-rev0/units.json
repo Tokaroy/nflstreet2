@@ -15781,6 +15781,31 @@
       ]
     },
     {
+      "source": "src/engine/eaxadecf.cpp",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8027BAFC-0x8027C020 (src/engine/eaxadecf.cpp), its nine function and name rows, the Snd::CEAXABLKDecf, Snd::MXAPACKETF and Snd::XAFSTATE type and field rows, the source-form row 0x8027BAFC-0x8027C020, the exact .rodata data row 0x802C22F8-0x802C2308, the exact .data row 0x80301008-0x80301428 with the Snd::xafilterf and Snd::xatablef name rows, and the sound_cxx compiler row 0x80276DE4-0x8027CF9C; every function exact, completed in the c18 wave and linked.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8027BAFC",
+          "end": "0x8027C020"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C22F8",
+          "end": "0x802C2308"
+        },
+        {
+          "section": ".data",
+          "placement": ".data4",
+          "start": "0x80301008",
+          "end": "0x80301428"
+        }
+      ]
+    },
+    {
       "source": "src/engine/scrsfl.c",
       "profile": "sound_cxx",
       "evidence": "evidence.tsv unit row 0x8027D2E8-0x8027D3AC (src/engine/scrsfl.c), its function and name row (rsflc), the SndResamplePhase_t type row, the exact .rodata data row 0x802C2370-0x802C2380 and the sound_cxx compiler row 0x8027CF9C-0x8027D3AC; every function exact, promoted from comparison-only.",
