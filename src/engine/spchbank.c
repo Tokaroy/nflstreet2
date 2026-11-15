@@ -59,6 +59,40 @@ void fn_801B2488(int count, Slot_801B2450 *slots)
     }
 }
 
+int fn_801B24C8(RowBank_801AFE90 *bank)
+{
+    int low = 0;
+    int high = lbl_803EBB0C - 1;
+    if (lbl_803EBB0C == 0) {
+        return 0;
+    }
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (bank->mUnknown0 == lbl_803EBB00[mid].mUnknown4->mUnknown0 && bank->mUnknown2 == lbl_803EBB00[mid].mUnknown4->mUnknown2) {
+            return -1;
+        }
+        if (mid == 0) {
+            if ((bank->mUnknown0 == lbl_803EBB00[0].mUnknown4->mUnknown0 && bank->mUnknown2 < lbl_803EBB00[0].mUnknown4->mUnknown2) || bank->mUnknown0 < lbl_803EBB00[0].mUnknown4->mUnknown0) {
+                return (short)mid;
+            }
+        }
+        if ((bank->mUnknown0 == lbl_803EBB00[mid].mUnknown4->mUnknown0 && bank->mUnknown2 < lbl_803EBB00[mid].mUnknown4->mUnknown2) || bank->mUnknown0 < lbl_803EBB00[mid].mUnknown4->mUnknown0) {
+            if ((bank->mUnknown0 == lbl_803EBB00[mid - 1].mUnknown4->mUnknown0 && bank->mUnknown2 > lbl_803EBB00[mid - 1].mUnknown4->mUnknown2) || bank->mUnknown0 > lbl_803EBB00[mid - 1].mUnknown4->mUnknown0) {
+                return (short)mid;
+            }
+        }
+        if (bank->mUnknown0 > lbl_803EBB00[mid].mUnknown4->mUnknown0 || (bank->mUnknown0 == lbl_803EBB00[mid].mUnknown4->mUnknown0 && bank->mUnknown2 > lbl_803EBB00[mid].mUnknown4->mUnknown2)) {
+            low = mid + 1;
+            if (lbl_803EBB00[low].mUnknown4 == 0) {
+                return (short)low;
+            }
+        } else {
+            high = mid - 1;
+        }
+    }
+    return -1;
+}
+
 int fn_801B2648(unsigned int id, int *out)
 {
     int low = 0;
@@ -85,12 +119,11 @@ int fn_801B26D8(unsigned int id, unsigned int key, int *out)
     if (lbl_803EBB00 && lbl_803EBB0C) {
         while (low <= high) {
             int mid = (low + high) / 2;
-            RowBank_801AFE90 *p = lbl_803EBB00[mid].mUnknown4;
-            if (id == p->mUnknown0 && key == p->mUnknown2) {
+            if (id == lbl_803EBB00[mid].mUnknown4->mUnknown0 && key == lbl_803EBB00[mid].mUnknown4->mUnknown2) {
                 *out = lbl_803EBB00[mid].mUnknown0;
                 return (short)mid;
             }
-            if (id > p->mUnknown0 || (id == p->mUnknown0 && key > p->mUnknown2)) low = mid + 1;
+            if (id > lbl_803EBB00[mid].mUnknown4->mUnknown0 || (id == lbl_803EBB00[mid].mUnknown4->mUnknown0 && key > lbl_803EBB00[mid].mUnknown4->mUnknown2)) low = mid + 1;
             else high = mid - 1;
         }
     }
@@ -148,10 +181,12 @@ int fn_801B2898(RowBank_801AFE90 *p, int value)
             }
             if (history[index] == value) {
                 result = i + 1;
-                break;
+                // FAKEMATCH: goto past the loop; with break the loop keeps its jump-to-test form
+                goto done;
             }
         }
     }
+done:
     return result;
 }
 
@@ -181,14 +216,34 @@ void fn_801B2944(RowBank_801AFE90 *p)
         int bit = start & 7;
         for (int i = 0; i < length; i++) {
             bits[index] |= 1 << bit;
-            if (bit == 7) {
+            if (++bit == 8) {
                 bit = 0;
                 index++;
-            } else {
-                bit++;
             }
         }
     }
+}
+
+int fn_801B2A08(RowBank_801AFE90 *bank)
+{
+    int handle = -1;
+    if (lbl_803EBB00) {
+        int pos = fn_801B24C8(bank);
+        if (pos < lbl_803EBB08 && pos >= 0) {
+            if (bank->mUnknown4 & 128) {
+                fn_801B2944(bank);
+            }
+            for (int i = lbl_803EBB0C; i > pos; i--) {
+                lbl_803EBB00[i] = lbl_803EBB00[i - 1];
+            }
+            handle = lbl_803EBB04;
+            lbl_803EBB00[pos].mUnknown4 = bank;
+            lbl_803EBB00[pos].mUnknown0 = handle;
+            lbl_803EBB04++;
+            lbl_803EBB0C++;
+        }
+    }
+    return handle;
 }
 
 }

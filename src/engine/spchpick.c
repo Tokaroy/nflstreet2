@@ -174,28 +174,30 @@ int fn_801AFBD8(unsigned char *p, Record_801AF75C *record, EventWord_801AFBD8 *e
     for (int i = 0; i < count; i++) {
         int value = values[i];
         result = 0;
-        if ((unsigned int)value > 31) break;
+        // FAKEMATCH: goto past the loop; with break the loop keeps its jump-to-test form
+        if ((unsigned int)value > 31) goto done;
         unsigned int mask = 1U << value;
         int id = fn_801AF84C(record, i)->mUnknown4;
-        if (fn_801AF84C(record, i)->mUnknown0 & mask) {
+        if (mask & fn_801AF84C(record, i)->mUnknown0) {
             if (id == 0 || id == 254) {
                 result = 1;
             } else if (id == 255) {
                 int flags = fn_801AF84C(record, i)->mUnknown6;
                 if (flags & 128) {
                     int *words = (int *)fn_801AF8B0(p);
-                    if (words[flags & 127] & mask) result = 1;
+                    if (mask & words[flags & 127]) result = 1;
                 } else {
                     SpchEventKey_t key = event[0].mKey;
                     char *text;
-                    if (fn_801AE7B4(&key, &text) && (unsigned char)text[flags] == value) result = 1;
+                    if (fn_801AE7B4(&key, &text) && value == (unsigned char)text[flags]) result = 1;
                 }
             } else {
-                if (event[id].mWord & mask) result = 1;
+                if (mask & event[id].mWord) result = 1;
             }
         }
-        if (!result) break;
+        if (!result) goto done;
     }
+done:
     return result;
 }
 
@@ -292,10 +294,12 @@ int fn_801AFFA4(Record_801AF75C *a, RowBank_801AFE90 *b, int *values)
         if (id != 0 && id != 255 && id != 254) {
             if (!(words[i] & values[id])) {
                 result = 0;
-                break;
+                // FAKEMATCH: goto past the loop; with break the loop keeps its jump-to-test form
+                goto done;
             }
         }
     }
+done:
     return result;
 }
 

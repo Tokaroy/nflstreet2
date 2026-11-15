@@ -65,6 +65,98 @@ int fn_801B1DAC(unsigned char *p, int value)
     return result;
 }
 
+struct SpchRule_t {
+    int mId;
+    int mParm;
+    int mType;
+};
+
+#define GET_RULE(rule, data, i)           (rule).mId = (data)[(i) * 3];         (rule).mParm = (data)[(i) * 3 + 1];     (rule).mType = (data)[(i) * 3 + 2]
+
+int fn_801B1E58(Item_801AE3F4 *event, unsigned int index)
+{
+    SpchRule_t rule;
+    int id = -1;
+    fn_801B1D18(event);
+    unsigned char *data = (unsigned char *)fn_801B1D44(event);
+    if (index < 8) {
+        GET_RULE(rule, data, index);
+        id = rule.mId;
+    }
+    return id;
+}
+
+void fn_801B1EC8(SpchEventKey_t *key, Item_801AE3F4 *event, int sentence, int *values)
+{
+    int game;
+    SpchRule_t rule;
+    if (gCallbacks.mUnknown8) {
+        fn_801AE760(key, &game);
+        int count = fn_801B1D18(event);
+        unsigned char *data = (unsigned char *)fn_801B1D44(event);
+        unsigned char *p = (unsigned char *)fn_801B1D30((char *)event, (unsigned short *)((char *)event + 12), sentence);
+        for (int i = 0; i < count; i++) {
+            GET_RULE(rule, data, i);
+            int id = rule.mId;
+            int parm = rule.mParm;
+            switch (rule.mType) {
+            case 0:
+            case 3:
+                if (fn_801B1DAC(p, parm)) {
+                    gCallbacks.mUnknown8(key, id, values[parm], game);
+                }
+                break;
+            case 1:
+            case 2:
+                break;
+            }
+        }
+    }
+}
+
+unsigned int fn_801B1FD8(SpchEventKey_t *key, Item_801AE3F4 *event, int *values, unsigned int *ignored)
+{
+    int game;
+    SpchRule_t rule;
+    fn_801AE760(key, &game);
+    unsigned int set = 0;
+    unsigned int skip = 0;
+    int count = fn_801B1D18(event);
+    unsigned char *data = (unsigned char *)fn_801B1D44(event);
+    int i;
+    for (i = 0; i < count; i++) {
+        unsigned int mask = 0;
+        GET_RULE(rule, data, i);
+        if (rule.mParm) {
+            unsigned int bit = 1 << (31 - i);
+            int value = values[rule.mParm];
+            int result;
+            if (gCallbacks.mUnknown4) result = gCallbacks.mUnknown4(key, rule.mId, value, game);
+            else result = -1;
+            if (result == 0) mask = 0;
+            else if (result > 0) mask = bit;
+            else skip |= bit;
+            set |= mask;
+        }
+    }
+    for (i = 0; i < count; i++) {
+        unsigned int mask = 0;
+        GET_RULE(rule, data, i);
+        if (rule.mParm == 0) {
+            unsigned int bit = 1 << (31 - i);
+            int result;
+            if (gCallbacks.mUnknown4) result = gCallbacks.mUnknown4(key, rule.mId, 0, game);
+            else result = -1;
+            if (result == 0) mask = 0;
+            else if (result > 0) mask = bit;
+            else skip |= bit;
+            set |= mask;
+        }
+    }
+    *ignored = skip;
+    return set;
+}
+
 unsigned char *fn_801B2190(Item_801AE3F4 *item, int index, unsigned int *a, unsigned int *b)
 {
     *a = 0;
@@ -106,18 +198,29 @@ int fn_801B22E0(RowBank_801AFE90 *p, int i, int *a, int *b)
     int count = p->mUnknown5;
     if (i < count) {
         int stride = (p->mUnknown4 & 127) + 2;
-        unsigned char *record = p->mRows + i * stride;
+        unsigned char *record = p->mRows;
+        record += i * stride;
         int scale = (p->mUnknown7 + 1) << 8;
         int start = ((record[0] << 8) + record[1]) * scale;
         unsigned char *next = record + stride;
         int end;
         if (i + 1 >= count) end = p->mUnknown8;
         else end = (next[0] << 8) + next[1];
+        end = end * scale - start;
         *a = start;
-        *b = end * scale - start;
+        *b = end;
         result = 1;
     }
     return result;
+}
+
+unsigned int fn_801B2368(void)
+{
+    unsigned int tick = 0;
+    if (gExtVecs.mVecs[2]) {
+        tick = ((unsigned int (*)(int))gExtVecs.mVecs[2])(0);
+    }
+    return tick;
 }
 
 }

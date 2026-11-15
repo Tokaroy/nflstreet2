@@ -125,10 +125,12 @@ int fn_801AE658(SpchEventKey_t *key, Slot_8037E0B4 **out)
             if (bank->mUnknown9 == key->mUnknown2 && bank->mUnknown8 == key->mUnknown3) {
                 *out = &gEventDats[i];
                 found = 1;
-                break;
+                // FAKEMATCH: goto past the loop; with break the loop keeps its jump-to-test form
+                goto done;
             }
         }
     }
+done:
     return found;
 }
 
@@ -230,8 +232,8 @@ void fn_801AE8DC(void)
         }
         lbl_8037E0F4.mVoices[i].mEvent = 0;
     }
-    lbl_803ECEB0 = 0;
     lbl_803ECEAC = 0;
+    lbl_803ECEB0 = 0;
 }
 
 int fn_801AE9A0(unsigned int priority, int channel)
@@ -548,27 +550,27 @@ int fn_801AF3D8(unsigned int channel)
     int started = 0;
 
     if (channel <= 7 && lbl_8037E0F4.mCount[channel]) {
+        int voice;
         do {
             SpchEventKey_t key;
-            int voice = fn_801AEFA0(channel);
+            voice = fn_801AEFA0(channel);
 
             if (voice < 0) {
-                break;
+                return started;
             }
             key = *(SpchEventKey_t *)lbl_8037E0F4.mVoices[voice].mEvent;
             if (fn_801AF28C(&key) == 1) {
                 fn_801B10D8(channel);
                 started = fn_801B1864(voice);
-                if (started) {
-                    fn_801AF1C8(voice);
-                    fn_801AF128(voice);
-                } else {
+                if (!started) {
                     fn_801AF128(voice);
                 }
             } else {
                 fn_801AF128(voice);
             }
         } while (started == 0);
+        fn_801AF1C8(voice);
+        fn_801AF128(voice);
     }
     return started;
 }
@@ -622,7 +624,7 @@ int fn_801AF578(int a, int b, int mode)
     return n;
 }
 
-void fn_801AF5E4(int a, int b)
+void fn_801AF5E4(int (*a)(SpchEventKey_t *, int, int, int), void (*b)(SpchEventKey_t *, int, int, int))
 {
     if (gSPCH_Initialized == 0x01789A34) {
         gCallbacks.mUnknown4 = a;

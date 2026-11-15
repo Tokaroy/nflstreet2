@@ -165,8 +165,9 @@ struct List_801AEDA4 {
 
 struct SpchCallbacks_t {
     int mUnknown0;
-    int mUnknown4;
-    int mUnknown8;
+    /* Rule test (0x801B1FD8) and rule set (0x801B1EC8): key, rule id, parameter value, game. */
+    int (*mUnknown4)(SpchEventKey_t *key, int rule, int value, int game);
+    void (*mUnknown8)(SpchEventKey_t *key, int rule, int value, int game);
     int (*mCallback)(SpchEventKey_t *key);
     int mUnknown10;
 };
@@ -184,6 +185,7 @@ public:
 
 extern "C" {
 extern SpchCallbacks_t gCallbacks;
+extern SpchExtVecs_t gExtVecs;
 extern Slot_8037E0B4 gEventDats[8];
 extern State_8037E0F4 lbl_8037E0F4;
 extern Pending_8037E234 lbl_8037E234[8];
@@ -241,6 +243,7 @@ void iSPCH_InitCsis(Bank_801AE444 *bank);
 SpchExtVecs_t *SPCH_GetExtVecs(void);
 
 /* Defined in another file of the library. */
+int fn_801AE760(SpchEventKey_t *key, int *out);
 int fn_801AE7B4(SpchEventKey_t *key, char **out);
 void fn_801AE808(void);
 void fn_801AE8DC(void);
