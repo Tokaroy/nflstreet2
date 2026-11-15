@@ -2162,46 +2162,6 @@
       "address": "0x801E26FC",
       "evidence": "evidence.tsv function and name rows for 0x801E26FC (PerJoyDriverPollPADs in src/engine/PJoyDrvr.c, a comparison-only file); the linked src/engine/llperiph.c calls it and registers it as a callback, so it resolves to the original bytes."
     },
-    "LLUIGFmvProcess": {
-      "address": "0x80226498",
-      "evidence": "evidence.tsv function and name rows for 0x80226498 (LLUIGFmvProcess, src/engine/LLUIGFmv.c, comparison-only; original bytes)."
-    },
-    "LLUIGFmvUpdate": {
-      "address": "0x8022666C",
-      "evidence": "evidence.tsv function and name rows for 0x8022666C (LLUIGFmvUpdate, src/engine/LLUIGFmv.c, comparison-only; original bytes)."
-    },
-    "LLUIGFmvInit": {
-      "address": "0x802267D0",
-      "evidence": "evidence.tsv function and name rows for 0x802267D0 (LLUIGFmvInit, src/engine/LLUIGFmv.c, comparison-only; original bytes)."
-    },
-    "LLUIGFmvShutdown": {
-      "address": "0x802267D4",
-      "evidence": "evidence.tsv function and name rows for 0x802267D4 (LLUIGFmvShutdown, src/engine/LLUIGFmv.c, comparison-only; original bytes)."
-    },
-    "LLUIGFmvAddInstance": {
-      "address": "0x802268D4",
-      "evidence": "evidence.tsv function and name rows for 0x802268D4 (LLUIGFmvAddInstance, src/engine/LLUIGFmv.c, comparison-only; original bytes)."
-    },
-    "LLUIGFmvDeleteInstance": {
-      "address": "0x802269C8",
-      "evidence": "evidence.tsv function and name rows for 0x802269C8 (LLUIGFmvDeleteInstance, src/engine/LLUIGFmv.c, comparison-only; original bytes)."
-    },
-    "LLUIGFmvStartInstance": {
-      "address": "0x80226A68",
-      "evidence": "evidence.tsv function and name rows for 0x80226A68 (LLUIGFmvStartInstance, src/engine/LLUIGFmv.c, comparison-only; original bytes)."
-    },
-    "LLUIGFmvStopInstance": {
-      "address": "0x80226C40",
-      "evidence": "evidence.tsv function and name rows for 0x80226C40 (LLUIGFmvStopInstance, src/engine/LLUIGFmv.c, comparison-only; original bytes)."
-    },
-    "LLUIGFmvSwapInstance": {
-      "address": "0x80226F34",
-      "evidence": "evidence.tsv function and name rows for 0x80226F34 (LLUIGFmvSwapInstance, src/engine/LLUIGFmv.c, comparison-only; original bytes)."
-    },
-    "LLUIGFmvInitTexture": {
-      "address": "0x802267D8",
-      "evidence": "evidence.tsv function and name rows for 0x802267D8 (LLUIGFmvInitTexture, src/engine/LLUIGFmv.c, comparison-only without a body; original bytes)."
-    },
     "SPCH_AddEventDB": {
       "address": "0x80266CB8",
       "evidence": "evidence.tsv function/name rows for 0x80266CB8 (target extent, related name); src/engine/spchrslv.c is comparison-only, so src/engine/Speech.cpp calls the original bytes."
@@ -7221,6 +7181,31 @@
           "placement": ".data5",
           "start": "0x803EBF78",
           "end": "0x803EBF80"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/LLUIGFmv.c",
+      "profile": "engine_c",
+      "evidence": "evidence.tsv unit row 0x80226498-0x80226F9C (src/engine/LLUIGFmv.c), its compiler, function, name, source-form and data rows; all sixteen functions exact, promoted from comparison-only, with the .rodata 0x802B2058-0x802B2068 of LLUIGFmvInitTexture and the .sdata 0x803EBF80-0x803EBF88 (_pToImage, _bAbortPlayback, _bIsFinished).",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80226498",
+          "end": "0x80226F9C"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B2058",
+          "end": "0x802B2068"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EBF80",
+          "end": "0x803EBF88"
         }
       ]
     },
