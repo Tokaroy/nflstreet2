@@ -181,12 +181,9 @@ void fn_801D4120(void)
 {
     CARDInit();
     lbl_80384CC0.mMounted = 0;
-    lbl_80384CC0.mRemoved = 0;
-    lbl_80384CD0.mPendingState = -1;
-    lbl_80384CD0.mPendingLength = 0;
-    lbl_803EBCFC = 0;
     lbl_80384CC0.mPresent = 0;
     lbl_80384CC0.mAdded = 0;
+    lbl_80384CC0.mRemoved = 0;
     lbl_80384CD0.mState = -1;
     lbl_80384CD0.mPos = 0;
     lbl_80384CD0.mCache = 0;
@@ -194,8 +191,11 @@ void fn_801D4120(void)
     lbl_80384CD0.mCachePos = 0;
     lbl_80384CD0.mCacheDirty = 0;
     lbl_80384CD0.mCacheValid = 0;
+    lbl_80384CD0.mPendingState = -1;
     lbl_80384CD0.mPendingRead = 0;
     lbl_80384CD0.mPendingWrite = 0;
+    lbl_80384CD0.mPendingLength = 0;
+    lbl_803EBCFC = 0;
 }
 
 void fn_801D4198(void)
@@ -230,12 +230,12 @@ int fn_801D4204(int port)
 static void fn_801D4230(void)
 {
     if ((lbl_80384CC0.mMounted >> lbl_80384CD0.mPort) & 1) {
-        lbl_80384CC0.mRemoved |= 1 << lbl_80384CD0.mPort;
         lbl_80384CC0.mMounted &= ~(1 << lbl_80384CD0.mPort);
+        lbl_80384CC0.mRemoved |= 1 << lbl_80384CD0.mPort;
     }
     if ((lbl_80384CC0.mPresent >> lbl_80384CD0.mPort) & 1) {
-        lbl_80384CC0.mRemoved |= 1 << lbl_80384CD0.mPort;
         lbl_80384CC0.mPresent &= ~(1 << lbl_80384CD0.mPort);
+        lbl_80384CC0.mRemoved |= 1 << lbl_80384CD0.mPort;
     }
     if (lbl_803EBCFC != 0) {
         lbl_803EBCFC(lbl_80384CC0.mAdded, lbl_80384CC0.mRemoved);
@@ -246,21 +246,21 @@ static void fn_801D42D4(int unused, int mounted)
 {
     if (mounted) {
         if ((lbl_80384CC0.mPresent >> lbl_80384CD0.mPort) & 1) {
-            lbl_80384CC0.mRemoved |= 1 << lbl_80384CD0.mPort;
             lbl_80384CC0.mPresent &= ~(1 << lbl_80384CD0.mPort);
+            lbl_80384CC0.mRemoved |= 1 << lbl_80384CD0.mPort;
         }
         if (!((lbl_80384CC0.mMounted >> lbl_80384CD0.mPort) & 1)) {
-            lbl_80384CC0.mAdded |= 1 << lbl_80384CD0.mPort;
             lbl_80384CC0.mMounted |= 1 << lbl_80384CD0.mPort;
+            lbl_80384CC0.mAdded |= 1 << lbl_80384CD0.mPort;
         }
     } else {
         if ((lbl_80384CC0.mMounted >> lbl_80384CD0.mPort) & 1) {
-            lbl_80384CC0.mRemoved |= 1 << lbl_80384CD0.mPort;
             lbl_80384CC0.mMounted &= ~(1 << lbl_80384CD0.mPort);
+            lbl_80384CC0.mRemoved |= 1 << lbl_80384CD0.mPort;
         }
         if (!((lbl_80384CC0.mPresent >> lbl_80384CD0.mPort) & 1)) {
-            lbl_80384CC0.mAdded |= 1 << lbl_80384CD0.mPort;
             lbl_80384CC0.mPresent |= 1 << lbl_80384CD0.mPort;
+            lbl_80384CC0.mAdded |= 1 << lbl_80384CD0.mPort;
         }
     }
     if (lbl_803EBCFC != 0) {
@@ -283,9 +283,9 @@ int fn_801D444C(int port)
     int status;
 
     lbl_80384CD0.mPort = port;
+    lbl_80384CD0.mState = 1;
     lbl_80384CD0.mBusy = 1;
     lbl_80384CD0.mResult = -99;
-    lbl_80384CD0.mState = 1;
     status = CARDProbeEx(fn_801D4204(port), &lbl_80384DB8.mMemSize, &lbl_80384DB8.mSectorSize);
     lbl_80384CD0.mResult = status;
     switch (status) {
@@ -325,9 +325,9 @@ int fn_801D4570(int port)
     int status;
 
     lbl_80384CD0.mPort = port;
-    lbl_80384CD0.mResult = -99;
     lbl_80384CD0.mState = 0;
     lbl_80384CD0.mBusy = 1;
+    lbl_80384CD0.mResult = -99;
     status = CARDFormatAsync(port, 0);
     lbl_80384CD0.mResult = status;
     if (status == CARD_RESULT_READY) {
@@ -344,8 +344,8 @@ int fn_801D45DC(int port)
 
     lbl_80384CD0.mPort = port;
     lbl_80384CD0.mState = 2;
-    lbl_80384CD0.mResult = -99;
     lbl_80384CD0.mBusy = 1;
+    lbl_80384CD0.mResult = -99;
     status = CARDMountAsync(port, lbl_80384DE0[port], fn_801D3CA4, 0);
     lbl_80384CD0.mResult = status;
     if (status == CARD_RESULT_READY) {
@@ -392,8 +392,8 @@ int fn_801D46F0(int port)
 
     lbl_80384CD0.mPort = port;
     lbl_80384CD0.mState = 6;
-    lbl_80384CD0.mResult = -99;
     lbl_80384CD0.mBusy = 1;
+    lbl_80384CD0.mResult = -99;
     status = CARDCheckAsync(port, 0);
     lbl_80384CD0.mResult = status;
     if (status == CARD_RESULT_BROKEN) {
@@ -625,27 +625,27 @@ int fn_801D4E6C(int handle)
     if (lbl_80384CD0.mCache != 0) {
         if (lbl_80384CD0.mCacheDirty) {
             fn_801D3C68(&offset, &chunk);
+            lbl_80384CD0.mHandle = handle;
             lbl_80384CD0.mState = 21;
             lbl_80384CD0.mBusy = 1;
             lbl_80384CD0.mResult = -99;
             lbl_80384CD0.mSize = chunk;
-            lbl_80384CD0.mHandle = handle;
             status = CARDWriteAsync(&lbl_80384CD0.mFileInfo, lbl_80384CD0.mCache, chunk, offset, 0);
             lbl_80384CD0.mResult = status;
             lbl_80384CD0.mBusy = status == CARD_RESULT_READY;
-            lbl_80384CD0.mCacheValid = 0;
             lbl_80384CD0.mCachePos = 0;
             lbl_80384CD0.mCacheDirty = 0;
+            lbl_80384CD0.mCacheValid = 0;
             return 0;
         }
+        lbl_80384CD0.mCachePos = 0;
         lbl_80384CD0.mCacheDirty = 0;
         lbl_80384CD0.mCacheValid = 0;
-        lbl_80384CD0.mCachePos = 0;
     }
-    lbl_80384CD0.mBusy = 0;
     lbl_80384CD0.mHandle = handle;
     lbl_80384CD0.mState = 16;
     lbl_80384CD0.mResult = 0;
+    lbl_80384CD0.mBusy = 0;
     return 0;
 }
 
@@ -653,17 +653,17 @@ int fn_801D4F58(int handle)
 {
     if (lbl_80384CD0.mCache != 0) {
         fn_801D2BD0(lbl_80384CD0.mCache);
-        lbl_80384CD0.mPendingState = -1;
-        lbl_80384CD0.mPendingLength = 0;
-        lbl_80384CD0.mPendingWrite = 0;
         lbl_80384CD0.mCache = 0;
         lbl_80384CD0.mCachePos = 0;
         lbl_80384CD0.mCacheDirty = 0;
         lbl_80384CD0.mCacheValid = 0;
+        lbl_80384CD0.mPendingState = -1;
         lbl_80384CD0.mPendingRead = 0;
+        lbl_80384CD0.mPendingWrite = 0;
+        lbl_80384CD0.mPendingLength = 0;
     }
-    lbl_80384CD0.mState = 15;
     lbl_80384CD0.mHandle = handle;
+    lbl_80384CD0.mState = 15;
     lbl_80384CD0.mBusy = 1;
     lbl_80384CD0.mResult = -99;
     lbl_80384CD0.mResult = CARDClose(&lbl_80384CD0.mFileInfo);
@@ -723,10 +723,10 @@ int fn_801D512C(int handle, int offset, int whence)
         lbl_80384CD0.mOffset = offset;
         lbl_80384CD0.mCachePos = offset % lbl_80384CD0.mChunkSize;
         fn_801D3C68(&fileOffset, &chunk);
-        lbl_80384CD0.mState = 20;
-        lbl_80384CD0.mResult = -99;
         lbl_80384CD0.mHandle = handle;
+        lbl_80384CD0.mState = 20;
         lbl_80384CD0.mBusy = 1;
+        lbl_80384CD0.mResult = -99;
         status = CARDReadAsync(&lbl_80384CD0.mFileInfo, lbl_80384CD0.mCache, chunk, fileOffset, 0);
         lbl_80384CD0.mResult = status;
         lbl_80384CD0.mCacheValid = 1;
@@ -776,34 +776,34 @@ static int fn_801D5288(int handle, char *pBuffer, int length)
             lbl_80384CD0.mUnknownD4 += count;
         }
         if (length == 0) {
-            lbl_80384CD0.mBusy = 0;
             lbl_80384CD0.mHandle = handle;
             lbl_80384CD0.mState = 20;
             lbl_80384CD0.mResult = 0;
+            lbl_80384CD0.mBusy = 0;
             return 0;
         }
         fn_801D3C68(&offset, &chunk);
-        lbl_80384CD0.mResult = -99;
         lbl_80384CD0.mHandle = handle;
         lbl_80384CD0.mState = 20;
         lbl_80384CD0.mBusy = 1;
+        lbl_80384CD0.mResult = -99;
         lbl_80384CD0.mSize = length;
         status = CARDReadAsync(&lbl_80384CD0.mFileInfo, lbl_80384CD0.mCache, chunk, offset, 0);
-        lbl_80384CD0.mPendingLength = length;
+        lbl_80384CD0.mResult = status;
         lbl_80384CD0.mBusy = status == CARD_RESULT_READY;
+        lbl_80384CD0.mCachePos = 0;
+        lbl_80384CD0.mCacheDirty = 0;
         lbl_80384CD0.mCacheValid = 1;
         lbl_80384CD0.mPendingState = 20;
         lbl_80384CD0.mPendingRead = pBuffer;
         lbl_80384CD0.mPendingWrite = 0;
-        lbl_80384CD0.mResult = status;
-        lbl_80384CD0.mCachePos = 0;
-        lbl_80384CD0.mCacheDirty = 0;
+        lbl_80384CD0.mPendingLength = length;
         return 0;
     }
     lbl_80384CD0.mHandle = handle;
     lbl_80384CD0.mState = 20;
-    lbl_80384CD0.mResult = -99;
     lbl_80384CD0.mBusy = 1;
+    lbl_80384CD0.mResult = -99;
     lbl_80384CD0.mSize = length;
     lbl_80384CD0.mResult = CARDReadAsync(&lbl_80384CD0.mFileInfo, pBuffer, length, lbl_80384CD0.mPos, 0);
     if (lbl_80384CD0.mResult == CARD_RESULT_READY) {
@@ -831,10 +831,10 @@ static int fn_801D546C(int handle, char *pBuffer, int length)
         fn_801D3C68(&offset, &chunk);
         count = 0;
         if (!lbl_80384CD0.mCacheValid) {
-            lbl_80384CD0.mState = 20;
-            lbl_80384CD0.mResult = -99;
             lbl_80384CD0.mHandle = handle;
+            lbl_80384CD0.mState = 20;
             lbl_80384CD0.mBusy = 1;
+            lbl_80384CD0.mResult = -99;
             status = CARDReadAsync(&lbl_80384CD0.mFileInfo, lbl_80384CD0.mCache, chunk, offset, 0);
             lbl_80384CD0.mCacheValid = 1;
             lbl_80384CD0.mBusy = status == CARD_RESULT_READY;
@@ -889,8 +889,8 @@ static int fn_801D546C(int handle, char *pBuffer, int length)
     }
     lbl_80384CD0.mHandle = handle;
     lbl_80384CD0.mState = 21;
-    lbl_80384CD0.mResult = -99;
     lbl_80384CD0.mBusy = 1;
+    lbl_80384CD0.mResult = -99;
     lbl_80384CD0.mSize = length;
     lbl_80384CD0.mResult = CARDWriteAsync(&lbl_80384CD0.mFileInfo, pBuffer, length, lbl_80384CD0.mPos, 0);
     if (lbl_80384CD0.mResult == CARD_RESULT_READY) {
@@ -914,10 +914,10 @@ int fn_801D56CC(void)
 
 int fn_801D56D4(int handle, unsigned int *pSysInfo)
 {
-    lbl_80384CD0.mState = 23;
-    lbl_80384CD0.mResult = -99;
     lbl_80384CD0.mHandle = handle;
+    lbl_80384CD0.mState = 23;
     lbl_80384CD0.mBusy = 1;
+    lbl_80384CD0.mResult = -99;
     lbl_80384CD0.mStat.iconAddr = pSysInfo[0];
     lbl_80384CD0.mStat.commentAddr = pSysInfo[1];
     lbl_80384CD0.mResult = CARDSetStatusAsync(lbl_80384CD0.mPort, handle, &lbl_80384CD0.mStat, 0);
