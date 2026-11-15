@@ -2170,7 +2170,7 @@
     },
     "gDefPred": {
       "address": "0x8030C070",
-      "evidence": "evidence.tsv external row for 0x8030C070 (gDefPred, defined in the comparison-only src/game/cu_8008E978.cpp); the linked src/game/InGameGroup.cpp module tables point to it."
+      "evidence": "evidence.tsv external row for 0x8030C070 (gDefPred, defined in the comparison-only src/game/cu_8008E978.cpp); src/game/InGameGroup.cpp's module tables point to it."
     },
     "FormationLineupSwapAllUser": {
       "address": "0x8008593C",
@@ -2263,6 +2263,10 @@
     "GBAFanServiceLink": {
       "address": "0x802857D8",
       "evidence": "evidence.tsv function/name rows for 0x802857D8 (target extent, related name); src/engine/gbafan.c is comparison-only, so src/engine/PJoyDrvr.c calls the original bytes."
+    },
+    "gInGameGroup": {
+      "address": "0x803068B4",
+      "evidence": "evidence.tsv data and name rows for 0x803068B4 (gInGameGroup, defined in the comparison-only src/game/InGameGroup.cpp, original bytes); the linked src/game/gsflowman.cpp returns its address."
     }
   },
   "units": [
@@ -4506,55 +4510,6 @@
           "placement": ".data2",
           "start": "0x80289B94",
           "end": "0x80289B98"
-        }
-      ]
-    },
-    {
-      "source": "src/game/InGameGroup.cpp",
-      "profile": "game_cpp",
-      "evidence": "evidence.tsv unit row 0x800325E8-0x80032EE8 (src/game/InGameGroup.cpp) and its function and data rows; every function and data placement exact, promoted from comparison-only.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x800325E8",
-          "end": "0x80032EE8"
-        },
-        {
-          "section": ".rodata",
-          "placement": ".data3",
-          "start": "0x8028ACE0",
-          "end": "0x8028AD70"
-        },
-        {
-          "section": ".data",
-          "placement": ".data4",
-          "start": "0x802CCBBC",
-          "end": "0x802CCBF4"
-        },
-        {
-          "section": ".bss",
-          "placement": ".bss",
-          "start": "0x803068B4",
-          "end": "0x80306B34"
-        },
-        {
-          "section": ".sbss",
-          "placement": ".sbss",
-          "start": "0x803EC680",
-          "end": "0x803EC688"
-        },
-        {
-          "section": ".ctors",
-          "placement": ".data2",
-          "start": "0x80289A5C",
-          "end": "0x80289A60"
-        },
-        {
-          "section": ".dtors",
-          "placement": ".data2",
-          "start": "0x80289B9C",
-          "end": "0x80289BA0"
         }
       ]
     },
