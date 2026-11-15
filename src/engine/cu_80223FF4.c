@@ -296,7 +296,7 @@ void fn_80225B50(Uint32 Flags)
         GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
     }
     GXSetCullMode(!(Flags & 8) ? GX_CULL_BACK : GX_CULL_NONE);
-    GXLoadPosMtxImm((f32 (*)[4])fn_801D0444(), GX_PNMTX0);
+    GXLoadPosMtxImm((f32 (*)[4])MatGetCurMatrixPtr(), GX_PNMTX0);
     GXSetCurrentMtx(GX_PNMTX0);
     GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
     GXSetZCompLoc(GX_FALSE);

@@ -8,10 +8,10 @@
 #include <dolphin/os/OSCache.h>
 #include "engine/tmlib.h"
 
-/* llmatrix.c matrix-stack operations (engine/llmatrix.h clashes with tmlib.h over fn_801D0F80). */
-void fn_801D04C4(void);
-void fn_801D0544(void);
-void fn_801D0558(void);
+/* llmatrix.c matrix-stack operations (engine/llmatrix.h clashes with tmlib.h over MatStore). */
+void MatPush(void);
+void MatPop(void);
+void MatMakeUnit(void);
 
 static void _TMRenderGeomSubmit(TMGeomNode_t *pNode, TMChannelList_t *pList)
 {
@@ -79,8 +79,8 @@ void TMRenderGeomSkin(TMRenderState_t *pState, TMGeomNode_t *pNode)
                 pMtxIndex = pAttrs[pNode->mUnknown16].mpData;
                 pDst = (Vec *)TMGeomAllocChannelBuffer(pAttr->mCount * sizeof(Vec));
                 pState->mpChannels[pNode->mFirstAttr + i] = pDst;
-                fn_801D04C4();
-                fn_801D0558();
+                MatPush();
+                MatMakeUnit();
                 for (j = 0; j < pAttr->mCount; j++) {
                     v.x = TMs16tof32(pSrc);
                     pSrc++;
@@ -101,8 +101,8 @@ void TMRenderGeomSkin(TMRenderState_t *pState, TMGeomNode_t *pNode)
                 pMtxIndex = pAttrs[pNode->mUnknown16].mpData;
                 pDst = (Vec *)TMGeomAllocChannelBuffer(pAttr->mCount * sizeof(Vec));
                 pState->mpChannels[pNode->mFirstAttr + i] = pDst;
-                fn_801D04C4();
-                fn_801D0558();
+                MatPush();
+                MatMakeUnit();
                 for (j = 0; j < pAttr->mCount; j++) {
                     v.x = *pSrc++;
                     v.y = *pSrc++;
@@ -113,7 +113,7 @@ void TMRenderGeomSkin(TMRenderState_t *pState, TMGeomNode_t *pNode)
             } else {
                 continue;
             }
-            fn_801D0544();
+            MatPop();
             DCFlushRange(pState->mpChannels[pNode->mFirstAttr + i], pAttr->mCount * sizeof(Vec));
         } else if (pAttr->mType == GX_VA_NRM && pAttr->mCompType == GX_S8) {
             signed char *pSrc = pAttr->mpData;
@@ -123,8 +123,8 @@ void TMRenderGeomSkin(TMRenderState_t *pState, TMGeomNode_t *pNode)
             pMtxIndex = pAttrs[pNode->mUnknown16].mpData;
             pDst = (signed char *)TMGeomAllocChannelBuffer(pAttr->mCount * 8);
             pState->mpChannels[pNode->mFirstAttr + i] = pDst;
-            fn_801D04C4();
-            fn_801D0558();
+            MatPush();
+            MatMakeUnit();
             for (j = 0; j < pAttr->mCount; j++) {
                 v.x = TMs8tof32(pSrc);
                 pSrc++;
@@ -143,7 +143,7 @@ void TMRenderGeomSkin(TMRenderState_t *pState, TMGeomNode_t *pNode)
                 TMf32tos8(v.z, pDst);
                 pDst++;
             }
-            fn_801D0544();
+            MatPop();
             DCFlushRange(pState->mpChannels[pNode->mFirstAttr + i], pAttr->mCount * 3);
         }
     }
