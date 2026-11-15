@@ -20906,31 +20906,6 @@
       ]
     },
     {
-      "source": "src/engine/gflink.c",
-      "profile": "engine_c",
-      "evidence": "evidence.tsv provisional unit row 0x802856D8-0x802857D8 (src/engine/gflink.c), its compiler, function and name rows. Draft comparisons only; original assembly remains linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x802856D8",
-          "end": "0x802857D8"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "Init_GFLink",
-          "start": "0x802856D8",
-          "end": "0x8028572C"
-        },
-        {
-          "symbol": "GetState_GFLink",
-          "start": "0x8028572C",
-          "end": "0x802857D8"
-        }
-      ]
-    },
-    {
       "source": "src/engine/gbafan.c",
       "profile": "engine_c",
       "evidence": "evidence.tsv provisional unit row 0x802857D8-0x80285808 (src/engine/gbafan.c), its compiler, function and name rows. Draft comparisons only; original assembly remains linked.",

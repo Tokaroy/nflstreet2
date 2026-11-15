@@ -2270,10 +2270,6 @@
       "address": "0x802F4794",
       "evidence": "evidence.tsv data/name rows for 0x802F4794 (target extent, related name); speech-library storage, original-owned."
     },
-    "Init_GFLink": {
-      "address": "0x802856D8",
-      "evidence": "evidence.tsv function/name rows for 0x802856D8 (target extent, related name); src/engine/gflink.c is comparison-only, so src/engine/llperiph.c calls the original bytes."
-    },
     "GBAFanServiceLink": {
       "address": "0x802857D8",
       "evidence": "evidence.tsv function/name rows for 0x802857D8 (target extent, related name); src/engine/gbafan.c is comparison-only, so src/engine/PJoyDrvr.c calls the original bytes."
@@ -18707,6 +18703,44 @@
           "placement": ".data4",
           "start": "0x802F9B90",
           "end": "0x802F9BAC"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/gflink.c",
+      "profile": "engine_c",
+      "evidence": "evidence.tsv provisional unit row 0x802856D8-0x802857D8 (src/engine/gflink.c), its compiler, function, name and data rows; both functions exact and the file's .rodata string, .sdata pointer and .sbss byte linked under unchanged engine_c; the file defines the COMMON port array _state and the unit's storage map places it at its exact data row. Promoted from comparison-only.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x802856D8",
+          "end": "0x802857D8"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C2930",
+          "end": "0x802C29A0"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EC588",
+          "end": "0x803EC58C"
+        },
+        {
+          "section": ".sbss",
+          "placement": ".sbss",
+          "start": "0x803ED4B8",
+          "end": "0x803ED4BC"
+        }
+      ],
+      "storage": [
+        {
+          "symbol": "_state",
+          "start": "0x803E990C",
+          "end": "0x803EA28C"
         }
       ]
     },
