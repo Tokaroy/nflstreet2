@@ -33097,13 +33097,19 @@
     {
       "source": "src/engine/T3DB_Lexer.c",
       "profile": "engine_c_fastmath",
-      "evidence": "evidence.tsv unit row 0x802009B0-0x80201D94 (src/engine/T3DB_Lexer.c): first function of the original T3DB_Lexer.c (NASCAR 2005 symbol table), T3DB_Lexer_GetTokens. Stops before 0x80200DD4 (T3DB_Lexer_Number, no source yet). Comparison only; original assembly stays linked.",
+      "evidence": "evidence.tsv unit row 0x802009B0-0x80201D94 (src/engine/T3DB_Lexer.c): the whole original T3DB_Lexer.c (NASCAR 2005 symbol table), T3DB_Lexer_GetTokens, T3DB_Lexer_Number, T3DB_Lexer_Identifier and T3DB_Lexer_StringLiteral, with their function, compiler and source-form rows. Comparison only; original assembly stays linked.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x802009B0",
-          "end": "0x80200DD4"
+          "end": "0x80201D94"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B1AF0",
+          "end": "0x802B1AF8"
         }
       ],
       "functions": [
@@ -33111,22 +33117,17 @@
           "symbol": "fn_802009B0",
           "start": "0x802009B0",
           "end": "0x80200DD4"
-        }
-      ]
-    },
-    {
-      "source": "src/engine/cu_80201C70.c",
-      "profile": "engine_c_fastmath",
-      "evidence": "evidence.tsv unit row 0x802009B0-0x80201D94 (src/engine/T3DB_Lexer.c; this source covers 0x80201C70-0x80201D94 as src/engine/cu_80201C70.c): last function of the original T3DB_Lexer.c (NASCAR 2005 symbol table), T3DB_Lexer_StringLiteral, split from src/engine/T3DB_Lexer.c because 0x80200DD4 and 0x80201030 have no source yet. Comparison only; original assembly stays linked.",
-      "sections": [
+        },
         {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x80201C70",
-          "end": "0x80201D94"
-        }
-      ],
-      "functions": [
+          "symbol": "fn_80200DD4",
+          "start": "0x80200DD4",
+          "end": "0x80201030"
+        },
+        {
+          "symbol": "fn_80201030",
+          "start": "0x80201030",
+          "end": "0x80201C70"
+        },
         {
           "symbol": "fn_80201C70",
           "start": "0x80201C70",

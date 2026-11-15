@@ -201,9 +201,15 @@ typedef struct TDbResult_8020AD1C {
     int mUnknown08;
 } TDbResult_8020AD1C;
 
+typedef union TDbTokenValue_t {
+    void *mPtr;
+    int mInt;
+    float mFloat;
+} TDbTokenValue_t;
+
 typedef struct TDbToken_801FD2E8 {
     unsigned int mType;
-    void *mValue;
+    TDbTokenValue_t mValue;
     char *mSrc;
     int mUnknownC;
 } TDbToken_801FD2E8;

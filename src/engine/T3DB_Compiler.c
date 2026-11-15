@@ -508,15 +508,15 @@ int fn_801FDF28(TDbParseInfo_801FC9D4 *pInfo, TDbLexer_801FCE10 *pLexer, int res
     switch (pLexer->mTokens[0].mType) {
     case 0x30:
         pValue->mType = TDB_TYPE_INT;
-        pValue->mValue.i = (int)pLexer->mTokens[0].mValue;
+        pValue->mValue.i = (int)pLexer->mTokens[0].mValue.mPtr;
         break;
     case 0x31:
         pValue->mType = TDB_TYPE_FLOAT;
-        pValue->mValue.f = *(float *)&pLexer->mTokens[0].mValue;
+        pValue->mValue.f = pLexer->mTokens[0].mValue.mFloat;
         break;
     case 0x32:
         pValue->mType = TDB_TYPE_STRING;
-        pValue->mValue.s = pLexer->mTokens[0].mValue;
+        pValue->mValue.s = pLexer->mTokens[0].mValue.mPtr;
         break;
     case 0:
         pValue->mValue.i = va_arg(pInfo->mArgs, int);
@@ -754,17 +754,17 @@ int fn_801FEA04(TDbParseInfo_801FC9D4 *pInfo, TDbLexer_801FCE10 *pLexer, int res
         pVar->mType = TDB_TYPE_STRING;
         break;
     case 0x30:
-        value = (unsigned int)pLexer->mTokens[0].mValue;
+        value = (unsigned int)pLexer->mTokens[0].mValue.mPtr;
         pVar->mType = TDB_TYPE_INT;
         pVar->mSize = 4;
         break;
     case 0x31:
-        value = (unsigned int)pLexer->mTokens[0].mValue;
+        value = (unsigned int)pLexer->mTokens[0].mValue.mPtr;
         pVar->mType = TDB_TYPE_FLOAT;
         pVar->mSize = 4;
         break;
     case 0x32:
-        value = (unsigned int)pLexer->mTokens[0].mValue;
+        value = (unsigned int)pLexer->mTokens[0].mValue.mPtr;
         pVar->mType = TDB_TYPE_STRING;
         pVar->mSize = 4;
         break;
