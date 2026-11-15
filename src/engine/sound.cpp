@@ -139,7 +139,7 @@ int SNDbankremove(int handle);
 void fn_8026B124(void *p);
 void fn_8026B250(void);
 void fn_8026C280(void);
-int fn_8026C3BC(int handle);
+int SNDover(int handle);
 int SNDpitchmult(int handle, int value);
 void SNDplaysetdef(SndPatchOpts_t *pOpts);
 void SNDSYS_entercritical(void);
@@ -592,7 +592,7 @@ int SndPatchOver(int handle)
     result = 0;
     if (SND_READY()) {
         SND_LOCK();
-        result = fn_8026C3BC(handle);
+        result = SNDover(handle);
         SND_UNLOCK();
     }
     return result;

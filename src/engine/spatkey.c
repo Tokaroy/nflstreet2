@@ -5,12 +5,12 @@
 
 int iSNDpatchkey(int handle, int *cursor)
 {
-/*V*/    unsigned char key = lbl_803A6C24.m1CC[handle].m26;
-/*V*/
+    Record_803A6DF0 *rec = &lbl_803A6C24.m1CC[handle];
+    unsigned char key = rec->m26;
+
     if (key != 0) {
         for ((*cursor)++; *cursor < lbl_803A6C24.m16C; (*cursor)++) {
-            Record_803A6DF0 *rec = &lbl_803A6C24.m1CC[*cursor];
-
+            rec = &lbl_803A6C24.m1CC[*cursor];
             if (rec->m26 == key && rec->m6D == 1 && rec->m0 >= 0) {
                 return 1;
             }

@@ -2370,37 +2370,25 @@
       "address": "0x8037E0B4",
       "evidence": "evidence.tsv data/name rows for 0x8037E0B4 (target extent, related name); speech-library storage, original-owned."
     },
-    "SNDbankremove": {
-      "address": "0x8026AB88",
-      "evidence": "evidence.tsv function and name rows for SNDbankremove 0x8026AB88; its draft src/engine/sbremove.c is registered in comparisons.json one function short of exact, so the original provider stays linked and linked callers resolve this name to it."
-    },
-    "iSNDpatchkey": {
-      "address": "0x8026C910",
-      "evidence": "evidence.tsv function and name rows for iSNDpatchkey 0x8026C910; its draft src/engine/spatkey.c is registered in comparisons.json one function short of exact, so the original provider stays linked and linked callers resolve this name to it."
-    },
-    "SNDplaysetdef": {
-      "address": "0x8026CA50",
-      "evidence": "evidence.tsv function and name rows for SNDplaysetdef 0x8026CA50; its draft src/engine/splysdef.c is registered in comparisons.json one function short of exact, so the original provider stays linked and linked callers resolve this name to it."
-    },
     "SNDMEMI_constrain": {
       "address": "0x8026B520",
-      "evidence": "evidence.tsv function and name rows for SNDMEMI_constrain 0x8026B520; the draft src/engine/smemman.c is registered in comparisons.json (two of its five functions differ), so the original provider stays linked and linked callers resolve this name to it."
+      "evidence": "evidence.tsv function and name rows for SNDMEMI_constrain 0x8026B520; the draft src/engine/smemman.c is registered in comparisons.json (one of its five functions, SNDMEMI_allocz, differs), so the original provider stays linked and linked callers resolve this name to it."
     },
     "SNDMEMI_init": {
       "address": "0x8026B54C",
-      "evidence": "evidence.tsv function and name rows for SNDMEMI_init 0x8026B54C; the draft src/engine/smemman.c is registered in comparisons.json (two of its five functions differ), so the original provider stays linked and linked callers resolve this name to it."
+      "evidence": "evidence.tsv function and name rows for SNDMEMI_init 0x8026B54C; the draft src/engine/smemman.c is registered in comparisons.json (one of its five functions, SNDMEMI_allocz, differs), so the original provider stays linked and linked callers resolve this name to it."
     },
     "SNDMEMI_restore": {
       "address": "0x8026B5B4",
-      "evidence": "evidence.tsv function and name rows for SNDMEMI_restore 0x8026B5B4; the draft src/engine/smemman.c is registered in comparisons.json (two of its five functions differ), so the original provider stays linked and linked callers resolve this name to it."
+      "evidence": "evidence.tsv function and name rows for SNDMEMI_restore 0x8026B5B4; the draft src/engine/smemman.c is registered in comparisons.json (one of its five functions, SNDMEMI_allocz, differs), so the original provider stays linked and linked callers resolve this name to it."
     },
     "SNDMEMI_allocz": {
       "address": "0x8026B5D4",
-      "evidence": "evidence.tsv function and name rows for SNDMEMI_allocz 0x8026B5D4; the draft src/engine/smemman.c is registered in comparisons.json (two of its five functions differ), so the original provider stays linked and linked callers resolve this name to it."
+      "evidence": "evidence.tsv function and name rows for SNDMEMI_allocz 0x8026B5D4; the draft src/engine/smemman.c is registered in comparisons.json (one of its five functions, SNDMEMI_allocz, differs), so the original provider stays linked and linked callers resolve this name to it."
     },
     "SNDMEMI_free": {
       "address": "0x8026B7D8",
-      "evidence": "evidence.tsv function and name rows for SNDMEMI_free 0x8026B7D8; the draft src/engine/smemman.c is registered in comparisons.json (two of its five functions differ), so the original provider stays linked and linked callers resolve this name to it."
+      "evidence": "evidence.tsv function and name rows for SNDMEMI_free 0x8026B7D8; the draft src/engine/smemman.c is registered in comparisons.json (one of its five functions, SNDMEMI_allocz, differs), so the original provider stays linked and linked callers resolve this name to it."
     },
     "SNDSTRM_setvol": {
       "address": "0x8026F334",
@@ -20026,6 +20014,90 @@
           "placement": ".text",
           "start": "0x8027AD08",
           "end": "0x8027AEE4"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/spatkey.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8026C910-0x8026C9BC (src/engine/spatkey.c), its function and name rows, and the sound_cxx compiler row; every function exact, promoted from comparison-only.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8026C910",
+          "end": "0x8026C9BC"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/sbremove.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8026AB88-0x8026AD18 (src/engine/sbremove.c), its function and name rows, and the sound_cxx compiler row; every function exact, promoted from comparison-only.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8026AB88",
+          "end": "0x8026AD18"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/sover.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8026C3BC-0x8026C3E0 (src/engine/sover.c), its function and name rows, and the sound_cxx compiler row; every function exact, promoted from comparison-only.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8026C3BC",
+          "end": "0x8026C3E0"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/spantoaz.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8026C3E0-0x8026C3F4 (src/engine/spantoaz.c), its function and name rows, the data rows of its .data 0x802FFCD4-0x802FFDD4, and the sound_cxx compiler row; every function exact, promoted from comparison-only.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8026C3E0",
+          "end": "0x8026C3F4"
+        },
+        {
+          "section": ".data",
+          "placement": ".data4",
+          "start": "0x802FFCD4",
+          "end": "0x802FFDD4"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/saemstimupdt.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x80269C70-0x80269CE8 (src/engine/saemstimupdt.c), its function and name rows, and the sound_cxx compiler row; every function exact, promoted from comparison-only.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80269C70",
+          "end": "0x80269CE8"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/splysdef.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8026CA50-0x8026CAA8 (src/engine/splysdef.c), its function and name rows, and the sound_cxx compiler row; every function exact, promoted from comparison-only.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8026CA50",
+          "end": "0x8026CAA8"
         }
       ]
     }
