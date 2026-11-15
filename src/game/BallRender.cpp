@@ -63,7 +63,7 @@ void TMRenderBindMaterialList(void *p);
 void TMRenderSetBlendMode(int a);
 void TMRenderSetZRange(float a, float b);
 void TMRenderSetZMode(int a, int b, int c);
-void fn_80211350(void);
+void TMRenderGeomAll(void);
 void TMTexLibLoad(BallTexLib *pElement, int a);
 void TMTexLibUnload(BallTexLib *pElement);
 void TMTexLibRegistryReset(void);
@@ -189,7 +189,7 @@ void BallRenderDraw(BallRenderObj *pObject)
         }
         TMXform(0, 0);
         TMRenderSetBlendMode(2);
-        fn_80211350();
+        TMRenderGeomAll();
         TMRenderSetBlendMode(1);
         fn_801D0544();
     }

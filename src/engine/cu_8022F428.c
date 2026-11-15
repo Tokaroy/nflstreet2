@@ -306,8 +306,8 @@ extern void TMMaterialListSelect(void *p, int a);
 extern void TMRenderBindModel(void *p);
 extern void TMRenderBindClusterObj(void *p);
 extern void TMRenderBindMaterialList(void *p);
-extern void fn_802112DC(short *pValues, int count);
-extern void fn_80211424(short *pValues, int count);
+extern void TMRenderGeomList(short *pValues, int count);
+extern void TMRenderGeomListDirect(short *pValues, int count);
 extern int TMShaderLibGetShader(const char *pName);
 extern void TMTexLibLoad(void *p, int a);
 extern void TMTexLibUnload(void *p);
@@ -1689,14 +1689,14 @@ void fn_80234BF4(int a, Part_80234A30 *pPart, int mode)
     TMRenderBindClusterObj(pPart->mpUnknown224);
     switch (mode) {
     case 0:
-        fn_802112DC(pPart->mUnknown96, pPart->mUnknown92);
+        TMRenderGeomList(pPart->mUnknown96, pPart->mUnknown92);
         break;
     case 1:
         GXSetNumTexGens(1);
         GXSetNumTevStages(1);
         GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
         TMTevSetTevOp(0, 0, 1);
-        fn_80211424(pPart->mUnknown96, pPart->mUnknown92);
+        TMRenderGeomListDirect(pPart->mUnknown96, pPart->mUnknown92);
         break;
     }
 }

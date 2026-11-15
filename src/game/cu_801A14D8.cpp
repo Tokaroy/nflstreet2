@@ -235,7 +235,7 @@ void TMRenderBindTexture(int a, int b, int c);
 void TMRenderBindMaterialList(void *p);
 void TMRenderSetBlendMode(int a);
 void TMRenderSetZRange(float a, float b);
-void fn_802113C0(int a, int b);
+void TMRenderGeomNode(int a, int b);
 void TMTexLibLoad(void *p, int handle);
 void TMTexLibUnload(void *p);
 void TMTexLibRegistryReset(void);
@@ -511,12 +511,12 @@ int fn_801A1C10(Object_8003DEC4 *pPlayer)
         fn_801A3300(pPlayer, a, b);
         fn_801A32AC(30, 1.0f, 1.0f, b[0], b[1]);
         GXSetTexCoordGen2(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0, GX_FALSE, GX_PTIDENTITY);
-        fn_802113C0(2, 0);
+        TMRenderGeomNode(2, 0);
         fn_801A32AC(30, 1.0f, 1.0f, a[0], a[1]);
         GXSetTexCoordGen2(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0, GX_FALSE, GX_PTIDENTITY);
-        fn_802113C0(3, 0);
+        TMRenderGeomNode(3, 0);
         GXSetTexCoordGen2(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY, GX_FALSE, GX_PTIDENTITY);
-        fn_802113C0(1, 0);
+        TMRenderGeomNode(1, 0);
     } else {
         fn_80234BF4(0, &pPlayer->mUnknown1164[4], 0);
     }
@@ -529,7 +529,7 @@ void fn_801A1D80(Object_8003DEC4 *pPlayer, int flag)
         TMRenderBindModel(&lbl_80365D54);
         TMRenderBindMaterialList(pPlayer->mUnknown4044);
         TMRenderBindClusterObj(&pPlayer->mUnknown4064[1]);
-        fn_802113C0(4, 0);
+        TMRenderGeomNode(4, 0);
     } else {
         fn_80234BF4(0, &pPlayer->mUnknown1164[5], 0);
     }

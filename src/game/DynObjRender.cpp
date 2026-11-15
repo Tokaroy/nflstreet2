@@ -81,7 +81,7 @@ void TMMaterialListSelect(void *, int); void TMMaterialBindClut(unsigned int, in
 void TMRenderBindModel(Object_8023417C *); void TMRenderBindClusterObj(void *);
 void TMRenderBindTexture(int, int, unsigned char *);
 void TMRenderBindMaterialList(void *); void TMRenderSetBlendMode(int);
-void fn_8021126C(void); void fn_802112DC(void *, int); void fn_80211350(void);
+void TMRenderGeomSkinAll(void); void TMRenderGeomList(void *, int); void TMRenderGeomAll(void);
 void TMTexLibLoad(DynObjTexLib *, int); void TMTexLibUnload(DynObjTexLib *);
 void TMTexLibRegistryReset(void); void TMTexLibRegister(const char *, DynObjTexLib *);
 int TMTexLibGetClut(DynObjTexLib *, unsigned int, int);
@@ -157,15 +157,15 @@ int DynObjDraw(DynObj *p, int arg)
                         TMRenderBindModel(reinterpret_cast<Object_8023417C *>(model));
                         TMRenderBindClusterObj(s->mUnknownC.mpUnknownE0); fn_801D04C4(); fn_801D0558();
                         fn_802337D4(model,s->mUnknownFC,p->mpUnknownDC,0);
-                        fn_801D0544(); fn_8021126C();
+                        fn_801D0544(); TMRenderGeomSkinAll();
                     }
                     GXSetCurrentMtx(GX_PNMTX0);GXLoadPosMtxImm(m2,GX_PNMTX0);GXLoadNrmMtxImm(m2,GX_PNMTX0);
                     GXSetNumTexGens(1);GXSetNumTevStages(1);GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
                     if(p->mUnknownE8.mWord&16) {
                         s->mUnknown4.mpUnknown4->mpUnknown0->mpUnknown10->mpUnknown4+=p->mUnknownFC*40;
-                        fn_80211350();
+                        TMRenderGeomAll();
                         s->mUnknown4.mpUnknown4->mpUnknown0->mpUnknown10->mpUnknown4-=p->mUnknownFC*40;
-                    } else fn_802112DC(s->mUnknownC.mUnknown60,s->mUnknownC.mUnknown5C);
+                    } else TMRenderGeomList(s->mUnknownC.mUnknown60,s->mUnknownC.mUnknown5C);
                 } else {
                     p->mUnknown138=1;fn_802337D4(s->mUnknownC.mpUnknownC,s->mUnknownFC,p->mpUnknownDC,0);
                     fn_80234BF4(work,&s->mUnknownC,0);
@@ -342,15 +342,15 @@ int DynObjDrawChild(DynObjChild *p,int arg)
                     if(!s->mUnknownC.mpUnknownC->mUnknown1C)TMModelAllocChannels(s->mUnknownC.mpUnknownC);
                     TMRenderBindModel(reinterpret_cast<Object_8023417C *>(model));TMRenderBindClusterObj(s->mUnknownC.mpUnknownE0);
                     fn_801D04C4();fn_801D0558();fn_802337D4(model,s->mUnknownFC,p->mpUnknown50->mpUnknownDC,0);
-                    fn_801D0544();fn_8021126C();GXSetNumTexGens(1);GXSetNumTevStages(1);GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
+                    fn_801D0544();TMRenderGeomSkinAll();GXSetNumTexGens(1);GXSetNumTevStages(1);GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
                 }
                 GXSetCurrentMtx(GX_PNMTX0);GXLoadPosMtxImm(m2,GX_PNMTX0);GXLoadNrmMtxImm(m2,GX_PNMTX0);
                 if(p->mpUnknown50->mUnknownE8.mWord&16) {
                     s->mUnknown4.mpUnknown4->mpUnknown0->mpUnknown10->mpUnknown4+=p->mUnknown6C*40;
                     TMRenderBindTexture(0,s->mUnknown4.mpUnknown4->mpUnknown0->mpUnknown10->mUnknown0,s->mUnknown4.mpUnknown4->mpUnknown0->mpUnknown10->mpUnknown4);
-                    fn_80211350();
+                    TMRenderGeomAll();
                     s->mUnknown4.mpUnknown4->mpUnknown0->mpUnknown10->mpUnknown4-=p->mUnknown6C*40;
-                } else fn_802112DC(s->mUnknownC.mUnknown60,s->mUnknownC.mUnknown5C);
+                } else TMRenderGeomList(s->mUnknownC.mUnknown60,s->mUnknownC.mUnknown5C);
             } else {
                 if(!p->mpUnknown50->mUnknown138) {
                     fn_801D06D4(m2);p->mpUnknown50->mUnknown138=1;

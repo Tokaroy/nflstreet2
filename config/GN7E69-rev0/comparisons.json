@@ -33649,7 +33649,7 @@
           "section": ".rodata",
           "placement": ".data3",
           "start": "0x802B1140",
-          "end": "0x802B1148"
+          "end": "0x802B114C"
         }
       ],
       "functions": [
@@ -33687,6 +33687,11 @@
           "symbol": "fn_801E079C",
           "start": "0x801E079C",
           "end": "0x801E0844"
+        },
+        {
+          "symbol": "fn_801E0844",
+          "start": "0x801E0844",
+          "end": "0x801E0984"
         },
         {
           "symbol": "fn_801E0984",
@@ -36112,9 +36117,9 @@
       ]
     },
     {
-      "source": "src/engine/cu_801C20F0.c",
+      "source": "src/engine/sprintf.c",
       "profile": "engine_c",
-      "evidence": "evidence.tsv provisional unit row 0x801C20F0-0x801C2EB4 (src/engine/cu_801C20F0.c, sprintf.c), its compiler row and function rows and the exact data row for its .rodata 0x802AF018-0x802AF050. Draft comparisons only; original assembly remains linked.",
+      "evidence": "evidence.tsv provisional unit row 0x801C20F0-0x801C2EB4 (src/engine/sprintf.c, renamed from the neutral cu_801C20F0.c), its compiler row and function rows and the exact data row for its .rodata 0x802AF018-0x802AF050. Draft comparisons only; original assembly remains linked.",
       "sections": [
         {
           "section": ".text",
@@ -37275,56 +37280,6 @@
           "symbol": "LLTexPadToPow2",
           "start": "0x8020E7EC",
           "end": "0x8020E9D0"
-        }
-      ]
-    },
-    {
-      "source": "src/engine/tmrendergeom.c",
-      "profile": "engine_c",
-      "evidence": "evidence.tsv unit row 0x80210D30-0x80211638 (src/engine/tmrendergeom.c), its compiler row, the source-form row 0x8020840C-0x802176E8 and the exact function rows. 7 drafted bodies, partial: 0x80211424. Comparison only; original assembly stays linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x80210D30",
-          "end": "0x80211638"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "fn_80210D30",
-          "start": "0x80210D30",
-          "end": "0x80210DCC"
-        },
-        {
-          "symbol": "fn_80211138",
-          "start": "0x80211138",
-          "end": "0x8021126C"
-        },
-        {
-          "symbol": "fn_8021126C",
-          "start": "0x8021126C",
-          "end": "0x802112DC"
-        },
-        {
-          "symbol": "fn_802112DC",
-          "start": "0x802112DC",
-          "end": "0x80211350"
-        },
-        {
-          "symbol": "fn_80211350",
-          "start": "0x80211350",
-          "end": "0x802113C0"
-        },
-        {
-          "symbol": "fn_802113C0",
-          "start": "0x802113C0",
-          "end": "0x80211424"
-        },
-        {
-          "symbol": "fn_80211424",
-          "start": "0x80211424",
-          "end": "0x80211638"
         }
       ]
     },

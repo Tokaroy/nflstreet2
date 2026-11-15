@@ -189,7 +189,8 @@ typedef struct TMGeomNode_t {
     unsigned char mFormatIndex;
     unsigned char mUnknown13;
     unsigned char mNumLods;
-    unsigned char maUnknown15[3];
+    unsigned char mUnknown15;
+    unsigned short mUnknown16;
 } TMGeomNode_t;
 
 typedef struct TMGeom_t {
@@ -319,6 +320,7 @@ void TMGeomExtentAddS16Points(TMClipExtent_t *pExtent, short *pPoints, int count
 void TMGeomExtentAddF32Points(TMClipExtent_t *pExtent, float *pPoints, int count);
 void TMGeomInitChannelBuffer(int size);
 void TMGeomFreeChannelBuffer(void);
+unsigned char *TMGeomAllocChannelBuffer(unsigned int size);
 void TMGeomRelocateChunk(TMGeom_t *pPart, void *pOldBase, void *pNewBase);
 void TMGeometryRemapMaterials(TMGeom_t *pPart, unsigned short *pRemap, int numMaterials);
 void TMGeomAddNodeExtent(TMGeom_t *pPart, int nodeIndex, TMClipExtent_t *pExtent);
@@ -555,12 +557,12 @@ typedef struct RenderHook_80211138 {
 } RenderHook_80211138;
 
 /* tmrendergeom.c */
-void fn_80210DCC(TMRenderState_t *pState, TMGeomNode_t *pNode);
-void fn_8021126C(void);
-void fn_802112DC(unsigned short *pIndices, unsigned int count);
-void fn_80211350(void);
-void fn_802113C0(int state, int arg);
-void fn_80211424(unsigned short *pIndices, unsigned int count);
+void TMRenderGeomSkin(TMRenderState_t *pState, TMGeomNode_t *pNode);
+void TMRenderGeomSkinAll(void);
+void TMRenderGeomList(unsigned short *pIndices, unsigned int count);
+void TMRenderGeomAll(void);
+void TMRenderGeomNode(int state, int arg);
+void TMRenderGeomListDirect(unsigned short *pIndices, unsigned int count);
 
 /* tmclusterobj.c */
 void TMClusterObjInit(int maxMatrices, int numBuffers);
