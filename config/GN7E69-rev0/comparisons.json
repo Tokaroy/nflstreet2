@@ -32954,13 +32954,19 @@
     {
       "source": "src/engine/LLUIGFmv.c",
       "profile": "engine_c",
-      "evidence": "evidence.tsv provisional unit row 0x80226498-0x80226F9C (src/engine/LLUIGFmv.c), its function and name rows and the file compiler row. Draft comparisons only; original assembly remains linked. The draft bodies use no compiled static data; 0x802267D8, the user of the .rodata 0x802B2058-0x802B2068, has no body here, and the .sdata 0x803EBF80-0x803EBF88 stays original.",
+      "evidence": "evidence.tsv provisional unit row 0x80226498-0x80226F9C (src/engine/LLUIGFmv.c), its function and name rows and the file compiler row. Draft comparisons only; original assembly remains linked. All sixteen functions have bodies; LLUIGFmvInitTexture 0x802267D8 owns the measured .rodata 0x802B2058-0x802B2068 (data row), and the .sdata 0x803EBF80-0x803EBF88 stays original. _PackTile_RGBA8 0x80226E4C is the documented holdout (source-form row 0x80226E4C).",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x80226498",
           "end": "0x80226F9C"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B2058",
+          "end": "0x802B2068"
         }
       ],
       "functions": [
@@ -32998,6 +33004,11 @@
           "symbol": "LLUIGFmvShutdown",
           "start": "0x802267D4",
           "end": "0x802267D8"
+        },
+        {
+          "symbol": "LLUIGFmvInitTexture",
+          "start": "0x802267D8",
+          "end": "0x802268D4"
         },
         {
           "symbol": "LLUIGFmvAddInstance",

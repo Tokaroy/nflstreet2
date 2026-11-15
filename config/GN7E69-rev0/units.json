@@ -2282,6 +2282,10 @@
       "address": "0x802215EC",
       "evidence": "evidence.tsv function and name rows for 0x802215EC (LLUIGTexNodeUpdate, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."
     },
+    "LLUIGTexNodeRoundToPowerOf2": {
+      "address": "0x802215B0",
+      "evidence": "evidence.tsv function and name rows for 0x802215B0 (LLUIGTexNodeRoundToPowerOf2, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."
+    },
     "LLUIGTexNodeSetImage": {
       "address": "0x802215F0",
       "evidence": "evidence.tsv function and name rows for 0x802215F0 (LLUIGTexNodeSetImage, src/engine/LLUIGTextureNode.c, comparison-only; original bytes)."

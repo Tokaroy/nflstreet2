@@ -1,8 +1,8 @@
 /* GameCube side of the UI graphics movies: allocates a 320x240 movie node,
    streams the movie file and its sound through the MovieRcmp player, decodes
    each frame into the node's texture and swizzles it into GX tiles, and
-   moves a playing movie to another menu slot. Functions without a body here
-   keep their original bytes. */
+   moves a playing movie to another menu slot. The file stays a comparison
+   until _PackTile_RGBA8 matches; its original bytes stay linked. */
 
 #include <string.h>
 
@@ -128,6 +128,27 @@ void LLUIGFmvInit(void)
 
 void LLUIGFmvShutdown(void)
 {
+}
+
+void LLUIGFmvInitTexture(LLUIGFmvMovie_t *pMovie, Int32 a, Int32 b)
+{
+    UIGTexNode_t *pNode = &pMovie->Node;
+    Uint32 Width;
+    Uint32 Height;
+
+    pNode->Texture.mWidth = a;
+    pNode->Texture.mHeight = b;
+    pNode->Texture.mFormat = 6;
+    pNode->Texture.mpImage = pMovie->Sub.unk_1C;
+    pNode->Texture.mTlutFormat = 3;
+    /* FAKEMATCH: store order found by search (field order gives one swapped register). */
+    pNode->Texture.mUnknown18 = 0;
+    pNode->Texture.mpPalette = NULL;
+    pNode->Texture.mUnknown1C = 0;
+    Width = LLUIGTexNodeRoundToPowerOf2(a);
+    Height = LLUIGTexNodeRoundToPowerOf2(b);
+    pNode->unk_30 = (Float32)Width / (Float32)a;
+    pNode->unk_34 = (Float32)Height / (Float32)b;
 }
 
 LLUIGFmvMovie_t *LLUIGFmvAddInstance(UIGLibrary_t *pObject, Int16 a, Int16 b)
