@@ -2297,6 +2297,30 @@
     "SNDMIX_setwetgain": {
       "address": "0x802763AC",
       "evidence": "evidence.tsv function and name rows for 0x802763AC (SNDMIX_setwetgain, src/engine/smixer.c, comparison only); the fx-level function 0x80271BD4 (src/engine/cu_80271BD4.cpp) calls it (bl at 0x80271CF8)."
+    },
+    "MIX_destroy": {
+      "address": "0x80275E7C",
+      "evidence": "evidence.tsv function and name rows for 0x80275E7C (MIX_destroy, smixer.c, registered in comparisons.json, original bytes linked); referenced by the linked src/engine/slinkmix.c, which installs it in the mixer hooks (c18 wave)."
+    },
+    "MIX_play": {
+      "address": "0x80276194",
+      "evidence": "evidence.tsv function and name rows for 0x80276194 (MIX_play, smixer.c, registered in comparisons.json, original bytes linked); referenced by the linked src/engine/slinkmix.c, which installs it in the mixer hooks (c18 wave)."
+    },
+    "MIX_audioslice": {
+      "address": "0x802763E0",
+      "evidence": "evidence.tsv function and name rows for 0x802763E0 (MIX_audioslice, smixer.c, registered in comparisons.json, original bytes linked); referenced by the linked src/engine/slinkmix.c, which installs it in the mixer hooks (c18 wave)."
+    },
+    "SNDPKTPLAYI_get": {
+      "address": "0x802792F0",
+      "evidence": "evidence.tsv function and name rows for 0x802792F0 (SNDPKTPLAYI_get, spktplay.c, registered in comparisons.json, original bytes linked); called by the linked src/engine/suppf.c and src/engine/supmutpf.c (c18 wave)."
+    },
+    "SNDI_aztospkrvol": {
+      "address": "0x80277A60",
+      "evidence": "evidence.tsv function and name rows for 0x80277A60 (SNDI_aztospkrvol, satospkr.c, registered in comparisons.json, original bytes linked); called by name from the src/engine/snddrv.c comparison bodies (c18 wave)."
+    },
+    "SNDPKTPLAYI_flushcallbackdata": {
+      "address": "0x80279598",
+      "evidence": "evidence.tsv function and name rows for 0x80279598 (SNDPKTPLAYI_flushcallbackdata, spktplay.c, registered in comparisons.json, original bytes linked); called by name from the src/engine/snddrv.c comparison bodies (c18 wave)."
     }
   },
   "units": [

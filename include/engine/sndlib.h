@@ -248,7 +248,14 @@ extern void (*lbl_803B5040)(int index, int value);
 extern int lbl_8030002C;
 extern OSMutex lbl_803B4B90;
 extern Node_803B4E20 **lbl_803B4E20;
-extern float **lbl_803B4E24;
+/* The effect bus state of sfxrevc.c (GoldenEye sndfx, 8 bytes): the per-bus wet buffers and a word the
+   mixer clears after mixing a voice into a bus. */
+typedef struct SndFx_t {
+    float **m0;
+    int m4;
+} SndFx_t;
+
+extern SndFx_t lbl_803B4E24;
 extern int lbl_80300850;
 extern float lbl_80300854;
 extern int lbl_80300858;
@@ -263,7 +270,7 @@ void *fn_80273264(void *arg);
 int fn_80273648(int mode);
 void fn_80274924(int index);
 void fn_80276938(int index, float value);
-void fn_80277A60(unsigned short angle, float *levels);
+void SNDI_aztospkrvol(unsigned short angle, float *levels);
 void fn_8027981C(int count);
 
 void fn_8026A0E8(int value);
@@ -282,12 +289,12 @@ void SFILTER_rsfinit(Node_80279D90 *node, int a, int b);
 void SFILTER_timestretchsetratio(Node_80279D90 *node, int ratio);
 void MIX_reset(void);
 void fn_802747D8(int index);
-void fn_80279598(void);
+void SNDPKTPLAYI_flushcallbackdata(void);
 int fn_8027271C(int index);
 int fn_80271BD4(int index, int slot);
-void fn_80275E7C(void);
-void fn_80276194(int index);
-void fn_802763E0(void **buffers, int count);
+void MIX_destroy(void);
+void MIX_play(int index);
+void MIX_audioslice(void **buffers, int count);
 int SFILTER_timestretchinit(Node_80279D90 *node, unsigned char *data, int index);
 
 void SNDDRV_DSPMixerResetChannel(SndDrvMixChannel_t *voice);

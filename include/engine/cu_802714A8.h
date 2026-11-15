@@ -194,7 +194,8 @@ typedef struct Struct_803B4E34 {
     Setup_80272EC4 m0;
     unsigned short mC;
     unsigned char mE;
-    unsigned char mUnknownF[5];
+    unsigned char mUnknownF;
+    void (*m10)(int count);
     int *m14;
     void (*m18[6][3])(Node_80279D90 *node, Params_80275F80 *params);
     int m60[6][3];
@@ -205,7 +206,7 @@ typedef struct Struct_803B4E34 {
     float mE8[6];
     float *m100;
     Node_80279D90 *m104[6];
-    unsigned char mUnknown11C[0x18];
+    Node_80279D90 *m11C[6];
     Node_80279D90 m134[6];
     Record_803B5010 *m1DC;
     void (*m1E0)(int count, float *src, float *dst, float gain);
@@ -264,7 +265,7 @@ int fn_8027474C(int index);
 int fn_802750B8(int index, Desc_80276798 *desc);
 
 void decode16x87(int count, short *src, float *dst);
-unsigned char *fn_802792F0(int index, int channel, int *length, int *b);
+unsigned char *SNDPKTPLAYI_get(int index, int channel, int *length, int *b);
 void SNDPKTPLAYI_freeframes(int index, int channel, int value);
 void fn_802797F4(void *(*alloc)(int size));
 void fn_80279800(void (*release)(void *p));

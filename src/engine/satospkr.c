@@ -1,5 +1,7 @@
-/* Azimuth to speaker gains (satospkr.c): the table that turns a voice's azimuth into per-speaker
-   volumes for the output speaker layout. Only the table release is reconstructed. */
+/* Azimuth to speaker gains (satospkr.c): the speaker layout setup and the table that turns a voice's
+   azimuth into per-speaker volumes: equal-power gains between the two speakers that enclose each of
+   256 azimuth steps. Names from the GoldenEye: Rogue Agent, Medal of Honor: European Assault and
+   NASCAR 2005 symbol sets (satospkr.c, SNDGAINPAIR). */
 
 #include "engine/sndsys.h"
 

@@ -26815,13 +26815,34 @@
           "placement": ".text",
           "start": "0x802755E0",
           "end": "0x80276798"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C1E1C",
+          "end": "0x802C1EAC"
         }
       ],
       "functions": [
         {
+          "symbol": "MIXI_interpolateto0",
+          "start": "0x802755E0",
+          "end": "0x80275780"
+        },
+        {
+          "symbol": "MIXI_interpolatemix",
+          "start": "0x80275780",
+          "end": "0x80275948"
+        },
+        {
           "symbol": "SNDMIX_setmasterlowpass",
           "start": "0x80275948",
           "end": "0x8027594C"
+        },
+        {
+          "symbol": "SNDMIXI_volramp",
+          "start": "0x8027594C",
+          "end": "0x80275B7C"
         },
         {
           "symbol": "SNDI_New",
@@ -26839,6 +26860,11 @@
           "end": "0x80275E7C"
         },
         {
+          "symbol": "MIX_destroy",
+          "start": "0x80275E7C",
+          "end": "0x80275F54"
+        },
+        {
           "symbol": "MIX_reset",
           "start": "0x80275F54",
           "end": "0x80275F80"
@@ -26847,6 +26873,11 @@
           "symbol": "MIX_playinit",
           "start": "0x80275F80",
           "end": "0x80276194"
+        },
+        {
+          "symbol": "MIX_play",
+          "start": "0x80276194",
+          "end": "0x80276238"
         },
         {
           "symbol": "MIXI_stop",
@@ -26867,6 +26898,11 @@
           "symbol": "SNDMIX_setwetgain",
           "start": "0x802763AC",
           "end": "0x802763E0"
+        },
+        {
+          "symbol": "MIX_audioslice",
+          "start": "0x802763E0",
+          "end": "0x80276798"
         }
       ]
     },
@@ -26970,6 +27006,11 @@
           "end": "0x80278BF0"
         },
         {
+          "symbol": "SNDPKTPLAY_submit",
+          "start": "0x80279048",
+          "end": "0x80279170"
+        },
+        {
           "symbol": "SNDPKTPLAY_submitspace",
           "start": "0x80279170",
           "end": "0x802791D0"
@@ -26985,14 +27026,29 @@
           "end": "0x802791FC"
         },
         {
+          "symbol": "SNDPKTPLAY_stop",
+          "start": "0x802791FC",
+          "end": "0x8027929C"
+        },
+        {
           "symbol": "SNDPKTPLAY_destroy",
           "start": "0x8027929C",
           "end": "0x802792F0"
         },
         {
+          "symbol": "SNDPKTPLAYI_get",
+          "start": "0x802792F0",
+          "end": "0x8027952C"
+        },
+        {
           "symbol": "SNDPKTPLAYI_freeframes",
           "start": "0x8027952C",
           "end": "0x80279598"
+        },
+        {
+          "symbol": "SNDPKTPLAYI_flushcallbackdata",
+          "start": "0x80279598",
+          "end": "0x80279648"
         }
       ]
     },

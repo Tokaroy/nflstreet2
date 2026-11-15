@@ -27,7 +27,7 @@ int SFILTER_unpackmtpf(Node_80279D90 *node, int count, float *a, float *b, int f
         total += n;
         if (n < count) {
             count -= n;
-            decoder->mpPacket = fn_802792F0(decoder->mStream, decoder->mChannel, &decoder->mPacketCount, &last);
+            decoder->mpPacket = SNDPKTPLAYI_get(decoder->mStream, decoder->mChannel, &decoder->mPacketCount, &last);
             if (decoder->mpPacket != 0) {
                 decoder->mPacketPosition = 0;
                 if (decoder->mMode <= 2) {

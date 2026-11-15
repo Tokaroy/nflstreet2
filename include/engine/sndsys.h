@@ -56,21 +56,49 @@ typedef struct Parser_8027823C {
     unsigned int m10;
 } Parser_8027823C;
 
-typedef struct SndPacketPlayer_t {
+/* A submitted packet: its frame count (31 bits) and last flag, and one data pointer per channel. */
+typedef struct SndPacket_t {
     int m0;
-    unsigned char mUnknown4[0x30];
-    short m34[6];
-    short m40;
+    unsigned int m4 : 31;
+    unsigned int m4b : 1;
+    int m8;
+    void *mC[6];
+} SndPacket_t;
+
+/* One queued packet of a player (32 bytes from +0x7C): its id, the packet's count and flag, the
+   channel data pointers. */
+typedef struct SndPacketEntry_t {
+    int m0;
+    int m4 : 31;
+    int m4b : 1;
+    void *m8[6];
+} SndPacketEntry_t;
+
+typedef struct SndPacketPlayer_t {
+    // FAKEMATCH: the packet-queue members are volatile for the target's re-reads and access order
+    int m0;
+    volatile int m4;
+    volatile unsigned int m8;
+    volatile unsigned int mC;
+    volatile unsigned int m10[6];
+    volatile short m28[6];
+    volatile short m34[6];
+    volatile short m40;
     signed char m42;
-    unsigned char mUnknown43[5];
-    int m48;
-    int m4C;
+    unsigned char mUnknown43;
+    volatile short m44;
+    volatile short m46;
+    volatile int m48;
+    volatile int m4C;
     void *m50;
-    int m54;
+    void (*m54)(int value, void *context);
     void (*m58)(int index, int value, void *context);
     void *m5C;
     unsigned char mUnknown60[2];
     unsigned char m62;
+    unsigned char mUnknown63;
+    void *m64[6];
+    SndPacketEntry_t m7C[1];
 } SndPacketPlayer_t;
 
 typedef struct SndPacketEvent_t {

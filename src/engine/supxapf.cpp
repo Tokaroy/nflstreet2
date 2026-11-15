@@ -29,7 +29,7 @@ int SFILTER_unpackxapf(Node_80279D90 *node, int count, float *a, float *b, int f
         total += n;
         if (n < count) {
             count -= n;
-            decoder->m20 = (int)fn_802792F0(decoder->m30, decoder->m38, &decoder->m24, &last);
+            decoder->m20 = (int)SNDPKTPLAYI_get(decoder->m30, decoder->m38, &decoder->m24, &last);
             if (decoder->m20 != 0) {
                 if (decoder->m2C <= 2) {
                     seed = 1;

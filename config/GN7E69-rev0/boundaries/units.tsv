@@ -162,7 +162,7 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x8026EF0C	0x8026EF38	sstqreqi.c	1	1	1	1	0	-	-
 0x802753F0	0x8027555C	sfxrevc.c	3	3	3	3	0	-	-
 0x8027555C	0x802755E0	slinkmix.c	1	1	1	1	0	-	sfreson.c
-0x80275948	0x802763E0	smixer.c	10	9	16	6	1	-	-
+0x802755E0	0x802763E0	smixer.c	15	14	16	9	5	-	-
 0x80276820	0x80276868	smixfram.c	1	1	1	1	0	-	-
 0x8027882C	0x80278894	slowpass.c	1	1	1	1	0	-	-
 0x802797F4	0x8027980C	coda.cpp	2	2	2	2	0	-	-
