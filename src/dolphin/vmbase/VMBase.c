@@ -2,11 +2,11 @@
 #include <dolphin/os.h>
 #include <dolphin/__vm.h>
 
-static u32* sPageTable;
-static u32* sReversePageTable;
-static u8* sLockedPageTable;
-static void (*sPageFaultHandler)(u32);
 static BOOL sInitialized;
+static void (*sPageFaultHandler)(u32);
+static u8* sLockedPageTable;
+static u32* sReversePageTable;
+static u32* sPageTable;
 
 void VMBASEInit(void (*pageFaultHandler)(u32));
 void VMBASESetPageTableEntry(u32 virtualAddr, u32 physAddr, u32 physPage);
@@ -117,7 +117,7 @@ void VMBASESetPageReferenced(u32 virtualAddr, BOOL referenced) {
     if (referenced) {
         pte[1] |= 0x100;
     } else {
-        pte[1] &= ~0x100;
+        pte[1] &= 0xFFFFFEFF;
     }
     DCStoreRange(&pte[1], 4);
     __VMBASEInvalidateTLBEntry(virtualAddr);
@@ -164,7 +164,7 @@ void __VMBASEInitLockedPageTable(void) {
 
 void __VMBASEInitReversePageTable(void) {
     sReversePageTable = OSGetArenaLo();
-    OSSetArenaLo(sReversePageTable + 0x1000 * 4);
+    OSSetArenaLo(sReversePageTable + 0x1000);
     __VMBASEInvalidateReversePageTable();
 }
 
