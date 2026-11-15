@@ -31336,50 +31336,6 @@
       ]
     },
     {
-      "source": "src/engine/animwgt.c",
-      "profile": "engine_c_fastmath",
-      "evidence": "evidence.tsv unit row 0x801BF090-0x801BF5E8 (src/engine/animwgt.c) and the source-form row at 0x801BF530. Documented holdout at the end of .text: AnimWgtSetLinearInAndOut 0x801BF530-0x801BF5E8 is compiled with DECOMP_COMPARE for comparison only and keeps its original bytes with its pool 0x802AEED0-0x802AEEE0; the rest of the file is linked through units.json.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x801BF090",
-          "end": "0x801BF5E8"
-        },
-        {
-          "section": ".rodata",
-          "placement": ".data3",
-          "start": "0x802AEEA8",
-          "end": "0x802AEEE0"
-        },
-        {
-          "section": ".data",
-          "placement": ".data4",
-          "start": "0x802F484C",
-          "end": "0x802F485C"
-        },
-        {
-          "section": ".sdata",
-          "placement": ".data5",
-          "start": "0x803EBB9C",
-          "end": "0x803EBBA8"
-        },
-        {
-          "section": ".sbss",
-          "placement": ".sbss",
-          "start": "0x803ED614",
-          "end": "0x803ED618"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "AnimWgtSetLinearInAndOut",
-          "start": "0x801BF530",
-          "end": "0x801BF5E8"
-        }
-      ]
-    },
-    {
       "source": "src/engine/spchevnt.c",
       "profile": "speech_cxx",
       "evidence": "evidence.tsv provisional unit row 0x801AE3E4-0x801AF60C (src/engine/spchevnt.c), the speech_cxx compiler row and the compiler, source-form, type and external rows 0x801AE3E4-0x801B2AD4, and the function and name rows of every registered function. Draft comparisons only; original assembly remains linked and data is referenced through neutral external labels.",
