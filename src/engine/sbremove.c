@@ -23,6 +23,7 @@ int SNDbankremove(int bank)
     SNDSYS_entercritical();
     hdr = lbl_803A6C24.m1D0[bank].m0;
     for (i = 0; i < lbl_803A6C24.m16C; i++) {
+        // FAKEMATCH: the record-pointer local keeps the target's add order (array base first, index offset second)
         Record_803A6DF0 *rec = &lbl_803A6C24.m1CC[i];
 
         if (rec->m4[7] == bank) {

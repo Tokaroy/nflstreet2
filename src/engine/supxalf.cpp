@@ -11,7 +11,6 @@ int SFILTER_unpackxalf(Node_80279D90 *node, int count, float *a, float *b, int f
     volatile int spare;
     Decoder_8027B7B0 *decoder;
     float scratch[28];
-    Pair_8027BFDC saved;
     Pair_8027BFDC state;
     float *discard;
     int total;
@@ -40,8 +39,7 @@ int SFILTER_unpackxalf(Node_80279D90 *node, int count, float *a, float *b, int f
                 fn_8027BDE8(decoder->m1C, (char *)decoder->m34 + pos / 28 * 15, (decoder->m48 - pos + 1) * 4,
                             decoder->m48 - pos + 1);
                 if (decoder->m3C == 0) {
-                    saved = fn_8027BFDC(decoder->m1C);
-                    state = saved;
+                    state = fn_8027BFDC(decoder->m1C);
                     decoder->m4C = state.m0;
                     decoder->m50 = state.m4;
                     got = fn_8027BE24(decoder->m1C, &b, count);

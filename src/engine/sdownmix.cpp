@@ -14,6 +14,7 @@ void SetDefaultAzimuths(Record_803A6DF0 *p)
     int i;
 
     for (i = 0; i < p->m23; i++) {
+        // FAKEMATCH: the record-pointer local is needed for the target code; indexing the array in the store differs
         record = &lbl_803A6C24.m1CC[p->m4[i]];
         record->m1C = table[i] << 8;
     }
