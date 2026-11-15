@@ -187,7 +187,7 @@ int fn_80187038(unsigned char pad, int allowCreate)
 {
     char name[32]; QueryResult result;
     int v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18; int id = 0;
-    int changed = 0; unsigned char busy = 0;
+    int changed = 0; int code = 0; unsigned char busy = 0; // FAKEMATCH: code is a dead store target
     int selected = fn_80186F7C(pad);
     UserRecGetName(selected, name);
     int db = fn_8022F358(selected);
@@ -205,12 +205,13 @@ int fn_80187038(unsigned char pad, int allowCreate)
     }
     if (status == 0 && !busy) {
         status = fn_801FCE10(&result, "use 'EVAS' select 'KPSH' into \x82 from 'RCSH' where 'KUSH' = \x88\n", &id, name);
+        if (status != 0 && status != 23) code = status; // FAKEMATCH: dead store of the error status
         if (status == 23) {
             if (allowCreate) {
                 id = fn_80187400(0x52435348, 0x4B505348, 0, 255);
                 if (id != -1) {
-                changed = 1;
                 fn_801FCE10(&result, "use 'EVAS' insert into 'RCSH' set 'KPSH' = \x82 and 'KUSH' = \x88 and 'WGSH' = \x82 and 'LGSH' = \x82 and 'PTSH' = \x82 and 'TPSH' = \x82 and 'TRSH' = \x82 and 'TDSH' = \x82 and 'TSSH' = \x82 and 'CISH' = \x82 and 'RFSH' = \x82 and 'GTSH' = \x82 and '2TSH' = \x82 and 'TTSH' = \x82 and 'KSSH' = \x82 and 'WQSH' = \x82 and 'WOSH' = \x82 and 'LOSH' = \x82 and 'SOSH' = \x82 and 'AOSH' = \x82\n", id, name, v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v14, v15, v16, v17, v18);
+                changed = 1; // FAKEMATCH: set after the insert call (order found by search; same result)
                 }
             } else id = -1;
         } else {
@@ -232,7 +233,7 @@ int fn_80187038(unsigned char pad, int allowCreate)
 }
 int fn_80187400(int kind, int key, int first, int last)
 {
-    QueryResult result; int found = -1; int value = -1; int scratch;
+    QueryResult result; int found = -1; int value = -1; int scratch; int code = 0; // FAKEMATCH: code is a dead store target
     fn_801FCE10(&result, "use 'EVAS' select max(\x8C) into \x82 from \x8C\n", key, &value, kind);
     if (value < last) found = value + 1;
     else {
@@ -240,6 +241,7 @@ int fn_80187400(int kind, int key, int first, int last)
         if (value < last) {
             for (value = first; value <= last; value++) {
                 int status = fn_801FCE10(&result, "use 'EVAS' select \x8C into \x82 from \x8C where \x8C = \x82\n", key, &scratch, kind, key, value);
+                if (status != 0 && status != 23) code = status; // FAKEMATCH: dead store of the error status
                 if (status == 23) { found = value; break; }
             }
         }
@@ -296,12 +298,15 @@ void fn_801877E8(int id, int value)
 }
 void fn_8018787C(int index)
 {
-    char name[32]; int id = 0; int v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12 = 0;
+    // FAKEMATCH: code only receives a dead store of the error status below
+    char name[32]; int id = 0; int code = 0; int v0, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12 = 0;
     UserRecGetName(index, name);
     int db = fn_8022F358(index);
     fn_8022F478(db);
     int token = fn_8022F3D4(db);
-    if (fn_801FCE10(0, "use 'EVAS' select 'KPSH' into \x82 from 'RCSH' where 'KUSH' = \x88\n", &id, name) == 23) {
+    int status = fn_801FCE10(0, "use 'EVAS' select 'KPSH' into \x82 from 'RCSH' where 'KUSH' = \x88\n", &id, name);
+    if (status != 0 && status != 23) code = status; // FAKEMATCH: dead store of the error status
+    if (status == 23) {
         id = fn_80187400(0x52435348, 0x4B505348, 0, 255);
         if (id == -1) return;
         if (fn_801FCE10(0, "use \x8C select 'wnSU' into \x82 and 'swSU' into \x82 and 'FPRP' into \x82 and 'tpSU' into \x82 and 'trSU' into \x82 and 'TDTU' into \x82 and 'FSSU' into \x82 and 'idSU' into \x82 and 'rfSU' into \x82 and 'BGSU' into \x82 and 'TBGU' into \x82 and 'TPTU' into \x82 and 'FNWU' into \x82 from 'TSPU'\n", token, &v0, &v1, &v2, &v3, &v4, &v5, &v6, &v7, &v8, &v9, &v10, &v11, &v12) == 0)
