@@ -10149,6 +10149,107 @@
       ]
     },
     {
+      "source": "src/game/InGameGroup.cpp",
+      "profile": "game_cpp",
+      "evidence": "evidence.tsv unit row 0x800325E8-0x80032EE8 (src/game/InGameGroup.cpp), its function and data rows, and the source-form row 0x80032790-0x80032E70: nine of the ten functions exact; the static initializer 0x80032790 is the documented partial (owner ruling of 2026-11-14 on #1349 question 2), so original bytes stay linked.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x800325E8",
+          "end": "0x80032EE8"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x8028ACE0",
+          "end": "0x8028AD70"
+        },
+        {
+          "section": ".data",
+          "placement": ".data4",
+          "start": "0x802CCBBC",
+          "end": "0x802CCBF4"
+        },
+        {
+          "section": ".bss",
+          "placement": ".bss",
+          "start": "0x803068B4",
+          "end": "0x80306B34"
+        },
+        {
+          "section": ".sbss",
+          "placement": ".sbss",
+          "start": "0x803EC680",
+          "end": "0x803EC688"
+        },
+        {
+          "section": ".ctors",
+          "placement": ".data2",
+          "start": "0x80289A5C",
+          "end": "0x80289A60"
+        },
+        {
+          "section": ".dtors",
+          "placement": ".data2",
+          "start": "0x80289B9C",
+          "end": "0x80289BA0"
+        }
+      ],
+      "functions": [
+        {
+          "symbol": "GSGetGroupName__11InGameGroup",
+          "start": "0x800325E8",
+          "end": "0x800325F4"
+        },
+        {
+          "symbol": "GSGetStageList__11InGameGroup",
+          "start": "0x800325F4",
+          "end": "0x80032600"
+        },
+        {
+          "symbol": "GSGetTransitionList__11InGameGroup",
+          "start": "0x80032600",
+          "end": "0x8003260C"
+        },
+        {
+          "symbol": "GSGetStageModuleList__11InGameGroupi",
+          "start": "0x8003260C",
+          "end": "0x80032658"
+        },
+        {
+          "symbol": "GSProcess__11InGameGroup",
+          "start": "0x80032658",
+          "end": "0x80032728"
+        },
+        {
+          "symbol": "GSTransition__11InGameGroupii",
+          "start": "0x80032728",
+          "end": "0x80032790"
+        },
+        {
+          "symbol": "__static_initialization_and_destruction_0",
+          "start": "0x80032790",
+          "end": "0x80032E70"
+        },
+        {
+          "symbol": "_._11InGameGroup",
+          "start": "0x80032E70",
+          "end": "0x80032E90"
+        },
+        {
+          "symbol": "_GLOBAL_.I._InGameGroup_aStages",
+          "start": "0x80032E90",
+          "end": "0x80032EBC"
+        },
+        {
+          "symbol": "_GLOBAL_.D._InGameGroup_aStages",
+          "start": "0x80032EBC",
+          "end": "0x80032EE8"
+        }
+      ]
+    },
+    {
       "source": "src/game/cu_8015A248.cpp",
       "profile": "game_cpp",
       "evidence": "Source consolidation retains accepted three-function prefix unchanged, with24 complete additional bodies under fixed DECOMP_COMPARE. Shared original pool context compiles184 bytes identical to target0x802A3E40-0x802A3EF8 including natural trailing alignment. Accepted prefix data remains invariant and is excluded from new comparison credit; comparison functions retain full24 target extents. Provisional original unit edges, neutral identifiers, unchanged game_cpp profile; original assembly stays linked for additional bodies.",

@@ -2184,7 +2184,7 @@
     },
     "gDefPred": {
       "address": "0x8030C070",
-      "evidence": "evidence.tsv external row for 0x8030C070 (gDefPred, defined in the comparison-only src/game/cu_8008E978.cpp); the linked src/game/InGameGroup.cpp module tables point to it."
+      "evidence": "evidence.tsv external row for 0x8030C070 (gDefPred, defined in the comparison-only src/game/cu_8008E978.cpp); src/game/InGameGroup.cpp's module tables point to it."
     },
     "FormationLineupSwapAllUser": {
       "address": "0x8008593C",
@@ -2469,6 +2469,10 @@
     "SNDMIX_setdrygain": {
       "address": "0x80276378",
       "evidence": "evidence.tsv function/name rows for 0x80276378 (SNDMIX_setdrygain in src/engine/smixer.c, comparison only until linked); src/engine/snddrv.c calls it by name (integration of c15h and c16f)."
+    },
+    "gInGameGroup": {
+      "address": "0x803068B4",
+      "evidence": "evidence.tsv data and name rows for 0x803068B4 (gInGameGroup, defined in the comparison-only src/game/InGameGroup.cpp, original bytes); the linked src/game/gsflowman.cpp returns its address."
     }
   },
   "units": [
@@ -4712,55 +4716,6 @@
           "placement": ".data2",
           "start": "0x80289B94",
           "end": "0x80289B98"
-        }
-      ]
-    },
-    {
-      "source": "src/game/InGameGroup.cpp",
-      "profile": "game_cpp",
-      "evidence": "evidence.tsv unit row 0x800325E8-0x80032EE8 (src/game/InGameGroup.cpp) and its function and data rows; every function and data placement exact, promoted from comparison-only.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x800325E8",
-          "end": "0x80032EE8"
-        },
-        {
-          "section": ".rodata",
-          "placement": ".data3",
-          "start": "0x8028ACE0",
-          "end": "0x8028AD70"
-        },
-        {
-          "section": ".data",
-          "placement": ".data4",
-          "start": "0x802CCBBC",
-          "end": "0x802CCBF4"
-        },
-        {
-          "section": ".bss",
-          "placement": ".bss",
-          "start": "0x803068B4",
-          "end": "0x80306B34"
-        },
-        {
-          "section": ".sbss",
-          "placement": ".sbss",
-          "start": "0x803EC680",
-          "end": "0x803EC688"
-        },
-        {
-          "section": ".ctors",
-          "placement": ".data2",
-          "start": "0x80289A5C",
-          "end": "0x80289A60"
-        },
-        {
-          "section": ".dtors",
-          "placement": ".data2",
-          "start": "0x80289B9C",
-          "end": "0x80289BA0"
         }
       ]
     },
@@ -15337,7 +15292,7 @@
           "_vt.23TiburonIAllocator13Impl": "0x802B1150",
           "_vt.10IAllocator": "0x802B1188"
         },
-        "evidence": "evidence.tsv linker row sound.cpp allocator folds: the inline TiburonIAllocator13Impl and IAllocator bodies and the two tables _vt.23TiburonIAllocator13Impl and _vt.10IAllocator are local to this file and to src/engine/sound.cpp; the target keeps this file's copies. SndInit forms the TiburonIAllocator13Impl table address 0x802B1150 (addi r9,r9,0x1150 at 0x801F3A48) and stores it at 0x801F3A50, and the slots of sound.cpp's unreferenced table copies 0x802B1A38-0x802B1AA8 point to this file's bodies. Second kept_locals use. The owner's ruling of 2026-11-14 on #1338 question (4) approves folded for sound.cpp's allocator vtable copies; this map and the six body folds go beyond those words (open owner question on #1347)."
+        "evidence": "evidence.tsv linker row sound.cpp allocator folds: the inline TiburonIAllocator13Impl and IAllocator bodies and the two tables _vt.23TiburonIAllocator13Impl and _vt.10IAllocator are local to this file and to src/engine/sound.cpp; the target keeps this file's copies. SndInit forms the TiburonIAllocator13Impl table address 0x802B1150 (addi r9,r9,0x1150 at 0x801F3A48) and stores it at 0x801F3A50, and the slots of sound.cpp's unreferenced table copies 0x802B1A38-0x802B1AA8 point to this file's bodies. Second kept_locals use. The owner's ruling of 2026-11-14 on #1338 question (4) approves folded for sound.cpp's allocator vtable copies; the owner's ruling (2) of 2026-11-14 on #1347 accepts this map and the six body folds as covered by it, since sound.cpp's table slots point to this file's bodies."
       }
     },
     {

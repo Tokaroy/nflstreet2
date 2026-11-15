@@ -43,13 +43,7 @@ extern Timg gTimg;
 
 InGameGroup gInGameGroup;
 
-// FAKEMATCH: the derived entry and its second store of the same pointer only add one instruction per
-// entry, so the compiler's CSE table flush falls where the target's does (same table contents)
-struct InGameModuleDependency : ModuleDependency {
-    InGameModuleDependency(void *pTarget) : ModuleDependency(pTarget) { void **pp = &mpTarget; *pp = pTarget; }
-};
-
-static InGameModuleDependency _InGameGroup_aLoadingModules[] = {
+static ModuleDependency _InGameGroup_aLoadingModules[] = {
     &gMemAudit,
     &gLoadingFEToInGame,
     &gQkl,
@@ -128,7 +122,7 @@ static InGameModuleDependency _InGameGroup_aLoadingModules[] = {
     0,
 };
 
-static InGameModuleDependency _InGameGroup_aDuringPlayModules[] = {
+static ModuleDependency _InGameGroup_aDuringPlayModules[] = {
     &gMemAudit,
     &gGRender,
     &gGameState,
@@ -206,7 +200,7 @@ static InGameModuleDependency _InGameGroup_aDuringPlayModules[] = {
     0,
 };
 
-static InGameModuleDependency _InGameGroup_aExitModules[] = {
+static ModuleDependency _InGameGroup_aExitModules[] = {
     &gMemAudit,
     0,
 };
