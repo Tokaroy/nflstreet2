@@ -1,13 +1,15 @@
 #ifndef ENGINE_MTDECF_H
 #define ENGINE_MTDECF_H
 
-/* 3432-byte MT decoder state used by src/engine/mtdecf.cpp (the MT unpack
-   filter constructors in src/engine/supmutf.c, src/engine/supmutlf.c and src/engine/supmutpf.c
-   allocate it with fn_8027C020(3432)). Partial layout: +0xC-+0x683 are not accessed by the
-   reconstructed functions. */
-typedef struct Codec_8027CF9C {
+namespace Snd {
+
+/* The MT (MicroTalk) decode state: the bit reader (+0x0 byte pointer, +0x4 bit buffer, +0x8 bit
+   count), the stream header (+0xC reduced-bandwidth flag, +0x10 multi-pulse threshold, +0x14 the 64
+   fixed gains), the 12 reflection coefficients +0x114, the 12-sample synthesis history +0x144, the
+   324-sample adaptive codebook +0x174 and the 432-sample decoded frame +0x684 that follows it. */
+struct UTALKSTATE_CODA {
     unsigned char *m0;
-    int m4;
+    unsigned int m4;
     int m8;
     int mC;
     int m10;
@@ -16,6 +18,15 @@ typedef struct Codec_8027CF9C {
     float m144[12];
     float m174[324];
     float m684[432];
+};
+
+/* 3432-byte MT block decoder used by src/engine/mtdecf.cpp (the MT unpack filter constructors in
+   src/engine/supmutf.c, src/engine/supmutlf.c and src/engine/supmutpf.c allocate it with
+   fn_8027C020(3432)): the decode state, then the delivery fields +0xD44-+0xD67. */
+class CMTBLKDecf : public UTALKSTATE_CODA {
+public:
+    void initmut(unsigned char *data, UTALKSTATE_CODA *state, int header);
+
     int mD44;
     unsigned char *mD48;
     float *mD4C;
@@ -26,7 +37,11 @@ typedef struct Codec_8027CF9C {
     int mD5C;
     int mD60;
     int mD64;
-} Codec_8027CF9C;
+};
+
+}
+
+typedef Snd::CMTBLKDecf Codec_8027CF9C;
 
 typedef struct Format_8027D284 {
     int m0;

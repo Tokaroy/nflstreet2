@@ -156,12 +156,6 @@ typedef struct SndRsfState_t {
     float m2C[4];
 } SndRsfState_t;
 
-typedef struct Bits_8027C078 {
-    unsigned char *m0;
-    unsigned int m4;
-    int m8;
-} Bits_8027C078;
-
 typedef struct SndPcmUnpackFilter_t {
     Node_80279D90 mNode;
     int m1C;

@@ -41500,7 +41500,7 @@
     {
       "source": "src/engine/mtdecf.cpp",
       "profile": "sound_cxx",
-      "evidence": "evidence.tsv provisional unit row 0x8027C020-0x8027D2E8 (src/engine/mtdecf.cpp), its compiler and source-form rows, and the function and name rows of every registered function; the exact .rodata data row 0x802C2368-0x802C2370. Draft comparisons only; original assembly remains linked.",
+      "evidence": "evidence.tsv provisional unit row 0x8027C020-0x8027D2E8 (src/engine/mtdecf.cpp), its compiler and source-form rows (including the mtdecf.cpp fake-match row), the function and name rows of every registered function (NASCAR 2005 names for the Snd::UTALKSTATE_CODA routines), and the exact .rodata data row 0x802C2308-0x802C2370 (all six per-function pools). Draft comparisons only; original assembly remains linked; 14 of 16 exact, Snd::readsamples and Snd::decodemut are partial.",
       "sections": [
         {
           "section": ".text",
@@ -41527,42 +41527,42 @@
           "end": "0x8027C078"
         },
         {
-          "symbol": "fn_8027C078",
+          "symbol": "getbits__3SndPQ23Snd15UTALKSTATE_CODAi",
           "start": "0x8027C078",
           "end": "0x8027C0D8"
         },
         {
-          "symbol": "fn_8027C0D8",
+          "symbol": "discardbits__3SndPQ23Snd15UTALKSTATE_CODAi",
           "start": "0x8027C0D8",
           "end": "0x8027C120"
         },
         {
-          "symbol": "fn_8027C120",
+          "symbol": "readsamples__3SndPQ23Snd15UTALKSTATE_CODAiPfi",
           "start": "0x8027C120",
           "end": "0x8027C318"
         },
         {
-          "symbol": "fn_8027C318",
+          "symbol": "interpolate__3SndPf",
           "start": "0x8027C318",
           "end": "0x8027C380"
         },
         {
-          "symbol": "fn_8027C380",
+          "symbol": "reftolpc__3SndPfT1",
           "start": "0x8027C380",
           "end": "0x8027C474"
         },
         {
-          "symbol": "fn_8027C474",
+          "symbol": "filter__3SndPQ23Snd15UTALKSTATE_CODAii",
           "start": "0x8027C474",
           "end": "0x8027CA34"
         },
         {
-          "symbol": "fn_8027CA34",
+          "symbol": "initmut__Q23Snd10CMTBLKDecfPUcPQ23Snd15UTALKSTATE_CODAi",
           "start": "0x8027CA34",
           "end": "0x8027CBA4"
         },
         {
-          "symbol": "fn_8027CBA4",
+          "symbol": "decodemut__3SndPQ23Snd15UTALKSTATE_CODA",
           "start": "0x8027CBA4",
           "end": "0x8027CF9C"
         },

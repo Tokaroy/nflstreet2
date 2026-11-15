@@ -1,5 +1,6 @@
-/* MT block decoder (mtdecf.cpp): decodes MT compressed sample blocks into a 432-sample float buffer
-   for the MT unpack filters: allocation, the bit reader, block parsing, sample delivery and the
+/* MT block decoder (mtdecf.cpp): decodes MT (MicroTalk) compressed sample blocks into a 432-sample
+   float buffer for the MT unpack filters: allocation, the bit reader, the stream header, the
+   excitation, reflection-coefficient and LPC synthesis stages of each frame, sample delivery and the
    decoder's state save/restore. */
 
 #include "engine/sndsys.h"
@@ -27,7 +28,11 @@ void fn_8027C04C(void *p)
     lbl_803B53E8(p);
 }
 
-unsigned int fn_8027C078(Bits_8027C078 *bits, int count)
+}
+
+namespace Snd {
+
+unsigned int getbits(UTALKSTATE_CODA *bits, int count)
 {
     unsigned int value;
 
@@ -41,7 +46,7 @@ unsigned int fn_8027C078(Bits_8027C078 *bits, int count)
     return value;
 }
 
-void fn_8027C0D8(Bits_8027C078 *bits, int count)
+void discardbits(UTALKSTATE_CODA *bits, int count)
 {
     bits->m4 >>= count;
     bits->m8 -= count;
@@ -51,7 +56,7 @@ void fn_8027C0D8(Bits_8027C078 *bits, int count)
     }
 }
 
-void fn_8027C120(Bits_8027C078 *s, int multipulse, float *out, int stride)
+void readsamples(UTALKSTATE_CODA *s, int multipulse, float *out, int stride)
 {
     // FAKEMATCH: unused stack object; reproduces the target frame (0x58, conversion slot at 0x18)
     volatile int spare;
@@ -67,12 +72,12 @@ void fn_8027C120(Bits_8027C078 *s, int multipulse, float *out, int stride)
         while (i < 108) {
             cnt = lbl_8030154C[model][s->m4 & 0xFF];
             model = lbl_8030174C[cnt].m0;
-            fn_8027C0D8(s, lbl_8030174C[cnt].m4);
+            discardbits(s, lbl_8030174C[cnt].m4);
             if (cnt > 3) {
                 out[i] = lbl_8030174C[cnt].m8;
                 i += stride;
             } else if (cnt > 1) {
-                n = fn_8027C078(s, 6) + 7;
+                n = getbits(s, 6) + 7;
                 if (i + stride * n > 108) {
                     n = (108 - i) / stride;
                 }
@@ -82,10 +87,10 @@ void fn_8027C120(Bits_8027C078 *s, int multipulse, float *out, int stride)
                 }
             } else {
                 x = 7;
-                while (fn_8027C078(s, 1) == 1) {
+                while (getbits(s, 1) == 1) {
                     x++;
                 }
-                if (fn_8027C078(s, 1) == 1) {
+                if (getbits(s, 1) == 1) {
                     out[i] = x;
                 } else {
                     out[i] = -x;
@@ -94,23 +99,24 @@ void fn_8027C120(Bits_8027C078 *s, int multipulse, float *out, int stride)
             }
         }
     } else {
-        for (x = 0; x < 108; x += stride) {
+        x = 0;
+        do {
             i = s->m4 & 3;
             if (i == 1) {
                 out[x] = -2.0f;
-                fn_8027C0D8(s, 2);
+                discardbits(s, 2);
             } else if (i == 3) {
                 out[x] = 2.0f;
-                fn_8027C0D8(s, 2);
+                discardbits(s, 2);
             } else {
                 out[x] = 0.0f;
-                fn_8027C0D8(s, 1);
+                discardbits(s, 1);
             }
-        }
+        } while ((x += stride) < 108);
     }
 }
 
-void fn_8027C318(float *p)
+void interpolate(float *p)
 {
     int i;
 
@@ -120,7 +126,7 @@ void fn_8027C318(float *p)
     }
 }
 
-void fn_8027C380(float *rc, float *lpc)
+void reftolpc(float *rc, float *lpc)
 {
     int i;
     int j;
@@ -146,14 +152,14 @@ void fn_8027C380(float *rc, float *lpc)
     }
 }
 
-void fn_8027C474(Codec_8027CF9C *p, int offset, int count)
+void filter(UTALKSTATE_CODA *p, int offset, int count)
 {
     float lpc[12];
     float *out;
     int i;
 
     out = &p->m684[offset];
-    fn_8027C380(p->m114, lpc);
+    reftolpc(p->m114, lpc);
     for (i = 0; i < count; i++) {
         out[0] = p->m144[11] = out[0] + lpc[0] * p->m144[0] + lpc[1] * p->m144[1] + lpc[2] * p->m144[2] + lpc[3] * p->m144[3]
             + lpc[4] * p->m144[4] + lpc[5] * p->m144[5] + lpc[6] * p->m144[6] + lpc[7] * p->m144[7]
@@ -195,7 +201,7 @@ void fn_8027C474(Codec_8027CF9C *p, int offset, int count)
     }
 }
 
-void fn_8027CA34(Codec_8027CF9C *unused, unsigned char *data, Codec_8027CF9C *p, int flag)
+void CMTBLKDecf::initmut(unsigned char *data, UTALKSTATE_CODA *p, int flag)
 {
     // FAKEMATCH: unused stack object; reproduces the target frame (0x28, conversion slot at 0x10)
     volatile int spare;
@@ -206,10 +212,10 @@ void fn_8027CA34(Codec_8027CF9C *unused, unsigned char *data, Codec_8027CF9C *p,
     p->m8 = 8;
     p->m4 = p->m0[-1];
     if (flag != 0) {
-        p->mC = fn_8027C078((Bits_8027C078 *)p, 1);
-        p->m10 = 32 - fn_8027C078((Bits_8027C078 *)p, 4);
-        p->m14[0] = (float)(fn_8027C078((Bits_8027C078 *)p, 4) + 1) * 8.0f;
-        mult = (float)fn_8027C078((Bits_8027C078 *)p, 6) * 0.001f + 1.04f;
+        p->mC = getbits(p, 1);
+        p->m10 = 32 - getbits(p, 4);
+        p->m14[0] = (float)(getbits(p, 4) + 1) * 8.0f;
+        mult = (float)getbits(p, 6) * 0.001f + 1.04f;
         for (i = 1; i < 64; i++) {
             p->m14[i] = p->m14[i - 1] * mult;
         }
@@ -223,7 +229,7 @@ void fn_8027CA34(Codec_8027CF9C *unused, unsigned char *data, Codec_8027CF9C *p,
     }
 }
 
-void fn_8027CBA4(Codec_8027CF9C *p)
+void decodemut(UTALKSTATE_CODA *p)
 {
     float excitation[118];
     float delta[12];
@@ -238,25 +244,25 @@ void fn_8027CBA4(Codec_8027CF9C *p)
     float fixedGain;
     float pitchGain;
 
-    idx = fn_8027C078((Bits_8027C078 *)p, 6);
+    idx = getbits(p, 6);
     multipulse = idx < p->m10;
     delta[0] = (lbl_8030144C[idx] - p->m114[0]) * 0.25f;
     for (i = 1; i < 4; i++) {
-        delta[i] = (lbl_8030144C[fn_8027C078((Bits_8027C078 *)p, 6)] - p->m114[i]) * 0.25f;
+        delta[i] = (lbl_8030144C[getbits(p, 6)] - p->m114[i]) * 0.25f;
     }
     for (i = 4; i < 12; i++) {
-        delta[i] = (lbl_8030144C[fn_8027C078((Bits_8027C078 *)p, 5) + 16] - p->m114[i]) * 0.25f;
+        delta[i] = (lbl_8030144C[getbits(p, 5) + 16] - p->m114[i]) * 0.25f;
     }
     for (k = 0; k < 4; k++) {
-        lag = (k + 2) * 108 - fn_8027C078((Bits_8027C078 *)p, 8);
-        pitchGain = (float)fn_8027C078((Bits_8027C078 *)p, 4) * 0.06666667f;
-        fixedGain = p->m14[fn_8027C078((Bits_8027C078 *)p, 6)];
+        lag = (k + 2) * 108 - getbits(p, 8);
+        pitchGain = (float)getbits(p, 4) * 0.06666667f;
+        fixedGain = p->m14[getbits(p, 6)];
         if (p->mC == 0) {
-            fn_8027C120((Bits_8027C078 *)p, multipulse, &excitation[5], 1);
+            readsamples(p, multipulse, &excitation[5], 1);
         } else {
-            align = fn_8027C078((Bits_8027C078 *)p, 1);
-            zero = fn_8027C078((Bits_8027C078 *)p, 1);
-            fn_8027C120((Bits_8027C078 *)p, multipulse, &excitation[5 + align], 2);
+            align = getbits(p, 1);
+            zero = getbits(p, 1);
+            readsamples(p, multipulse, &excitation[5 + align], 2);
             if (zero != 0) {
                 for (j = 0; j < 108; j += 2) {
                     excitation[j - (align - 6)] = 0.0f;
@@ -268,7 +274,7 @@ void fn_8027CBA4(Codec_8027CF9C *p)
                 for (j = 113; j < 118; j++) {
                     excitation[j] = 0.0f;
                 }
-                fn_8027C318(excitation - (align - 6));
+                interpolate(excitation - (align - 6));
                 fixedGain *= 0.5f;
             }
         }
@@ -280,20 +286,24 @@ void fn_8027CBA4(Codec_8027CF9C *p)
     for (i = 0; i < 12; i++) {
         p->m114[i] += delta[i];
     }
-    fn_8027C474(p, 0, 1);
+    filter(p, 0, 1);
     for (i = 0; i < 12; i++) {
         p->m114[i] += delta[i];
     }
-    fn_8027C474(p, 12, 1);
+    filter(p, 12, 1);
     for (i = 0; i < 12; i++) {
         p->m114[i] += delta[i];
     }
-    fn_8027C474(p, 24, 1);
+    filter(p, 24, 1);
     for (i = 0; i < 12; i++) {
         p->m114[i] += delta[i];
     }
-    fn_8027C474(p, 36, 33);
+    filter(p, 36, 33);
 }
+
+}
+
+extern "C" {
 
 Codec_8027CF9C *fn_8027CF9C(void *memory)
 {
@@ -325,9 +335,9 @@ int fn_8027CFCC(Codec_8027CF9C *p, unsigned char *data, int size, int count)
         } else {
             p->mD60 = 0;
         }
-        fn_8027CA34(p, data + 1, p, p->mD5C);
+        p->initmut(data + 1, p, p->mD5C);
     } else {
-        fn_8027CA34(p, data, p, p->mD5C);
+        p->initmut(data, p, p->mD5C);
     }
     return 0;
 }
@@ -366,7 +376,7 @@ int CodecReadSamples(Codec_8027CF9C *p, float **dst, int count)
         if (left <= 0) {
             break;
         }
-        fn_8027CBA4(p);
+        Snd::decodemut(p);
         p->mD44 = 432;
         n = 432;
         if (p->mD64 == 1) {
