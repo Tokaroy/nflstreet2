@@ -9,7 +9,12 @@ typedef struct Codec_8027CF9C {
     unsigned char *m0;
     int m4;
     int m8;
-    unsigned char mUnknownC[0x678];
+    int mC;
+    int m10;
+    float m14[64];
+    float m114[12];
+    float m144[12];
+    float m174[324];
     float m684[432];
     int mD44;
     unsigned char *mD48;

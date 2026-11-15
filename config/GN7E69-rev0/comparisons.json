@@ -41511,7 +41511,7 @@
         {
           "section": ".rodata",
           "placement": ".data3",
-          "start": "0x802C2368",
+          "start": "0x802C2308",
           "end": "0x802C2370"
         }
       ],
@@ -41535,6 +41535,31 @@
           "symbol": "fn_8027C0D8",
           "start": "0x8027C0D8",
           "end": "0x8027C120"
+        },
+        {
+          "symbol": "fn_8027C120",
+          "start": "0x8027C120",
+          "end": "0x8027C318"
+        },
+        {
+          "symbol": "fn_8027C318",
+          "start": "0x8027C318",
+          "end": "0x8027C380"
+        },
+        {
+          "symbol": "fn_8027C380",
+          "start": "0x8027C380",
+          "end": "0x8027C474"
+        },
+        {
+          "symbol": "fn_8027CA34",
+          "start": "0x8027CA34",
+          "end": "0x8027CBA4"
+        },
+        {
+          "symbol": "fn_8027CBA4",
+          "start": "0x8027CBA4",
+          "end": "0x8027CF9C"
         },
         {
           "symbol": "fn_8027CF9C",

@@ -6,8 +6,17 @@
 
 extern "C" {
 
-void fn_8027CA34(Codec_8027CF9C *unused, unsigned char *data, Codec_8027CF9C *p, int flag);
-void fn_8027CBA4(Codec_8027CF9C *p);
+void fn_8027C474(Codec_8027CF9C *p, int offset, int count);
+
+typedef struct MtCommand_t {
+    int m0;
+    int m4;
+    float m8;
+} MtCommand_t;
+
+extern float lbl_8030144C[64];
+extern unsigned char lbl_8030154C[2][256];
+extern MtCommand_t lbl_8030174C[];
 
 void *fn_8027C020(int size)
 {
@@ -41,6 +50,201 @@ void fn_8027C0D8(Bits_8027C078 *bits, int count)
         bits->m4 |= *bits->m0++ << bits->m8;
         bits->m8 += 8;
     }
+}
+
+void fn_8027C120(Bits_8027C078 *s, int multipulse, float *out, int stride)
+{
+    // FAKEMATCH: unused stack object; reproduces the target frame (0x58, conversion slot at 0x18)
+    volatile int spare;
+    int i;
+    int model;
+    int cnt;
+    int x;
+    int n;
+
+    if (multipulse) {
+        model = 0;
+        i = 0;
+        while (i < 108) {
+            cnt = lbl_8030154C[model][s->m4 & 0xFF];
+            model = lbl_8030174C[cnt].m0;
+            fn_8027C0D8(s, lbl_8030174C[cnt].m4);
+            if (cnt > 3) {
+                out[i] = lbl_8030174C[cnt].m8;
+                i += stride;
+            } else if (cnt > 1) {
+                n = fn_8027C078(s, 6) + 7;
+                if (i + stride * n > 108) {
+                    n = (108 - i) / stride;
+                }
+                for (x = 0; x < n; x++) {
+                    out[i] = 0.0f;
+                    i += stride;
+                }
+            } else {
+                x = 7;
+                while (fn_8027C078(s, 1) == 1) {
+                    x++;
+                }
+                if (fn_8027C078(s, 1) == 1) {
+                    out[i] = x;
+                } else {
+                    out[i] = -x;
+                }
+                i += stride;
+            }
+        }
+    } else {
+        for (x = 0; x < 108; x += stride) {
+            i = s->m4 & 3;
+            if (i == 1) {
+                out[x] = -2.0f;
+                fn_8027C0D8(s, 2);
+            } else if (i == 3) {
+                out[x] = 2.0f;
+                fn_8027C0D8(s, 2);
+            } else {
+                out[x] = 0.0f;
+                fn_8027C0D8(s, 1);
+            }
+        }
+    }
+}
+
+void fn_8027C318(float *p)
+{
+    int i;
+
+    for (i = 0; i < 108; i += 2) {
+        p[i] = (p[i - 1] + p[i + 1]) * 0.59738594f + (p[i - 3] + p[i + 3]) * -0.11459156f
+            + (p[i - 5] + p[i + 5]) * 0.018032679f;
+    }
+}
+
+void fn_8027C380(float *rc, float *lpc)
+{
+    int i;
+    int j;
+    float x;
+    float tmp2[12];
+    float tmp1[12];
+
+    for (j = 10; j >= 0; j--) {
+        tmp2[j + 1] = rc[j];
+    }
+    tmp2[0] = 1.0f;
+    for (i = 0; i < 12; i++) {
+        x = -rc[11] * tmp2[11];
+        for (j = 10; j >= 0; j--) {
+            x -= rc[j] * tmp2[j];
+            tmp2[j + 1] = rc[j] * x + tmp2[j];
+        }
+        tmp1[i] = tmp2[0] = x;
+        for (j = 0; j < i; j++) {
+            x -= lpc[j] * tmp1[i - j - 1];
+        }
+        lpc[i] = x;
+    }
+}
+
+void fn_8027CA34(Codec_8027CF9C *unused, unsigned char *data, Codec_8027CF9C *p, int flag)
+{
+    // FAKEMATCH: unused stack object; reproduces the target frame (0x28, conversion slot at 0x10)
+    volatile int spare;
+    int i;
+    float mult;
+
+    p->m0 = data + 1;
+    p->m8 = 8;
+    p->m4 = p->m0[-1];
+    if (flag != 0) {
+        p->mC = fn_8027C078((Bits_8027C078 *)p, 1);
+        p->m10 = 32 - fn_8027C078((Bits_8027C078 *)p, 4);
+        p->m14[0] = (float)(fn_8027C078((Bits_8027C078 *)p, 4) + 1) * 8.0f;
+        mult = (float)fn_8027C078((Bits_8027C078 *)p, 6) * 0.001f + 1.04f;
+        for (i = 1; i < 64; i++) {
+            p->m14[i] = p->m14[i - 1] * mult;
+        }
+        for (i = 0; i < 12; i++) {
+            p->m114[i] = 0.0f;
+            p->m144[i] = 0.0f;
+        }
+        for (i = 0; i < 324; i++) {
+            p->m174[i] = 0.0f;
+        }
+    }
+}
+
+void fn_8027CBA4(Codec_8027CF9C *p)
+{
+    float excitation[118];
+    float delta[12];
+    int multipulse;
+    int idx;
+    int i;
+    int k;
+    int j;
+    int lag;
+    int align;
+    int zero;
+    float pitchGain;
+    float fixedGain;
+
+    idx = fn_8027C078((Bits_8027C078 *)p, 6);
+    multipulse = idx < p->m10;
+    delta[0] = (lbl_8030144C[idx] - p->m114[0]) * 0.25f;
+    for (i = 1; i < 4; i++) {
+        delta[i] = (lbl_8030144C[fn_8027C078((Bits_8027C078 *)p, 6)] - p->m114[i]) * 0.25f;
+    }
+    for (i = 4; i < 12; i++) {
+        delta[i] = (lbl_8030144C[fn_8027C078((Bits_8027C078 *)p, 5) + 16] - p->m114[i]) * 0.25f;
+    }
+    for (k = 0; k < 4; k++) {
+        lag = (k + 2) * 108 - fn_8027C078((Bits_8027C078 *)p, 8);
+        pitchGain = (float)fn_8027C078((Bits_8027C078 *)p, 4) * 0.06666667f;
+        fixedGain = p->m14[fn_8027C078((Bits_8027C078 *)p, 6)];
+        if (p->mC == 0) {
+            fn_8027C120((Bits_8027C078 *)p, multipulse, &excitation[5], 1);
+        } else {
+            align = fn_8027C078((Bits_8027C078 *)p, 1);
+            zero = fn_8027C078((Bits_8027C078 *)p, 1);
+            fn_8027C120((Bits_8027C078 *)p, multipulse, &excitation[5 + align], 2);
+            if (zero != 0) {
+                for (j = 0; j < 108; j += 2) {
+                    excitation[6 - align + j] = 0.0f;
+                }
+            } else {
+                for (j = 0; j < 5; j++) {
+                    excitation[j] = 0.0f;
+                }
+                for (j = 113; j < 118; j++) {
+                    excitation[j] = 0.0f;
+                }
+                fn_8027C318(&excitation[6 - align]);
+                fixedGain *= 0.5f;
+            }
+        }
+        for (j = 0; j < 108; j++) {
+            p->m684[k * 108 + j] = fixedGain * excitation[5 + j] + pitchGain * p->m174[lag + j];
+        }
+    }
+    lbl_80301000(p->m174, &p->m684[108], 1296);
+    for (i = 0; i < 12; i++) {
+        p->m114[i] += delta[i];
+    }
+    fn_8027C474(p, 0, 1);
+    for (i = 0; i < 12; i++) {
+        p->m114[i] += delta[i];
+    }
+    fn_8027C474(p, 12, 1);
+    for (i = 0; i < 12; i++) {
+        p->m114[i] += delta[i];
+    }
+    fn_8027C474(p, 24, 1);
+    for (i = 0; i < 12; i++) {
+        p->m114[i] += delta[i];
+    }
+    fn_8027C474(p, 36, 33);
 }
 
 Codec_8027CF9C *fn_8027CF9C(void *memory)
