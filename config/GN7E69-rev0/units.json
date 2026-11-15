@@ -2418,10 +2418,6 @@
       "address": "0x802791D0",
       "evidence": "evidence.tsv function/name rows for 0x802791D0; registered in the comparison-only src/engine/spktplay.c, which keeps its original bytes until the whole file can be linked; called by name from src/engine/sststat.c and src/engine/stretch.c."
     },
-    "SFILTER_createHPFFIR8": {
-      "address": "0x80279CB8",
-      "evidence": "evidence.tsv function/name rows for 0x80279CB8; registered in the comparison-only src/engine/sfhpffir8.c, which keeps its original bytes until the whole file can be linked; called by name from src/engine/smixhip.c."
-    },
     "SFILTER_add": {
       "address": "0x80279D90",
       "evidence": "evidence.tsv function/name rows for 0x80279D90; registered in the comparison-only src/engine/sfilter.c, which keeps its original bytes until the whole file can be linked; called by name from src/engine/smixer.c, src/engine/smixfilt.c, src/engine/smixhip.c and src/engine/smixptch.c."
@@ -2430,17 +2426,9 @@
       "address": "0x80279DF8",
       "evidence": "evidence.tsv function/name rows for 0x80279DF8; registered in the comparison-only src/engine/sfilter.c, which keeps its original bytes until the whole file can be linked; called by name from src/engine/smixhip.c."
     },
-    "SFILTER_rsfsetpitch": {
-      "address": "0x8027A4C0",
-      "evidence": "evidence.tsv function/name rows for 0x8027A4C0; registered in the comparison-only src/engine/sfrsf.c, which keeps its original bytes until the whole file can be linked; called by name from src/engine/smixptch.c."
-    },
     "SNDPKTPLAYI_freeframes": {
       "address": "0x8027952C",
       "evidence": "evidence.tsv function/name rows for 0x8027952C (SNDPKTPLAYI_freeframes in src/engine/spktplay.c, comparison only until linked); the linked src/engine/supmutpf.c calls it by name."
-    },
-    "SFILTER_unpackxalfinit": {
-      "address": "0x8027B7B0",
-      "evidence": "evidence.tsv function/name rows for 0x8027B7B0; exact but unlinked in the comparison-only src/engine/supxalf.cpp, which keeps its original bytes until the whole file can be linked; stored by name in the constructor table of src/engine/sinitxa.c."
     },
     "SFILTER_unpackxapfinit": {
       "address": "0x8027BA6C",
@@ -2457,6 +2445,10 @@
     "gInGameGroup": {
       "address": "0x803068B4",
       "evidence": "evidence.tsv data and name rows for 0x803068B4 (gInGameGroup, defined in the comparison-only src/game/InGameGroup.cpp, original bytes); the linked src/game/gsflowman.cpp returns its address."
+    },
+    "calcFIRCoeffs": {
+      "address": "0x80279E74",
+      "evidence": "evidence.tsv function and name rows for 0x80279E74 (calcFIRCoeffs, sfir.c, registered in comparisons.json, original bytes linked); referenced by the linked src/engine/sfhpffir8.c (SFILTER_modifyHPFFIR8)."
     }
   },
   "units": [
@@ -15772,6 +15764,19 @@
       ]
     },
     {
+      "source": "src/engine/supxalf.cpp",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8027B4F4-0x8027B888 (src/engine/supxalf.cpp), its four function and name rows, the Decoder_8027B7B0 type row, the source-form row 0x8027B4F4-0x8027B888; no owned data, and the sound_cxx compiler rows 0x802714A8-0x8027CF9C; every function exact, completed in the c17 wave and linked.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8027B4F4",
+          "end": "0x8027B888"
+        }
+      ]
+    },
+    {
       "source": "src/engine/scrsfl.c",
       "profile": "sound_cxx",
       "evidence": "evidence.tsv unit row 0x8027D2E8-0x8027D3AC (src/engine/scrsfl.c), its function and name row (rsflc), the SndResamplePhase_t type row, the exact .rodata data row 0x802C2370-0x802C2380 and the sound_cxx compiler row 0x8027CF9C-0x8027D3AC; every function exact, promoted from comparison-only.",
@@ -19657,6 +19662,19 @@
       ]
     },
     {
+      "source": "src/engine/s3dlow.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x80277520-0x802775EC (src/engine/s3dlow.c), its function and name row; no owned data, and the sound_cxx compiler rows 0x802714A8-0x8027CF9C; every function exact, completed in the c17 wave and linked.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80277520",
+          "end": "0x802775EC"
+        }
+      ]
+    },
+    {
       "source": "src/engine/sbend.c",
       "profile": "sound_cxx",
       "evidence": "evidence.tsv unit row 0x80277D88-0x80277E38 (src/engine/sbend.c), its function and name row; no owned data, and the sound_cxx compiler rows 0x802714A8-0x8027CF9C; every function exact, split from the former comparison files src/engine/cu_802753F0.cpp / cu_80276DE4.cpp and promoted.",
@@ -19698,6 +19716,19 @@
           "placement": ".text",
           "start": "0x80277F98",
           "end": "0x80278000"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/sdownmix.cpp",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x80278000-0x80278070 (src/engine/sdownmix.cpp), its function and name row; no owned data (the byte table 0x802C1F62 it reads is shared with other sound files and stays external), and the sound_cxx compiler rows 0x802714A8-0x8027CF9C; every function exact, completed in the c17 wave and linked.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80278000",
+          "end": "0x80278070"
         }
       ]
     },
@@ -19895,6 +19926,25 @@
       ]
     },
     {
+      "source": "src/engine/sfhpffir8.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x80279C38-0x80279D90 (src/engine/sfhpffir8.c), its three function and name rows, the data row of its .rodata double 0x802C21B8-0x802C21C0, and the sound_cxx compiler rows 0x802714A8-0x8027CF9C; every function exact, completed in the c17 wave and linked.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80279C38",
+          "end": "0x80279D90"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C21B8",
+          "end": "0x802C21C0"
+        }
+      ]
+    },
+    {
       "source": "src/engine/sfir8.c",
       "profile": "sound_cxx",
       "evidence": "evidence.tsv unit row 0x8027A21C-0x8027A308 (src/engine/sfir8.c), its function and name rows, the data rows of its .rodata 0x802C21F0-0x802C21F4, and the sound_cxx compiler row 0x802714A8-0x8027CF9C; every function exact, promoted from comparison-only.",
@@ -19910,6 +19960,44 @@
           "placement": ".data3",
           "start": "0x802C21F0",
           "end": "0x802C21F4"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/sflpf.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8027A308-0x8027A4C0 (src/engine/sflpf.c), its three function and name rows, the data row of its .rodata 0x802C21F8-0x802C2210, the SndLpfState_t and SndRcState_t type rows, and the sound_cxx compiler rows 0x802714A8-0x8027CF9C; every function exact, completed in the c17 wave and linked.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8027A308",
+          "end": "0x8027A4C0"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C21F8",
+          "end": "0x802C2210"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/sfrsf.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8027A4C0-0x8027A7FC (src/engine/sfrsf.c), its three function and name rows, the data row of its .rodata 0x802C2248-0x802C2250, the SndRsfState_t type row, the source-form row 0x8027A4C8-0x8027A7A0, and the sound_cxx compiler rows 0x802714A8-0x8027CF9C; every function exact, completed in the c17 wave and linked.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8027A4C0",
+          "end": "0x8027A7FC"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C2248",
+          "end": "0x802C2250"
         }
       ]
     },

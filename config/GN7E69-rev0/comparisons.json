@@ -27001,26 +27001,6 @@
       ]
     },
     {
-      "source": "src/engine/s3dlow.c",
-      "profile": "sound_cxx",
-      "evidence": "evidence.tsv provisional unit row 0x80277520-0x802775EC (src/engine/s3dlow.c), the sound_cxx compiler rows and the function and name rows of every registered function. Draft comparisons only; original assembly remains linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x80277520",
-          "end": "0x802775EC"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "SND3dpos",
-          "start": "0x80277520",
-          "end": "0x802775EC"
-        }
-      ]
-    },
-    {
       "source": "src/engine/satospkr.c",
       "profile": "sound_cxx",
       "evidence": "evidence.tsv provisional unit row 0x802775EC-0x80277CF0 (src/engine/satospkr.c), the sound_cxx compiler rows and the function and name rows of every registered function. Draft comparisons only; original assembly remains linked.",
@@ -27057,26 +27037,6 @@
           "symbol": "SND_attrsetdef",
           "start": "0x80277CF0",
           "end": "0x80277D88"
-        }
-      ]
-    },
-    {
-      "source": "src/engine/sdownmix.cpp",
-      "profile": "sound_cxx",
-      "evidence": "evidence.tsv provisional unit row 0x80278000-0x80278070 (src/engine/sdownmix.cpp), the sound_cxx compiler rows and the function and name rows of every registered function. Draft comparisons only; original assembly remains linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x80278000",
-          "end": "0x80278070"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "SetDefaultAzimuths",
-          "start": "0x80278000",
-          "end": "0x80278070"
         }
       ]
     },
@@ -27136,27 +27096,22 @@
       ]
     },
     {
-      "source": "src/engine/sfhpffir8.c",
+      "source": "src/engine/srender.c",
       "profile": "sound_cxx",
-      "evidence": "evidence.tsv provisional unit row 0x80279C38-0x80279D90 (src/engine/sfhpffir8.c), the compiler, external and source-form rows 0x80276DE4-0x8027CF9C, and the function and name rows of every registered function. Draft comparisons only; original assembly remains linked.",
+      "evidence": "evidence.tsv provisional unit row 0x802796DC-0x80279798 (src/engine/srender.c), the sound_cxx compiler rows and the function and name rows of every registered function. Draft comparisons only; original assembly remains linked.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
-          "start": "0x80279C38",
-          "end": "0x80279D90"
+          "start": "0x802796DC",
+          "end": "0x80279798"
         }
       ],
       "functions": [
         {
-          "symbol": "SFILTER_hpfFIR8",
-          "start": "0x80279C38",
-          "end": "0x80279CB8"
-        },
-        {
-          "symbol": "SFILTER_createHPFFIR8",
-          "start": "0x80279CB8",
-          "end": "0x80279D0C"
+          "symbol": "SNDI_validrendermode",
+          "start": "0x802796DC",
+          "end": "0x80279798"
         }
       ]
     },
@@ -27186,22 +27141,28 @@
       ]
     },
     {
-      "source": "src/engine/sfrsf.c",
+      "source": "src/engine/sfir.c",
       "profile": "sound_cxx",
-      "evidence": "evidence.tsv provisional unit row 0x8027A4C0-0x8027A7FC (src/engine/sfrsf.c), the compiler, external and source-form rows 0x80276DE4-0x8027CF9C, and the function and name rows of every registered function. Draft comparisons only; original assembly remains linked.",
+      "evidence": "evidence.tsv provisional unit row 0x80279E74-0x8027A21C (src/engine/sfir.c), the sound_cxx compiler rows and the function and name rows of every registered function and the data rows of its .rodata 0x802C21C0-0x802C21F0. Draft comparisons only; original assembly remains linked.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
-          "start": "0x8027A4C0",
-          "end": "0x8027A7FC"
+          "start": "0x80279E74",
+          "end": "0x8027A21C"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C21C0",
+          "end": "0x802C21F0"
         }
       ],
       "functions": [
         {
-          "symbol": "SFILTER_rsfsetpitch",
-          "start": "0x8027A4C0",
-          "end": "0x8027A4C8"
+          "symbol": "calcFIRCoeffs",
+          "start": "0x80279E74",
+          "end": "0x8027A21C"
         }
       ]
     },
@@ -41988,36 +41949,6 @@
           "symbol": "SNDSTRM_setvol",
           "start": "0x8026F334",
           "end": "0x8026F5F8"
-        }
-      ]
-    },
-    {
-      "source": "src/engine/supxalf.cpp",
-      "profile": "sound_cxx",
-      "evidence": "evidence.tsv provisional unit row 0x8027B4F4-0x8027B888 (src/engine/supxalf.cpp), its compiler and source-form rows, and the function and name rows of every registered function. Draft comparisons only; original assembly remains linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x8027B4F4",
-          "end": "0x8027B888"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "SFILTER_unpackgetframexalf",
-          "start": "0x8027B77C",
-          "end": "0x8027B784"
-        },
-        {
-          "symbol": "SFILTER_unpackxalfrestore",
-          "start": "0x8027B784",
-          "end": "0x8027B7B0"
-        },
-        {
-          "symbol": "SFILTER_unpackxalfinit",
-          "start": "0x8027B7B0",
-          "end": "0x8027B888"
         }
       ]
     },

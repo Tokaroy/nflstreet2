@@ -4,7 +4,7 @@
 /* Declarations shared by the files of the sound range 0x80276B7C-0x8027D3AC: stretch.c, s3dlow.c,
    sattrdef.c, sbend.c, sclcptch.c, sctlfilt.c, sgetdata.c, sgettag.c, shipass.c, slinklst.c,
    slowpass.c, smemhigh.cpp, SNDI_cos.c, SNDI_sin.c, spktctoh.c, spktplay.c, sreallocbuf.cpp,
-   srrange.c, saramman.c, sfft24.c, sfhpffir8.c, sfilter.c, sfir8.c, sfrsf.c, sinit16.c, sinitut.c,
+   srender.c, srrange.c, saramman.c, sfft24.c, sfhpffir8.c, sfilter.c, sfir.c, sfir8.c, sflpf.c, sfrsf.c, sinit16.c, sinitut.c,
    sinitxa.c, smixc.c, supf.c, suplf.c, supmutf.c, supmutlf.c, supmutpf.c, suppf.c, supxaf.cpp,
    supxalf.cpp, supxapf.cpp, eaxadecf.cpp and mtdecf.cpp. */
 
@@ -93,12 +93,9 @@ typedef struct Struct_803B53EC {
 
 typedef struct SndFirState_t {
     float m0[8];
-    float m20;
-    float m24;
-    float m28;
-    float m2C;
-    float m30;
-    unsigned char mUnknown34[8];
+    float m20[5];
+    float m34;
+    float m38;
 } SndFirState_t;
 
 typedef struct SndHpfState_t {
@@ -106,9 +103,26 @@ typedef struct SndHpfState_t {
     SndFirState_t m1C;
 } SndHpfState_t;
 
+typedef struct SndRcState_t {
+    float m0;
+    float m4;
+    float m8;
+} SndRcState_t;
+
+typedef struct SndLpfState_t {
+    Node_80279D90 mNode;
+    SndRcState_t m1C;
+} SndLpfState_t;
+
 typedef struct SndRsfState_t {
     Node_80279D90 mNode;
     int m1C;
+    unsigned int m20;
+    void (*m24)(int count, float *src, float *dst, int *pos, void *phase, unsigned int stepHi,
+                unsigned int stepLo);
+    short m28;
+    short m2A;
+    float m2C[4];
 } SndRsfState_t;
 
 typedef struct Pair_8027BFDC {
@@ -218,6 +232,8 @@ typedef struct Decoder_8027B7B0 {
     int m40;
     int m44;
     int m48;
+    float m4C;
+    float m50;
 } Decoder_8027B7B0;
 
 typedef struct Decoder_8027BA6C {
@@ -261,9 +277,10 @@ Pair_8027BFDC fn_8027BFDC(Struct_8027BE24 *p);
 void fn_8027C00C(Struct_8027BE24 *p, Pair_8027BFDC *pair);
 void *fn_8027C020(int size);
 void fn_8027C04C(void *p);
+void calcFIRCoeffs(SndFirState_t *state, int type);
 void SNDI_fir8init(SndFirState_t *state);
 void SNDI_fir8(SndFirState_t *state, int count, float *in, float *out);
-int fn_8027B4F4(Node_80279D90 *node, int count, float *a, float *b, int flag);
+int SFILTER_unpackxalf(Node_80279D90 *node, int count, float *a, float *b, int flag);
 int SFILTER_unpackxapf(Node_80279D90 *node, int count, float *a, float *b, int flag);
 int SFILTER_unpackpf(Node_80279D90 *node, int count, float *a, float *b, int flag);
 
