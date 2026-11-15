@@ -15080,19 +15080,46 @@
     {
       "source": "src/engine/rigidbody.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv unit row 0x801E9BB4-0x801E9F70 (src/engine/rigidbody.cpp), its compiler, function, name and source-form rows; all eleven functions exact, promoted from comparison-only, with their literal pool 0x802B16B8-0x802B16CC (.rodata) linked. The unit links the tail of the rigid-body file; the body functions before 0x801E9BB4 keep their original bytes (unit row).",
+      "evidence": "evidence.tsv unit row 0x801E9538-0x801E9F70 (src/engine/rigidbody.cpp), its compiler, function, name, source-form, type and field rows, data rows 0x802B1690-0x802B1708 and linker row 0x802B16CC-0x802B16D8; all twenty functions exact, with the file .rodata (head and tail literal pools, the pool of the discarded GetBodyKineticEnergy and the body vtable) linked.",
+      "link_roots": {
+        "symbols": [
+          "__9RigidBodyP13Vec3_801DE1E0P15ShapeCollectionPvff",
+          "GetState__9RigidBodyPf",
+          "SetState__9RigidBodyPf",
+          "GetDerivative__9RigidBodyPvPf",
+          "UpdateBodyDerivedState",
+          "SetBodyPosition",
+          "SetBodyOrientation",
+          "SetBodyPose",
+          "GetBodyOrientation",
+          "SetBodyLinearMomentum",
+          "SetBodyAngularMomentum",
+          "SetBodyLinearVelocity",
+          "ClearBodyForces",
+          "AddBodyForceAtPoint",
+          "ApplyBodyImpulseAtPoint",
+          "ApplyBodyAngularImpulse",
+          "GetBodyPointVelocity",
+          "ComputeBodyRotationalResponse",
+          "SetBodyMotionState"
+        ],
+        "discarded": [
+          "GetBodyKineticEnergy"
+        ],
+        "evidence": "evidence.tsv linker row 0x802B16CC-0x802B16D8: the target keeps every listed function (constructor and the free functions are called from game and physics code, the three state methods and the deleting destructor _._9RigidBody, whose symbol cannot be a root name, are reached through the vtable 0x802B16D8 the constructor stores); GetBodyKineticEnergy has no code in the target while its constant pool remains in .rodata."
+      },
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
-          "start": "0x801E9BB4",
+          "start": "0x801E9538",
           "end": "0x801E9F70"
         },
         {
           "section": ".rodata",
           "placement": ".data3",
-          "start": "0x802B16B8",
-          "end": "0x802B16CC"
+          "start": "0x802B1690",
+          "end": "0x802B1708"
         }
       ]
     },
