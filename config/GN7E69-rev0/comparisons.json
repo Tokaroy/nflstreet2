@@ -41507,9 +41507,25 @@
           "placement": ".text",
           "start": "0x8027BAFC",
           "end": "0x8027C020"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C22F8",
+          "end": "0x802C2308"
         }
       ],
       "functions": [
+        {
+          "symbol": "fn_8027BAFC",
+          "start": "0x8027BAFC",
+          "end": "0x8027BC18"
+        },
+        {
+          "symbol": "fn_8027BC18",
+          "start": "0x8027BC18",
+          "end": "0x8027BD68"
+        },
         {
           "symbol": "fn_8027BD68",
           "start": "0x8027BD68",
@@ -41521,9 +41537,19 @@
           "end": "0x8027BDC0"
         },
         {
+          "symbol": "fn_8027BDC0",
+          "start": "0x8027BDC0",
+          "end": "0x8027BDE8"
+        },
+        {
           "symbol": "fn_8027BDE8",
           "start": "0x8027BDE8",
           "end": "0x8027BE24"
+        },
+        {
+          "symbol": "fn_8027BE24",
+          "start": "0x8027BE24",
+          "end": "0x8027BFDC"
         },
         {
           "symbol": "fn_8027BFDC",

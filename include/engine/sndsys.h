@@ -161,18 +161,21 @@ typedef struct Pair_8027BFDC {
 } Pair_8027BFDC;
 
 typedef struct Block_8027BC18 {
-    unsigned char mUnknown0[4];
+    int m0;
     float m4;
     float m8;
-    char *mC;
-    unsigned char mUnknown10[4];
+    unsigned char *mC;
+    float *m10;
 } Block_8027BC18;
 
 typedef struct Struct_8027BE24 {
-    unsigned char mUnknown0[8];
+    unsigned char mUnknown0[4];
+    int m4;
     int m8;
     int mC;
-    unsigned char mUnknown10[0x84];
+    float *m10;
+    unsigned char mUnknown14[0x10];
+    float m24[28];
     Block_8027BC18 m94;
 } Struct_8027BE24;
 
