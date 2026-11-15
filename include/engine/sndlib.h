@@ -2,7 +2,7 @@
 #define ENGINE_SNDLIB_H
 
 /* Declarations shared by the files of the sound range 0x802714A8-0x80276B7C:
-   cu_802714A8.cpp, sdspmix.c, snddrv.c, sfxrevc.c, slinkmix.c, smixer.c, smixfilt.c, smixfram.c,
+   lbmpeg.cpp, mpegl3base.cpp, sdspmix.c, snddrv.c, sfxrevc.c, slinkmix.c, smixer.c, smixfilt.c, smixfram.c,
    smixhip.c, smixptch.c and smixtmul.c. */
 
 #include <dolphin/ai.h>
@@ -14,7 +14,7 @@
 #include "engine/cu_802714A8.h"
 #include "engine/sndvoice.h"
 
-class Class_80271640 {
+class CMpegBase {
 public:
     unsigned int m0;
     unsigned int m4;
@@ -49,25 +49,26 @@ public:
     int m48;
     void *m4C;
 
-    virtual ~Class_80271640();
-    virtual int vfn_02(unsigned int header);
-    virtual int vfn_03(unsigned char *data);
-    virtual int vfn_04();
-    virtual void vfn_05(unsigned char *data);
-    virtual int vfn_06();
+    virtual ~CMpegBase();
+    virtual int ProcessHeader(unsigned int header);
+    virtual int Open(unsigned char *data);
+    virtual int Close();
+    virtual void Seek(unsigned char *data);
+    virtual int OpenLayer();
 
-    void fn_80271698();
-    void fn_80271710();
-    int fn_80271918();
-    void fn_80271AB8();
+    void OpenSynth();
+    void CloseSynth();
+    int GetHeader();
+    int CloseLayer();
+    void Reset();
 };
 
-class Class_80271B74 : public Class_80271640 {
+class CMpegLayer3Base : public CMpegBase {
 public:
     unsigned char mUnknown54[0x15C];
     void *m1B0;
 
-    virtual ~Class_80271B74();
+    virtual ~CMpegLayer3Base();
 };
 
 struct SndDrvMixChannel_t {
@@ -227,8 +228,11 @@ struct Params_80279D0C {
     int m4;
 };
 
+namespace Snd {
+extern int MPEGuse_MMX;
+}
+
 extern "C" {
-extern int lbl_80300044;
 extern const unsigned short lbl_802B7A98[];
 extern const short lbl_802B7AF0[2][3][16];
 extern unsigned short SNDDRV_dolbypl2balances[256][4];
@@ -286,7 +290,6 @@ void fn_80276194(int index);
 void fn_802763E0(void **buffers, int count);
 void fn_80277404(Node_80279D90 *node, void *data, int index);
 
-int fn_80271A04(void);
 void SNDDRV_DSPMixerResetChannel(SndDrvMixChannel_t *voice);
 void SNDDRV_DSPMixerSetPan(AXVPB *vpb, float *p, unsigned short a, int b);
 void SNDDRV_DSPMixerSetAuxBus(AXVPB *vpb, unsigned short value, int which);

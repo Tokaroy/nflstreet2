@@ -2265,6 +2265,34 @@
     "iSPCH_GetSampleParmAddr": {
       "address": "0x801B22B0",
       "evidence": "evidence.tsv function/name rows for 0x801B22B0 (target extent, related name); exact in the src/engine/spchrule.c comparison, called by the src/engine/spchpick.c comparison; the file is not linked."
+    },
+    "_._9CMpegBase": {
+      "address": "0x80271640",
+      "evidence": "evidence.tsv function and name rows for 0x80271640 (CMpegBase::~CMpegBase, src/engine/lbmpeg.cpp, comparison only); the destructor of src/engine/mpegl3base.cpp calls it (bl at 0x80271BBC)."
+    },
+    "ProcessHeader__9CMpegBaseUi": {
+      "address": "0x80271740",
+      "evidence": "evidence.tsv function and name rows for 0x80271740 (CMpegBase::ProcessHeader, src/engine/lbmpeg.cpp, comparison only); the vtable 0x802C19A8 of src/engine/mpegl3base.cpp inherits it (word at 0x802C19BC)."
+    },
+    "Open__9CMpegBasePUc": {
+      "address": "0x80271A0C",
+      "evidence": "evidence.tsv function and name rows for 0x80271A0C (CMpegBase::Open, src/engine/lbmpeg.cpp, comparison only); the vtable 0x802C19A8 of src/engine/mpegl3base.cpp inherits it (word at 0x802C19C4)."
+    },
+    "Close__9CMpegBase": {
+      "address": "0x80271AD0",
+      "evidence": "evidence.tsv function and name rows for 0x80271AD0 (CMpegBase::Close, src/engine/lbmpeg.cpp, comparison only); the vtable 0x802C19A8 of src/engine/mpegl3base.cpp inherits it (word at 0x802C19CC)."
+    },
+    "Seek__9CMpegBasePUc": {
+      "address": "0x80271624",
+      "evidence": "evidence.tsv function and name rows for 0x80271624 (CMpegBase::Seek, src/engine/lbmpeg.cpp, comparison only); the vtable 0x802C19A8 of src/engine/mpegl3base.cpp inherits it (word at 0x802C19D4)."
+    },
+    "OpenLayer__9CMpegBase": {
+      "address": "0x8027199C",
+      "evidence": "evidence.tsv function and name rows for 0x8027199C (CMpegBase::OpenLayer, src/engine/lbmpeg.cpp, comparison only); the vtable 0x802C19A8 of src/engine/mpegl3base.cpp inherits it (word at 0x802C19DC)."
+    },
+    "_3Snd.MPEGuse_MMX": {
+      "address": "0x80300044",
+      "evidence": "evidence.tsv data and name rows for 0x80300044 (Snd::MPEGuse_MMX, a .data word read by OpenSynth of src/engine/lbmpeg.cpp; no file defines it yet, its initializer form is open)."
     }
   },
   "units": [

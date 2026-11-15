@@ -1,10 +1,11 @@
-/* Audio decoder classes (neutral file name): a base and a derived decoder class with their
-   virtual functions; the base class reads MPEG-audio frame headers. */
+/* MPEG-audio decoder base class: opens a compressed stream, reads and decodes each frame header
+   (layer, sample rate, bit rate, channel mode and frame size), allocates the synthesis buffer and
+   keeps the read position for the layer decoders derived from it. */
 
 #include "engine/sndlib.h"
 
 
-void Class_80271640::vfn_05(unsigned char *data)
+void CMpegBase::Seek(unsigned char *data)
 {
     m20 = data;
     m24 = data;
@@ -13,27 +14,27 @@ void Class_80271640::vfn_05(unsigned char *data)
     m30 = 0;
 }
 
-Class_80271640::~Class_80271640()
+CMpegBase::~CMpegBase()
 {
     if (m43 != 0) {
-        vfn_04();
+        Close();
     }
 }
 
-void Class_80271640::fn_80271698()
+void CMpegBase::OpenSynth()
 {
-    if (lbl_80300044 == 0) {
+    if (Snd::MPEGuse_MMX == 0) {
         m4C = lbl_803B53E4(m44 * 0x900);
         memset(m4C, 0, m44 * 0x900);
     }
 }
 
-void Class_80271640::fn_80271710()
+void CMpegBase::CloseSynth()
 {
     lbl_803B53E8(m4C);
 }
 
-int Class_80271640::vfn_02(unsigned int header)
+int CMpegBase::ProcessHeader(unsigned int header)
 {
     unsigned int id;
     int channels;
@@ -100,7 +101,7 @@ int Class_80271640::vfn_02(unsigned int header)
     return 0;
 }
 
-int Class_80271640::fn_80271918()
+int CMpegBase::GetHeader()
 {
     unsigned int header;
     unsigned char *p = m20;
@@ -110,13 +111,13 @@ int Class_80271640::fn_80271918()
     } else {
         header = (p[0] << 24) | (p[1] << 16) | (p[2] << 8) | p[3];
     }
-    if (vfn_02(header) == -1) {
+    if (ProcessHeader(header) == -1) {
         return -1;
     }
     return 0;
 }
 
-int Class_80271640::vfn_06()
+int CMpegBase::OpenLayer()
 {
     if (m14 == 1) {
         m8 = m44 * 768;
@@ -131,15 +132,15 @@ int Class_80271640::vfn_06()
     return 0;
 }
 
-int fn_80271A04(void)
+int CMpegBase::CloseLayer()
 {
     return 0;
 }
 
-int Class_80271640::vfn_03(unsigned char *data)
+int CMpegBase::Open(unsigned char *data)
 {
     if (m43 != 0) {
-        vfn_04();
+        Close();
     }
     m43 = 1;
     m20 = data;
@@ -147,35 +148,28 @@ int Class_80271640::vfn_03(unsigned char *data)
     if (data == 0) {
         return -1;
     }
-    if (fn_80271918() != 0) {
+    if (GetHeader() != 0) {
         return -1;
     }
-    fn_80271698();
-    vfn_06();
-    fn_80271AB8();
+    OpenSynth();
+    OpenLayer();
+    Reset();
     return 0;
 }
 
-void Class_80271640::fn_80271AB8()
+void CMpegBase::Reset()
 {
     m28 = m20;
     m2C = 0;
     m30 = 0;
 }
 
-int Class_80271640::vfn_04()
+int CMpegBase::Close()
 {
     if (m43 != 0) {
         m43 = m48 = 0;
-        fn_80271A04();
-        fn_80271710();
+        CloseLayer();
+        CloseSynth();
     }
     return 0;
-}
-
-Class_80271B74::~Class_80271B74()
-{
-    if (m1B0 != 0) {
-        lbl_803B53E8(m1B0);
-    }
 }
