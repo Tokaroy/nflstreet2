@@ -24,7 +24,11 @@ typedef struct Params_803A6C40 {
     unsigned char mUnknown2E[0xA];
     unsigned int m38;
     unsigned int m3C;
-    unsigned char mUnknown40[0x5C];
+    unsigned char mUnknown40[0x2C];
+    unsigned short m6C;
+    unsigned short m6E;
+    unsigned short m70;
+    unsigned char mUnknown72[0x2A];
 } Params_803A6C40;
 
 typedef struct Record_803A6DF0 {
@@ -116,7 +120,8 @@ typedef struct Struct_803A6C24 {
     Record_803A6DF0 *m1CC;
     struct SndBankSlot_t *m1D0;
     struct SndMemPool_t *m1D4;
-    unsigned char mUnknown1D8[0x48];
+    unsigned char mUnknown1D8[0xC];
+    short m1E4[5][6];
     void (*m220)(void);
     void (*m224)(void);
 } Struct_803A6C24;

@@ -6,6 +6,8 @@
 
 extern "C" {
 
+int fn_802743A0(int index, void *stream);
+
 int SNDPKTPLAYI_gethighchannel(int index, int count)
 {
     int i;
@@ -28,6 +30,41 @@ int SNDPKTPLAYI_overhead(int count)
 int SNDPKTPLAY_overhead(int count)
 {
     return SNDPKTPLAYI_overhead(count) + fn_80274398();
+}
+
+int SNDPKTPLAY_create(int type, void (*callback)(int index, int value, void *context), void *context, void *memory,
+                      unsigned int size)
+{
+    SndPacketPlayer_t *stream;
+    void *voice;
+    int i = 0;
+
+    SNDSYS_entercritical();
+    for (i = 0; i < lbl_803A6C24.m1C.m22; i++) {
+        if (sndpps.m304[i] == 0) {
+            goto found;
+        }
+    }
+    SNDSYS_leavecritical();
+    return -9;
+found:
+    if (fn_802743A0(i, memory) < 0) {
+        SNDSYS_leavecritical();
+        return -6;
+    }
+    voice = memory;
+    memory = (char *)memory + fn_80274398();
+    size -= fn_80274398();
+    stream = (SndPacketPlayer_t *)memory;
+    stream->m40 = (size - 156) / 32;
+    stream->m50 = voice;
+    stream->m54 = type;
+    stream->m58 = callback;
+    stream->m5C = context;
+    stream->m0 = -1;
+    sndpps.m304[i] = stream;
+    SNDSYS_leavecritical();
+    return i;
 }
 
 int SNDPKTPLAY_submitspace(int index)

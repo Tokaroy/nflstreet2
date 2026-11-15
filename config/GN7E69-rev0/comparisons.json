@@ -26871,51 +26871,6 @@
       ]
     },
     {
-      "source": "src/engine/stretch.c",
-      "profile": "sound_cxx",
-      "evidence": "evidence.tsv provisional unit row 0x80276B7C-0x802774C8 (src/engine/stretch.c), the sound_cxx compiler rows and the function and name rows of every registered function. Draft comparisons only; original assembly remains linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x80276B7C",
-          "end": "0x802774C8"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "applyaction",
-          "start": "0x80276DE4",
-          "end": "0x80276F38"
-        },
-        {
-          "symbol": "transferframes",
-          "start": "0x80276F38",
-          "end": "0x80276FD4"
-        },
-        {
-          "symbol": "stretchframesneeded",
-          "start": "0x80276FD4",
-          "end": "0x802770F8"
-        },
-        {
-          "symbol": "stretch",
-          "start": "0x802770F8",
-          "end": "0x80277240"
-        },
-        {
-          "symbol": "SFILTER_timestretch",
-          "start": "0x80277280",
-          "end": "0x802773C0"
-        },
-        {
-          "symbol": "SFILTER_timestretchrestore",
-          "start": "0x802773C0",
-          "end": "0x80277404"
-        }
-      ]
-    },
-    {
       "source": "src/engine/satospkr.c",
       "profile": "sound_cxx",
       "evidence": "evidence.tsv provisional unit row 0x802775EC-0x80277CF0 (src/engine/satospkr.c), the sound_cxx compiler rows and the function and name rows of every registered function. Draft comparisons only; original assembly remains linked.",
@@ -26925,13 +26880,39 @@
           "placement": ".text",
           "start": "0x802775EC",
           "end": "0x80277CF0"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C1F10",
+          "end": "0x802C1F64"
         }
       ],
       "functions": [
         {
+          "symbol": "SNDI_equalpower",
+          "start": "0x802775EC",
+          "end": "0x80277658"
+        },
+        {
+          "symbol": "SNDI_precalcaztospkrvol",
+          "start": "0x80277658",
+          "end": "0x80277A60"
+        },
+        {
+          "symbol": "SNDI_aztospkrvol",
+          "start": "0x80277A60",
+          "end": "0x80277AFC"
+        },
+        {
           "symbol": "SNDI_freespkrtable",
           "start": "0x80277AFC",
           "end": "0x80277B3C"
+        },
+        {
+          "symbol": "SNDI_spkrconfig",
+          "start": "0x80277B3C",
+          "end": "0x80277CF0"
         }
       ]
     },
@@ -26982,6 +26963,11 @@
           "symbol": "SNDPKTPLAY_overhead",
           "start": "0x80278AC8",
           "end": "0x80278AFC"
+        },
+        {
+          "symbol": "SNDPKTPLAY_create",
+          "start": "0x80278AFC",
+          "end": "0x80278BF0"
         },
         {
           "symbol": "SNDPKTPLAY_submitspace",

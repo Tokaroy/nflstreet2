@@ -150,7 +150,7 @@ void MIX_playinit(int index, int type, int mode, int a, int b, void *data, int c
         record->m4C->m4 = 0;
         record->m4C->m18 = 200;
         record->m4C->m1A = slot;
-        fn_80277404(record->m4C, data, index);
+        SFILTER_timestretchinit(record->m4C, (unsigned char *)data, index);
         SFILTER_add(&record->m40, record->m4C);
     }
     record->m0 = 1;

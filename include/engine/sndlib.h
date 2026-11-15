@@ -279,7 +279,7 @@ void fn_80279B24(void *p);
 void SFILTER_modifyHPFFIR8(Node_80279D90 *node, Params_80279D0C *params);
 void SFILTER_remove(Node_80279D90 **list, Node_80279D90 *node);
 void SFILTER_rsfinit(Node_80279D90 *node, int a, int b);
-void fn_80277240(Node_80279D90 *node);
+void SFILTER_timestretchsetratio(Node_80279D90 *node, int ratio);
 void MIX_reset(void);
 void fn_802747D8(int index);
 void fn_80279598(void);
@@ -288,7 +288,7 @@ int fn_80271BD4(int index, int slot);
 void fn_80275E7C(void);
 void fn_80276194(int index);
 void fn_802763E0(void **buffers, int count);
-void fn_80277404(Node_80279D90 *node, void *data, int index);
+int SFILTER_timestretchinit(Node_80279D90 *node, unsigned char *data, int index);
 
 void SNDDRV_DSPMixerResetChannel(SndDrvMixChannel_t *voice);
 void SNDDRV_DSPMixerSetPan(AXVPB *vpb, float *p, unsigned short a, int b);
