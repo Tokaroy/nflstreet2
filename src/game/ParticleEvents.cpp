@@ -34,12 +34,12 @@ void *fn_801C6B4C(void *pool, void *item);
 void fn_801C6C0C(void *pool, void *item);
 void *fn_801C6C84(void *pool, void *item);
 int fn_801C6D34(void *pool, int b, void *ctx, int d, int (*fn)(void *, void *), int f);
-void fn_801D03D0(Mtx44 m);
-void fn_801D0508(void);
-void fn_801D0544(void);
-void fn_801D0BCC(int a, int b, int c);
-void fn_801D0C58(void *a);
-void fn_801D0F80(Mtx44 m);
+void MatMakeUnitMatrix(Mtx44 m);
+void MatPushUnit(void);
+void MatPop(void);
+void MatRotZYX(int a, int b, int c);
+void MatTranslate(void *a);
+void MatStore(Mtx44 m);
 
 extern unsigned char gParticles_bInit;
 }
@@ -241,18 +241,18 @@ void ParticlesSpawnAt(int a, float *pPos, float *pRot, ParticleSource_t *pSource
     if (pEntry == 0) {
         return;
     }
-    fn_801D03D0(m);
+    MatMakeUnitMatrix(m);
     m[2][3] = m[1][3] = m[0][3] = 0.0f;
-    fn_801D0508();
-    fn_801D0C58(pPos);
+    MatPushUnit();
+    MatTranslate(pPos);
     if (pRot != 0) {
         QuatEulerAngles_t v;
         QuatToEuler(&v, pRot);
 
-        fn_801D0BCC(v.mUnknown8, v.mUnknown4, v.mUnknown0);
+        MatRotZYX(v.mUnknown8, v.mUnknown4, v.mUnknown0);
     }
-    fn_801D0F80(pEntry->mMatrix);
-    fn_801D0544();
+    MatStore(pEntry->mMatrix);
+    MatPop();
     args.mUnknown0C = 0;
     args.mUnknown10 = 0;
     args.mUnknown04 = &pEntry->mMatrix;

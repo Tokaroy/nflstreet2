@@ -65,7 +65,7 @@ void GXSetClipMode(int);
 extern "C" void GXLoadTexObj(GXTexObj *, int);
 void GXGetProjectionv(float *);
 void GXSetProjection(Mtx44, int);
-void fn_801D03D0(Mtx44);
+void MatMakeUnitMatrix(Mtx44);
 void GXLoadPosMtxImm(Mtx44, int);
 void GXSetCurrentMtx(int);
 void *fn_801D2BB0(int, int, int, int);
@@ -345,7 +345,7 @@ void _ScreenTransSetupDraw(int textured, unsigned int value, float alpha) {
     GXGetProjectionv(_ScreenTrans_afSavedProjection[0]);
     C_MTXOrtho(projection, 0.0f, 448.0f, 0.0f, 640.0f, 1.0f, 2.0f);
     GXSetProjection(projection, 1);
-    fn_801D03D0(view);
+    MatMakeUnitMatrix(view);
     GXLoadPosMtxImm(view, 0);
     GXSetCurrentMtx(0);
 }

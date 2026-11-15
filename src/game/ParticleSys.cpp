@@ -85,10 +85,10 @@ void WeatherUpdate(float rate);
 void WeatherRender(void);
 void *fn_801C6B4C(void *pool, void *item);
 void *fn_801C6C84(void *pool, void *item);
-void fn_801D0508(void);
-void fn_801D0544(void);
-void fn_801D0664(Mtx44 m);
-void fn_801D0F80(Mtx44 m);
+void MatPushUnit(void);
+void MatPop(void);
+void MatCat(Mtx44 m);
+void MatStore(Mtx44 m);
 void *fn_801D2BB0(int a, int size, int c, int d);
 int ObjNewType_(int type, int size, int count, void *pCreate, void *pDestroy);
 int ObjDelType(int type);
@@ -388,12 +388,12 @@ PsysEmitter_t *ParticleSysSpawnEmitter(ParticleSpawnArgs_t *pArgs, int b, Partic
         if (pObject->mUnknown0F0 != 3) {
             pObject->mUnknown35A = 1;
         }
-        fn_801D0508();
+        MatPushUnit();
         if (pObject->mUnknown03C != 0) {
-            fn_801D0664(pObject->mUnknown35C);
+            MatCat(pObject->mUnknown35C);
         }
-        fn_801D0F80(pObject->mUnknown35C);
-        fn_801D0544();
+        MatStore(pObject->mUnknown35C);
+        MatPop();
         pObject->mUnknown03C = 1;
         PsysColExtClearAll(pObject);
     }

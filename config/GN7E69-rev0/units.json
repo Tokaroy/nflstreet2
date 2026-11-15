@@ -2516,6 +2516,37 @@
       ]
     },
     {
+      "source": "src/engine/llmatrix.c",
+      "profile": "engine_c",
+      "evidence": "evidence.tsv unit row 0x801D03D0-0x801D134C (src/engine/llmatrix.c), its compiler, function, name, data and source-form rows; all 38 functions exact (MatMulMatrices4x4 through a labeled fake-match form), promoted from comparison-only, with the .rodata 0x802AF5F8-0x802AF624, the .sdata word _Mat_pCurStack 0x803EBCC0 and the .bss _LLMatrix_SlotArray 0x803847C0-0x80384BC0.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x801D03D0",
+          "end": "0x801D134C"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802AF5F8",
+          "end": "0x802AF624"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EBCC0",
+          "end": "0x803EBCC4"
+        },
+        {
+          "section": ".bss",
+          "placement": ".bss",
+          "start": "0x803847C0",
+          "end": "0x80384BC0"
+        }
+      ]
+    },
+    {
       "source": "src/engine/MemExtern.c",
       "profile": "engine_c",
       "evidence": "evidence.tsv unit row 0x801D36E8-0x801D3BD0 (src/engine/MemExtern.c), its function, name, type, field and source-form rows and its two data rows; every function and data placement exact, promoted from comparison-only.",

@@ -67,7 +67,7 @@ void GXSetChanCtrl(int,int,int,int,int,int,int);
 void GXSetClipMode(int);
 void GXGetProjectionv(float *);
 void GXSetProjection(Mtx44,int);
-void fn_801D03D0(Mtx44);
+void MatMakeUnitMatrix(Mtx44);
 void GXLoadPosMtxImm(Mtx44,int);
 void GXSetCurrentMtx(int);
 void fn_801CE720(void);
@@ -230,7 +230,7 @@ void LoadingBeginDraw(int alpha)
     GXGetProjectionv(_Loading_MatOldProj[0]);
     C_MTXOrtho(projection,0.0f, 480.0f, 0.0f, 640.0f, 1.0f, 2.0f);
     GXSetProjection(projection,1);
-    fn_801D03D0(view);
+    MatMakeUnitMatrix(view);
     GXLoadPosMtxImm(view,0);
     GXSetCurrentMtx(0);
 }

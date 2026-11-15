@@ -545,9 +545,9 @@ void FileAsyncCheckError(void)
         fn_801CEA7C(1);
         fn_801CE908(0);
         fn_801CE2B8(0);
-        fn_801D0470(VptGetMatrixStack());
-        fn_801D0508();
-        fn_801D0D94(0.0014705883f, -0.002232143f, 1.0f);
+        MatSetStack(VptGetMatrixStack());
+        MatPushUnit();
+        MatScaleRow(0.0014705883f, -0.002232143f, 1.0f);
         do {
             if (status != -1) {
                 fn_801F8768();
@@ -565,7 +565,7 @@ void FileAsyncCheckError(void)
         pos.y = 0.0f;
         fn_801CDB5C(lbl_803ECEF8, "Loading...", 1, 0.0f, &pos.x);
         fn_801CE82C();
-        fn_801D0544();
+        MatPop();
         fn_801F7AD4(level);
         fn_801CE908(1);
         fn_801CE2B8(1);

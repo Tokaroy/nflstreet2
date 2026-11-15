@@ -41,7 +41,7 @@ const char *TexGetMaterialNameByIndex(TexFileHeader_t *pTex, unsigned short inde
 
 extern int lbl_803EBEBC;
 
-void fn_801D0F80(Mtx44 mtx);
+void MatStore(Mtx44 mtx);
 void MemFill(void *p, unsigned int size, int c, int d);
 
 Pool_801C750C *DSNewNodeHandler(int a, int count, int size, void *pMemory);

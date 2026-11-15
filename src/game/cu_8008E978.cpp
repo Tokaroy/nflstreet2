@@ -347,19 +347,19 @@ void CamGameProcess(void);
 void CamGameSetModeAll(int a);
 GameCamera_t *CamGameGetCamera(int index);
 void CamMainWarpToDest(GameCamera_t *pCamera);
-void fn_801D0508(void);
-void fn_801D0C58(void *p);
-void fn_801D0ADC(int a);
-void fn_801D08FC(int a);
-void fn_801D0CFC(float a);
-void fn_801D0F80(float m[4][4]);
-void fn_801D0544(void);
-void fn_801D04C4(void);
-void fn_801D058C(float pOut[4][4], float pA[4][4], float pB[4][4]);
-void fn_801D06D4(float m[4][4]);
-void fn_801D0664(float m[4][4]);
-void fn_801D0FB8(Vector_80039F5C *pOut);
-void fn_801D11F4(void *pOut, int a);
+void MatPushUnit(void);
+void MatTranslate(void *p);
+void MatRotZ(int a);
+void MatRotX(int a);
+void MatScale(float a);
+void MatStore(float m[4][4]);
+void MatPop(void);
+void MatPush(void);
+void MatMulMatrices(float pOut[4][4], float pA[4][4], float pB[4][4]);
+void MatLoad(float m[4][4]);
+void MatCat(float m[4][4]);
+void MatGetPos(Vector_80039F5C *pOut);
+void MatGetRotByOrder(void *pOut, int a);
 void fn_8009BE0C(float m[4][4], Vector_80039F5C *pPos, int angle, float scale);
 void fn_8009BFF8(Object_80039F5C *p, Vector_80039F5C *pOut, Quat_801EB488 *pRot, int joint);
 int fn_800ACF40(Object_80039F5C *p, signed char value);
@@ -391,8 +391,8 @@ void fn_800C8A98(Object_80039F5C *p);
 void fn_800C8AF0(Object_80039F5C *p);
 void fn_800AF9F4(Entry_800AF82C *p);
 void fn_8009CB0C(Object_80039F5C *p);
-void fn_801D0E44(float a);
-void fn_801D0E94(void);
+void MatScalePos(float a);
+void MatTranspose(void);
 void fn_80227C2C(Vector_80039F5C *pOut, Vector_80039F5C *pIn);
 
 extern int lbl_802D7C08[3];
@@ -1168,11 +1168,11 @@ extern "C" int fn_80093AF0(Object_80039F5C *p)
         return p->mMotion.mFacing;
     }
     pModel = (Object_8003DEC4 *)p->mpUnknown4;
-    fn_801D04C4();
-    fn_801D058C(matrix, pModel->mUnknown908, pModel->mUnknown44.mUnknown52[13]);
-    fn_801D06D4(matrix);
-    fn_801D0FB8(&offset);
-    fn_801D0544();
+    MatPush();
+    MatMulMatrices(matrix, pModel->mUnknown908, pModel->mUnknown44.mUnknown52[13]);
+    MatLoad(matrix);
+    MatGetPos(&offset);
+    MatPop();
     if (fn_801784C4() != 0) {
         offset.mX = -offset.mX;
         offset.mY = -offset.mY;
@@ -5266,13 +5266,13 @@ extern "C" void fn_8009BD88(Object_80039F5C *p, float scale)
 
 extern "C" void fn_8009BDA0(float m[4][4], Vector_80039F5C *pPos, int angle, float scale)
 {
-    fn_801D0508();
-    fn_801D0C58(pPos);
-    fn_801D0ADC(angle + 0x400000);
-    fn_801D08FC(0x400000);
-    fn_801D0CFC(scale);
-    fn_801D0F80(m);
-    fn_801D0544();
+    MatPushUnit();
+    MatTranslate(pPos);
+    MatRotZ(angle + 0x400000);
+    MatRotX(0x400000);
+    MatScale(scale);
+    MatStore(m);
+    MatPop();
 }
 
 extern "C" void fn_8009BEA8(Object_80039F5C *p)
@@ -5285,25 +5285,25 @@ extern "C" void fn_8009BEFC(Object_80039F5C *p, int joint, Vector_80039F5C *pOut
 {
     Block_80170E64 *pBlock = p->mpUnknown4;
 
-    fn_801D04C4();
-    fn_801D06D4(pBlock->mUnknown44.mUnknown52[joint]);
-    fn_801D0FB8(pOut);
-    fn_801D11F4(pAngles, 0);
-    fn_801D0544();
+    MatPush();
+    MatLoad(pBlock->mUnknown44.mUnknown52[joint]);
+    MatGetPos(pOut);
+    MatGetRotByOrder(pAngles, 0);
+    MatPop();
 }
 
 extern "C" void fn_8009BF5C(Object_80039F5C *p, int joint, Vector_80039F5C *pOut, void *pAngles)
 {
     Block_80170E64 *pBlock = p->mpUnknown4;
 
-    fn_801D04C4();
-    fn_801D06D4(p->mUnknown640);
-    fn_801D0664(pBlock->mUnknown44.mUnknown52[joint]);
-    fn_801D0FB8(pOut);
+    MatPush();
+    MatLoad(p->mUnknown640);
+    MatCat(pBlock->mUnknown44.mUnknown52[joint]);
+    MatGetPos(pOut);
     if (pAngles != 0) {
-        fn_801D11F4(pAngles, 0);
+        MatGetRotByOrder(pAngles, 0);
     }
-    fn_801D0544();
+    MatPop();
 }
 
 extern "C" void fn_8009BFD0(Object_80039F5C *p, Vector_80039F5C *pOut, Quat_801EB488 *pRot)
@@ -5496,10 +5496,10 @@ extern "C" unsigned char fn_8009C88C(Object_80039F5C *p, Block_8009C6F4 *pBlock)
         Entry_8009C684 *pEntry = &pBlock->mEntries[index];
 
         pEntry->mpCallback0(p, &pEntry->mUnknown4, pEntry->mUnknown10);
-        fn_801D04C4();
-        fn_801D06D4(p->mUnknown704);
+        MatPush();
+        MatLoad(p->mUnknown704);
         fn_80227CC0(&pEntry->mUnknown4, &pEntry->mUnknown4);
-        fn_801D0544();
+        MatPop();
         if (fn_8009C7B4(&pEntry->mUnknown4) == 1) {
             fn_8009CE88(p, pBlock, 6);
         }
@@ -5524,15 +5524,15 @@ extern "C" void fn_8009C9D0(Object_80039F5C *p, Vector_80039F5C *pTarget, int bo
     short rot;
     int angle;
 
-    fn_801D04C4();
-    fn_801D0C58(&pObject->mUnknown100->mUnknown8[8 + bone * 16]);
-    fn_801D0E44(pObject->mUnknown24);
-    fn_801D0F80(m);
-    fn_801D0FB8(&pos);
+    MatPush();
+    MatTranslate(&pObject->mUnknown100->mUnknown8[8 + bone * 16]);
+    MatScalePos(pObject->mUnknown24);
+    MatStore(m);
+    MatGetPos(&pos);
     fn_802276B4(&dir, pTarget, &pos);
-    fn_801D0E94();
+    MatTranspose();
     fn_80227C2C(&dir, &dir);
-    fn_801D0544();
+    MatPop();
     angle = -fn_801CFE40(dir.mZ, dir.mX) + 0x400000;
     if (angle > lbl_803EA9A0) {
         angle = lbl_803EA9A0;
@@ -5565,14 +5565,14 @@ extern "C" void fn_8009CB0C(Object_80039F5C *p)
         if (pBlock->mUnknown0 == 2) {
             Vector_80039F5C *pTarget = &pBlock->mEntries[pBlock->mUnknown4].mUnknown4;
 
-            fn_801D04C4();
-            fn_801D06D4(pObject->mUnknown44.mUnknown52[13]);
+            MatPush();
+            MatLoad(pObject->mUnknown44.mUnknown52[13]);
             if (pBlock->mUnknown8 < 6) {
                 pBlock->mUnknown8++;
             }
             fn_8009C9D0(p, pTarget, 29);
             fn_8009C9D0(p, pTarget, 28);
-            fn_801D0544();
+            MatPop();
         } else {
             short *pRot29 = &pObject->mUnknown44.mUnknown48[29 * 3];
             short *pRot28;
@@ -5588,10 +5588,10 @@ extern "C" void fn_8009CBD8(Object_80039F5C *p, Vector_80039F5C *pOut)
 {
     Object_8003DEC4 *pObject = (Object_8003DEC4 *)p->mpUnknown4;
 
-    fn_801D04C4();
-    fn_801D06D4(pObject->mUnknown44.mUnknown52[13]);
+    MatPush();
+    MatLoad(pObject->mUnknown44.mUnknown52[13]);
     fn_80227CC0(pOut, &lbl_802D7C20);
-    fn_801D0544();
+    MatPop();
 }
 
 extern "C" void fn_8009CC28(Object_80039F5C *p)

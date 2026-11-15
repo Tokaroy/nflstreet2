@@ -1308,9 +1308,9 @@ extern void *lbl_803EA368;
 void QuatFromEuler(Quat_801EB488 *, int, int, int);
 void QuatFromEulerYZX(Quat_801EB488 *, int, int, int);
 void QuatMultiply(Quat_801EB488 *, Quat_801EB488 *, void *);
-void fn_801D0508(void); void fn_801D0544(void);
-void fn_801D0860(void *); void fn_801D0C58(void *);
-void fn_801D0470(int); void fn_801D04C4(void); void fn_801D08FC(int);
+void MatPushUnit(void); void MatPop(void);
+void MatRotQuat(void *); void MatTranslate(void *);
+void MatSetStack(int); void MatPush(void); void MatRotX(int);
 void fn_80227C2C(void *, void *);
 void fn_8022765C(void *, void *, void *);
 void fn_802276B4(void *, void *, void *);
@@ -1378,11 +1378,11 @@ void fn_8004CBEC(void *pData, float time, BigObjInst *pObject, BigObj_t *pOwner)
                 QuatFromEuler(&rotation, (int)(p->mUnknown24[2] * 46603.3789f),
                             (int)(p->mUnknown24[1] * 46603.3789f), (int)(p->mUnknown24[0] * 46603.3789f));
                 QuatMultiply(&rotation, &rotation, &pObject->mUnknown96);
-                fn_801D0508();
-                fn_801D0860(&rotation);
+                MatPushUnit();
+                MatRotQuat(&rotation);
                 Vector_80039F5C offset;
                 fn_80227C2C(&offset, p->mUnknown12);
-                fn_801D0544();
+                MatPop();
                 position.mX = pObject->mUnknown8;
                 position.mY = pObject->mUnknown12;
                 position.mZ = pObject->mUnknown16;
@@ -1582,10 +1582,10 @@ int fn_8004D874(DynObj *p, int mode)
         if (pPose->mUnknown224 == 1) DynObjScrollUVs(p, &pPose->mUnknown224);
         int index = VptGetMatrixStack();
         Object_80235588 *pRender = &pInstance->mRender;
-        fn_801D0470(index); fn_801D04C4();
-        fn_801D0C58(&p->mUnknown4); fn_801D0860(&p->mUnknown18); fn_801D08FC(0x400000);
+        MatSetStack(index); MatPush();
+        MatTranslate(&p->mUnknown4); MatRotQuat(&p->mUnknown18); MatRotX(0x400000);
         fn_80235C90(pRender, context, 0.5f, 0.5f, 0.5f, 0.51f);
-        fn_80235740(pRender, context); fn_801D0544(); fn_80235764(pRender, context);
+        fn_80235740(pRender, context); MatPop(); fn_80235764(pRender, context);
     }
     if (p->mUnknownE8.mWord & 2) DynObjDrawEnvMap(p, mode);
     return 0;
@@ -2596,8 +2596,8 @@ void fn_80050F14(void)
 {
     int renderState = VptGetMatrixStack();
     unsigned int index = 0;
-    fn_801D0470(renderState);
-    fn_801D0508();
+    MatSetStack(renderState);
+    MatPushUnit();
     Collision_pDebugLineProc = fn_80050960;
     void *cursor = fn_801E2C3C(lbl_803EA514);
     RigidBody *pBody;
@@ -2639,7 +2639,7 @@ void fn_80050F14(void)
         } else if (pBody->mKind == 2) fn_801E7208(pShapes, pBody->mTransform, 250, 250, 250);
         else fn_801E7208(pShapes, pBody->mTransform, 250, 150, 150);
     }
-    fn_801D0544();
+    MatPop();
 }
 
 void fn_80051B88(Point_8017886C *pCenter, float radius)

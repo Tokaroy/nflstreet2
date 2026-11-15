@@ -276,7 +276,7 @@ void fn_8023570C(Object_80235588 *p, const char *pName)
 
 void fn_80235740(Object_80235588 *p, int handle)
 {
-    fn_801D0F80(p->mUnknown8[0]);
+    MatStore(p->mUnknown8[0]);
 }
 
 void fn_80235764(Object_80235588 *p, int handle)
@@ -504,7 +504,7 @@ Light_802362C4 *fn_802362C4(Scene_8023609C *pScene, int index)
 void fn_802362D4(Viewport_t *pObject)
 {
     if (lbl_803A2868.mpUnknown0 != 0) {
-        fn_801D0470(VptGetMatrixStack());
+        MatSetStack(VptGetMatrixStack());
         fn_8023609C(lbl_803A2868.mpUnknown0);
         fn_80236258(lbl_803A2868.mpUnknown0, lbl_803A2868.mUnknown276);
         fn_80236164(lbl_803A2868.mpUnknown0, lbl_803A2868.mUnknown4, lbl_803A2868.mUnknown260);
@@ -549,18 +549,18 @@ void fn_80236408(int index, float *pOut)
     float v[3];
     float w[3];
 
-    fn_801D0470(0);
+    MatSetStack(0);
     v[0] = 0.0f;
     v[1] = 0.0f;
     v[2] = 1.0f;
-    fn_801D04C4();
-    fn_801D06D4((float *)pLight);
+    MatPush();
+    MatLoad((float *)pLight);
     fn_80227C2C(w, v);
     pOut[0] = v[0] - w[0];
     pOut[1] = v[1] - w[1];
     pOut[2] = v[2] - w[2];
     fn_802271F0(pOut, pOut);
-    fn_801D0544();
+    MatPop();
 }
 
 GXColor fn_802364B4(float *pColor)

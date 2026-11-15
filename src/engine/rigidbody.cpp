@@ -124,7 +124,7 @@ void UpdateBodyDerivedState(RigidBody *pBody)
     pBody->mTransform[1][3] = 0.0f;
     pBody->mTransform[2][3] = 0.0f;
     fn_80227264(&pBody->mLinearVelocity, &pBody->mLinearMomentum, pBody->mInvMass);
-    fn_801D04C4();
+    MatPush();
     transpose[0][0] = pBody->mTransform[0][0];
     transpose[0][1] = pBody->mTransform[1][0];
     transpose[0][2] = pBody->mTransform[2][0];
@@ -141,12 +141,12 @@ void UpdateBodyDerivedState(RigidBody *pBody)
     transpose[3][1] = pBody->mTransform[1][3];
     transpose[3][2] = pBody->mTransform[2][3];
     transpose[3][3] = pBody->mTransform[3][3];
-    fn_801D06D4(&pBody->mTransform[0][0]);
-    fn_801D0664(&pBody->mInvInertia[0][0]);
-    fn_801D0664(&transpose[0][0]);
-    fn_801D0F80(&pBody->mWorldInvInertia[0][0]);
+    MatLoad(&pBody->mTransform[0][0]);
+    MatCat(&pBody->mInvInertia[0][0]);
+    MatCat(&transpose[0][0]);
+    MatStore(&pBody->mWorldInvInertia[0][0]);
     fn_80227C2C(&pBody->mAngularVelocity, &pBody->mAngularMomentum);
-    fn_801D0544();
+    MatPop();
     pBody->mTransform[0][3] = pBody->mPosition.x;
     pBody->mTransform[1][3] = pBody->mPosition.y;
     pBody->mTransform[2][3] = pBody->mPosition.z;
@@ -287,10 +287,10 @@ float ComputeBodyRotationalResponse(RigidBody *pBody, Vec3_801DE1E0 *pPoint, Vec
         Vec3_801DE1E0 response;
         fn_802276B4(&offset, pPoint, &pBody->mPosition);
         fn_802277DC(&response, &offset, pDirection);
-        fn_801D04C4();
-        fn_801D06D4(&pBody->mWorldInvInertia[0][0]);
+        MatPush();
+        MatLoad(&pBody->mWorldInvInertia[0][0]);
         fn_80227C2C(&response, &response);
-        fn_801D0544();
+        MatPop();
         fn_802277DC(&response, &response, &offset);
         rotationalResponse = fn_80227704(pDirection, &response);
     } else {

@@ -44,12 +44,12 @@ void PointConstraint::Solve()
     float invMassB;
     float dotA;
 
-    fn_801D04C4();
+    MatPush();
     pMatrixA = mpBodyA->mTransform[0];
     pMatrixB = mpBodyB->mTransform[0];
-    fn_801D06D4(pMatrixA);
+    MatLoad(pMatrixA);
     fn_80227CC0(&pointA, &mAnchorA);
-    fn_801D06D4(pMatrixB);
+    MatLoad(pMatrixB);
     fn_80227CC0(&pointB, &mAnchorB);
     GetBodyPointVelocity(mpBodyA, &pointA, &velA);
     GetBodyPointVelocity(mpBodyB, &pointB, &velB);
@@ -66,9 +66,9 @@ void PointConstraint::Solve()
         pInertiaB = mpBodyB->mWorldInvInertia[0];
         fn_802277DC(&crossA, &armA, &normal);
         fn_802277DC(&crossB, &armB, &normal);
-        fn_801D06D4(pInertiaA);
+        MatLoad(pInertiaA);
         fn_80227C2C(&turnA, &crossA);
-        fn_801D06D4(pInertiaB);
+        MatLoad(pInertiaB);
         fn_80227C2C(&turnB, &crossB);
         fn_802277DC(&crossA, &turnA, &armA);
         fn_802277DC(&crossB, &turnB, &armB);
@@ -84,5 +84,5 @@ void PointConstraint::Solve()
         UpdateBodyDerivedState(mpBodyA);
         UpdateBodyDerivedState(mpBodyB);
     }
-    fn_801D0544();
+    MatPop();
 }

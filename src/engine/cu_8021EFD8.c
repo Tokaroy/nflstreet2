@@ -168,7 +168,7 @@ void fn_8021F984(Node_80223874 *pNode, Int32 Item)
         lbl_803ECFF8 = Mode;
     }
     GXSetCullMode((Flags & 4) ? GX_CULL_BACK : GX_CULL_NONE);
-    GXLoadPosMtxImm((f32 (*)[4])fn_801D0444(), GX_PNMTX0);
+    GXLoadPosMtxImm((f32 (*)[4])MatGetCurMatrixPtr(), GX_PNMTX0);
     GXSetCurrentMtx(GX_PNMTX0);
     if (pNode->Flags & 2) {
         lbl_802F9FA0[0][0] = ((UIGTexNode_t *)Item)->unk_30;
@@ -356,28 +356,28 @@ void fn_80221198(void *p)
     Transform_80221198 *pXf = p;
     float aNeg[3];
 
-    fn_801D0470(VptGetMatrixStack());
-    fn_801D04C4();
-    fn_801D0C58(pXf->mPosition);
-    fn_801D0C58(pXf->mPivot);
+    MatSetStack(VptGetMatrixStack());
+    MatPush();
+    MatTranslate(pXf->mPosition);
+    MatTranslate(pXf->mPivot);
     if (fn_80221154(pXf->mRotation) != 0) {
-        fn_801D08FC((int)(pXf->mRotation[0] * 46603.38f));
-        fn_801D09EC((int)(pXf->mRotation[1] * 46603.38f));
-        fn_801D0ADC((int)(pXf->mRotation[2] * 46603.38f));
+        MatRotX((int)(pXf->mRotation[0] * 46603.38f));
+        MatRotY((int)(pXf->mRotation[1] * 46603.38f));
+        MatRotZ((int)(pXf->mRotation[2] * 46603.38f));
     }
-    fn_801D0D94(pXf->mScale[0], pXf->mScale[1], pXf->mScale[2]);
+    MatScaleRow(pXf->mScale[0], pXf->mScale[1], pXf->mScale[2]);
     aNeg[0] = -pXf->mPivot[0];
     aNeg[1] = -pXf->mPivot[1];
     aNeg[2] = -pXf->mPivot[2];
-    fn_801D0C58(aNeg);
+    MatTranslate(aNeg);
     fn_80220DA4(pXf->mMultiply, pXf->mScaleColor);
     fn_80220CFC(0);
 }
 
 void fn_80221294(void *p)
 {
-    fn_801D0470(VptGetMatrixStack());
-    fn_801D0544();
+    MatSetStack(VptGetMatrixStack());
+    MatPop();
     fn_80221118();
     fn_80220CFC(0);
 }

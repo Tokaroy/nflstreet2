@@ -236,8 +236,8 @@ void VptRemoveCallback(Viewport_t *pObject, VptCallbackFuncT fn)
 void VptUpdateCamera(Viewport_t *pObject)
 {
     if (pObject->mUnknown60) {
-        fn_801D0470(_Vpt_MatrixStackIndex);
-        fn_801D0494();
+        MatSetStack(_Vpt_MatrixStackIndex);
+        MatResetStack();
         pObject->mUnknown60(pObject, pObject->mUnknown64);
         pObject->mUnknown68 = 1;
         VptSaveMatrix(pObject);
@@ -295,8 +295,8 @@ int VptGetMatrixStack(void)
 
 void VptSaveMatrix(Viewport_t *pObject)
 {
-    fn_801D0470(_Vpt_MatrixStackIndex);
-    fn_801D0F80(pObject->mUnknown76[0]);
+    MatSetStack(_Vpt_MatrixStackIndex);
+    MatStore(pObject->mUnknown76[0]);
 }
 
 void VptSetCamera(Viewport_t *pObject, VptCameraFuncT fn, void *arg)
