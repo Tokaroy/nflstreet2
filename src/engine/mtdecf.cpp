@@ -6,7 +6,6 @@
 
 extern "C" {
 
-void fn_8027C474(Codec_8027CF9C *p, int offset, int count);
 
 typedef struct MtCommand_t {
     int m0;
@@ -147,6 +146,55 @@ void fn_8027C380(float *rc, float *lpc)
     }
 }
 
+void fn_8027C474(Codec_8027CF9C *p, int offset, int count)
+{
+    float lpc[12];
+    float *out;
+    int i;
+
+    out = &p->m684[offset];
+    fn_8027C380(p->m114, lpc);
+    for (i = 0; i < count; i++) {
+        out[0] = p->m144[11] = out[0] + lpc[0] * p->m144[0] + lpc[1] * p->m144[1] + lpc[2] * p->m144[2] + lpc[3] * p->m144[3]
+            + lpc[4] * p->m144[4] + lpc[5] * p->m144[5] + lpc[6] * p->m144[6] + lpc[7] * p->m144[7]
+            + lpc[8] * p->m144[8] + lpc[9] * p->m144[9] + lpc[10] * p->m144[10] + lpc[11] * p->m144[11];
+        out[1] = p->m144[10] = out[1] + lpc[0] * p->m144[11] + lpc[1] * p->m144[0] + lpc[2] * p->m144[1] + lpc[3] * p->m144[2]
+            + lpc[4] * p->m144[3] + lpc[5] * p->m144[4] + lpc[6] * p->m144[5] + lpc[7] * p->m144[6]
+            + lpc[8] * p->m144[7] + lpc[9] * p->m144[8] + lpc[10] * p->m144[9] + lpc[11] * p->m144[10];
+        out[2] = p->m144[9] = out[2] + lpc[0] * p->m144[10] + lpc[1] * p->m144[11] + lpc[2] * p->m144[0] + lpc[3] * p->m144[1]
+            + lpc[4] * p->m144[2] + lpc[5] * p->m144[3] + lpc[6] * p->m144[4] + lpc[7] * p->m144[5]
+            + lpc[8] * p->m144[6] + lpc[9] * p->m144[7] + lpc[10] * p->m144[8] + lpc[11] * p->m144[9];
+        out[3] = p->m144[8] = out[3] + lpc[0] * p->m144[9] + lpc[1] * p->m144[10] + lpc[2] * p->m144[11] + lpc[3] * p->m144[0]
+            + lpc[4] * p->m144[1] + lpc[5] * p->m144[2] + lpc[6] * p->m144[3] + lpc[7] * p->m144[4]
+            + lpc[8] * p->m144[5] + lpc[9] * p->m144[6] + lpc[10] * p->m144[7] + lpc[11] * p->m144[8];
+        out[4] = p->m144[7] = out[4] + lpc[0] * p->m144[8] + lpc[1] * p->m144[9] + lpc[2] * p->m144[10] + lpc[3] * p->m144[11]
+            + lpc[4] * p->m144[0] + lpc[5] * p->m144[1] + lpc[6] * p->m144[2] + lpc[7] * p->m144[3]
+            + lpc[8] * p->m144[4] + lpc[9] * p->m144[5] + lpc[10] * p->m144[6] + lpc[11] * p->m144[7];
+        out[5] = p->m144[6] = out[5] + lpc[0] * p->m144[7] + lpc[1] * p->m144[8] + lpc[2] * p->m144[9] + lpc[3] * p->m144[10]
+            + lpc[4] * p->m144[11] + lpc[5] * p->m144[0] + lpc[6] * p->m144[1] + lpc[7] * p->m144[2]
+            + lpc[8] * p->m144[3] + lpc[9] * p->m144[4] + lpc[10] * p->m144[5] + lpc[11] * p->m144[6];
+        out[6] = p->m144[5] = out[6] + lpc[0] * p->m144[6] + lpc[1] * p->m144[7] + lpc[2] * p->m144[8] + lpc[3] * p->m144[9]
+            + lpc[4] * p->m144[10] + lpc[5] * p->m144[11] + lpc[6] * p->m144[0] + lpc[7] * p->m144[1]
+            + lpc[8] * p->m144[2] + lpc[9] * p->m144[3] + lpc[10] * p->m144[4] + lpc[11] * p->m144[5];
+        out[7] = p->m144[4] = out[7] + lpc[0] * p->m144[5] + lpc[1] * p->m144[6] + lpc[2] * p->m144[7] + lpc[3] * p->m144[8]
+            + lpc[4] * p->m144[9] + lpc[5] * p->m144[10] + lpc[6] * p->m144[11] + lpc[7] * p->m144[0]
+            + lpc[8] * p->m144[1] + lpc[9] * p->m144[2] + lpc[10] * p->m144[3] + lpc[11] * p->m144[4];
+        out[8] = p->m144[3] = out[8] + lpc[0] * p->m144[4] + lpc[1] * p->m144[5] + lpc[2] * p->m144[6] + lpc[3] * p->m144[7]
+            + lpc[4] * p->m144[8] + lpc[5] * p->m144[9] + lpc[6] * p->m144[10] + lpc[7] * p->m144[11]
+            + lpc[8] * p->m144[0] + lpc[9] * p->m144[1] + lpc[10] * p->m144[2] + lpc[11] * p->m144[3];
+        out[9] = p->m144[2] = out[9] + lpc[0] * p->m144[3] + lpc[1] * p->m144[4] + lpc[2] * p->m144[5] + lpc[3] * p->m144[6]
+            + lpc[4] * p->m144[7] + lpc[5] * p->m144[8] + lpc[6] * p->m144[9] + lpc[7] * p->m144[10]
+            + lpc[8] * p->m144[11] + lpc[9] * p->m144[0] + lpc[10] * p->m144[1] + lpc[11] * p->m144[2];
+        out[10] = p->m144[1] = out[10] + lpc[0] * p->m144[2] + lpc[1] * p->m144[3] + lpc[2] * p->m144[4] + lpc[3] * p->m144[5]
+            + lpc[4] * p->m144[6] + lpc[5] * p->m144[7] + lpc[6] * p->m144[8] + lpc[7] * p->m144[9]
+            + lpc[8] * p->m144[10] + lpc[9] * p->m144[11] + lpc[10] * p->m144[0] + lpc[11] * p->m144[1];
+        out[11] = p->m144[0] = out[11] + lpc[0] * p->m144[1] + lpc[1] * p->m144[2] + lpc[2] * p->m144[3] + lpc[3] * p->m144[4]
+            + lpc[4] * p->m144[5] + lpc[5] * p->m144[6] + lpc[6] * p->m144[7] + lpc[7] * p->m144[8]
+            + lpc[8] * p->m144[9] + lpc[9] * p->m144[10] + lpc[10] * p->m144[11] + lpc[11] * p->m144[0];
+        out += 12;
+    }
+}
+
 void fn_8027CA34(Codec_8027CF9C *unused, unsigned char *data, Codec_8027CF9C *p, int flag)
 {
     // FAKEMATCH: unused stack object; reproduces the target frame (0x28, conversion slot at 0x10)
@@ -187,8 +235,8 @@ void fn_8027CBA4(Codec_8027CF9C *p)
     int lag;
     int align;
     int zero;
-    float pitchGain;
     float fixedGain;
+    float pitchGain;
 
     idx = fn_8027C078((Bits_8027C078 *)p, 6);
     multipulse = idx < p->m10;
@@ -211,7 +259,7 @@ void fn_8027CBA4(Codec_8027CF9C *p)
             fn_8027C120((Bits_8027C078 *)p, multipulse, &excitation[5 + align], 2);
             if (zero != 0) {
                 for (j = 0; j < 108; j += 2) {
-                    excitation[6 - align + j] = 0.0f;
+                    excitation[j - (align - 6)] = 0.0f;
                 }
             } else {
                 for (j = 0; j < 5; j++) {
@@ -220,7 +268,7 @@ void fn_8027CBA4(Codec_8027CF9C *p)
                 for (j = 113; j < 118; j++) {
                     excitation[j] = 0.0f;
                 }
-                fn_8027C318(&excitation[6 - align]);
+                fn_8027C318(excitation - (align - 6));
                 fixedGain *= 0.5f;
             }
         }
