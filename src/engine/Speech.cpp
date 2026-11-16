@@ -74,9 +74,9 @@ static unsigned char bVerboseLogging;
 extern "C" {
 extern int (*gSPCH_AddEvent)(int, int, ...);
 
-int fn_801AEC58(int id, int count, ...);
-int fn_801AF578(int a, int b, int mode);
-void fn_801AF4A0(EA::Allocator::TiburonIAllocatorImpl *pAllocator);
+int SPCH_AddEventV(int id, int count, ...);
+int SPCH_GetSampleDataRate(int a, int b, int mode);
+void SPCH_SetAllocator(EA::Allocator::TiburonIAllocatorImpl *pAllocator);
 int SPCH_Init(int a, int b, int c);
 int SPCH_GetBankPtrMemSize(int numBanks);
 void SPCH_InitBankMem(int numBanks, void *pMem);
@@ -152,7 +152,7 @@ static int fn_801F58B8(int id, int numArgs, ...)
         argv[i] = (i < numArgs) ? va_arg(args, unsigned int) : 0;
     }
     if (_Spch_pPassFunction((unsigned int)id >> 16)) {
-        result = fn_801AEC58(id, numArgs, argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6],
+        result = SPCH_AddEventV(id, numArgs, argv[0], argv[1], argv[2], argv[3], argv[4], argv[5], argv[6],
                              argv[7], argv[8], argv[9], argv[10], argv[11], argv[12], argv[13], argv[14],
                              argv[15], argv[16], argv[17], argv[18], argv[19], argv[20], argv[21], argv[22],
                              argv[23], argv[24], argv[25], argv[26], argv[27], argv[28], argv[29], argv[30],
@@ -167,9 +167,9 @@ void SpchInit(SpchInitParams_t *pParams)
     int dataSize;
     void *pBankMem;
 
-    dataSize = fn_801AF578(pParams->mUnknown8, pParams->mUnknownC, pParams->mUnknown10);
+    dataSize = SPCH_GetSampleDataRate(pParams->mUnknown8, pParams->mUnknownC, pParams->mUnknown10);
     pIAllocator = new EA::Allocator::TiburonIAllocatorImpl(1);
-    fn_801AF4A0(pIAllocator);
+    SPCH_SetAllocator(pIAllocator);
     SPCH_Init(pParams->mUnknown0, pParams->mUnknown4, dataSize);
     pBankMem = fn_801D2B7C(SPCH_GetBankPtrMemSize(pParams->mUnknown14), 0, 0);
     SPCH_InitBankMem(pParams->mUnknown14, pBankMem);
