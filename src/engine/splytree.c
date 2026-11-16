@@ -294,12 +294,12 @@ static int fn_801C7EDC(SplayTree_801C7684 *pTree)
 
 void fn_801C7EE4(void)
 {
-    fn_801C67AC(2, (void (*)(List_801C68FC *))fn_801C7A34, (int (*)(List_801C68FC *))fn_801C7A60,
-                (void (*)(Node_801C6A20 *, int))fn_801C7C1C,
-                (Node_801C6A20 * (*)(List_801C68FC *, Node_801C6A20 *, int)) fn_801C7A98,
-                (Node_801C6A20 * (*)(List_801C68FC *, Node_801C6A20 *, int)) fn_801C7C44,
-                (void (*)(List_801C68FC *, Node_801C6A20 *))fn_801C7D1C,
-                (int (*)(List_801C68FC *, Node_801C6A20 *, void *, void *, ListVisitFn_801C6D34, int))fn_801C7E00,
-                (int (*)(List_801C68FC *, Node_801C6A20 *, void *, void *, ListSearchFn_801C6DCC))fn_801C7E30,
-                (void (*)(List_801C68FC *))fn_801C7EDC, sizeof(SplayTree_801C7684), sizeof(SplayNode_801C7684));
+    DSAddListType(2, (void (*)(DSList_t *))fn_801C7A34, (int (*)(DSList_t *))fn_801C7A60,
+                (void (*)(DSListNode_t *, int))fn_801C7C1C,
+                (DSListNode_t * (*)(DSList_t *, DSListNode_t *, int)) fn_801C7A98,
+                (DSListNode_t * (*)(DSList_t *, DSListNode_t *, int)) fn_801C7C44,
+                (void (*)(DSList_t *, DSListNode_t *))fn_801C7D1C,
+                (int (*)(DSList_t *, DSListNode_t *, void *, void *, DSListVisitFn_t, int))fn_801C7E00,
+                (int (*)(DSList_t *, DSListNode_t *, void *, void *, DSListSearchFn_t))fn_801C7E30,
+                (void (*)(DSList_t *))fn_801C7EDC, sizeof(SplayTree_801C7684), sizeof(SplayNode_801C7684));
 }

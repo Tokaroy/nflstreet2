@@ -21,7 +21,7 @@ typedef struct FileFontPos_t {
     float y;
     float z;
 } FileFontPos_t;
-#include "game/fn_801C68FC.h"
+#include "engine/dslist.h"
 #include "engine/fn_801F7BD4.h"
 #include "engine/fn_801F8014.h"
 #include "game/fn_801D2B7C.h"
@@ -210,7 +210,7 @@ static int _FileStartIO(int devType)
     FileAsyncRequest_t *pAsync;
 
     fn_801F8014(&File_AsyncRequestListCS);
-    for (pAsync = fn_801C6B4C(File_pAsyncRequestList, 0); pAsync; pAsync = fn_801C6C84(File_pAsyncRequestList, pAsync)) {
+    for (pAsync = DSGetListNode(File_pAsyncRequestList, 0); pAsync; pAsync = DSNextListNode(File_pAsyncRequestList, pAsync)) {
         if (File_StreamInfo[pAsync->mHandle].mDevType == devType && pAsync->mState == 0) {
             found = 1;
             break;
@@ -236,12 +236,12 @@ void _FileProcessRequestFinish(FileAsyncRequest_t *pAsync)
     if (done) {
         pAsync->mState = 2;
         pAsync->mpReq->mpAsync = 0;
-        fn_801C6C0C(File_pAsyncRequestList, pAsync);
+        DSDelListNode(File_pAsyncRequestList, pAsync);
     } else {
         pAsync->mState = done;
     }
     busy = 0;
-    for (pAsync = fn_801C6B4C(File_pAsyncRequestList, 0); pAsync; pAsync = fn_801C6C84(File_pAsyncRequestList, pAsync)) {
+    for (pAsync = DSGetListNode(File_pAsyncRequestList, 0); pAsync; pAsync = DSNextListNode(File_pAsyncRequestList, pAsync)) {
         if (pAsync->mState == 1) {
             busy = 1;
         }
@@ -406,8 +406,8 @@ int FileQueueAsyncRequest(FileAsyncRequest_t *pAsync)
 
     fn_801F8014(&File_AsyncRequestListCS);
     fn_801F8014(&File_AsyncThreadActiveCS);
-    fn_801C6AA4(File_pAsyncRequestList, pAsync, 0);
-    for (pNode = fn_801C6B4C(File_pAsyncRequestList, 0); pNode; pNode = fn_801C6C84(File_pAsyncRequestList, pNode)) {
+    DSAddListNode(File_pAsyncRequestList, pAsync, 0);
+    for (pNode = DSGetListNode(File_pAsyncRequestList, 0); pNode; pNode = DSNextListNode(File_pAsyncRequestList, pNode)) {
         if (pNode->mState == 1) {
             busy = 1;
             break;
@@ -436,8 +436,8 @@ void FileAsyncWaitStream(int handle)
         busy = 0;
         FileAsyncCheckError();
         fn_801F8014(&File_AsyncRequestListCS);
-        for (pAsync = fn_801C6B4C(File_pAsyncRequestList, 0); pAsync; pAsync = pNext) {
-            pNext = fn_801C6C84(File_pAsyncRequestList, pAsync);
+        for (pAsync = DSGetListNode(File_pAsyncRequestList, 0); pAsync; pAsync = pNext) {
+            pNext = DSNextListNode(File_pAsyncRequestList, pAsync);
             if (pAsync->mHandle == handle && pAsync->mState != 2) {
                 busy = 1;
                 break;
@@ -589,7 +589,7 @@ void FileDebugProcess(void)
     FileAsyncRequest_t *pAsync;
 
     fn_801F8014(&File_AsyncRequestListCS);
-    for (pAsync = fn_801C6B4C(File_pAsyncRequestList, 0); pAsync; pAsync = fn_801C6C84(File_pAsyncRequestList, pAsync)) {
+    for (pAsync = DSGetListNode(File_pAsyncRequestList, 0); pAsync; pAsync = DSNextListNode(File_pAsyncRequestList, pAsync)) {
         if (pAsync->mState == 1) {
             if (File_StreamInfo[pAsync->mHandle].mDevType == 4) {
                 _FileProcessRequestFinish(pAsync);

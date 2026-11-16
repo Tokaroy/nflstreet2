@@ -8,7 +8,7 @@
 #include "engine/viewport.h"
 #include "engine/list.h"
 #include "engine/llmatrix.h"
-#include "game/fn_801C68FC.h"
+#include "engine/dslist.h"
 
 typedef struct VptCallback_t {
     int mUnknown0;
@@ -54,7 +54,7 @@ static int _VptTraverseRemoveCallback(void *pItem, void *pContext, void *pArg)
 
     if (pMatch->mUnknown0 == pEntry->mUnknown12) {
         if (pMatch->mUnknown4 == 0 || pMatch->mUnknown4 == pEntry->mUnknown8) {
-            fn_801C6C0C(_Vpt_CallbackList, pEntry);
+            DSDelListNode(_Vpt_CallbackList, pEntry);
             return 0;
         }
     }
@@ -78,7 +78,7 @@ static void _VptCallCallbacks(Viewport_t *pObject, int event)
 
     match.mUnknown0 = pObject;
     match.mUnknown8 = event;
-    fn_801C6D34(_Vpt_CallbackList, 0, &match, 0, _VptTraverseCallCallback, 1);
+    DSTraverseList(_Vpt_CallbackList, 0, &match, 0, _VptTraverseCallCallback, 1);
 }
 
 static int _VptInsertByPriorityViewport(void *a, void *b)
@@ -111,8 +111,8 @@ int VptInit(VptInitBlock_t *pInit)
     int err;
 
     if (!_Vpt_ModuleActive) {
-        if ((_Vpt_ViewportList = fn_801C68FC(1, 0, pInit->mUnknown0, sizeof(Viewport_t), _VptInsertByPriorityViewport, 0)) != 0
-            && (_Vpt_CallbackList = fn_801C68FC(1, 0, pInit->mUnknown4, sizeof(VptCallback_t), _VptInsertByPriorityCallback, 0)) != 0) {
+        if ((_Vpt_ViewportList = DSNewList(1, 0, pInit->mUnknown0, sizeof(Viewport_t), _VptInsertByPriorityViewport, 0)) != 0
+            && (_Vpt_CallbackList = DSNewList(1, 0, pInit->mUnknown4, sizeof(VptCallback_t), _VptInsertByPriorityCallback, 0)) != 0) {
             _Vpt_MatrixStackIndex = pInit->mUnknown10;
             err = MatNewStack(pInit->mUnknown10, pInit->mUnknown11);
             if (err == 0) {
@@ -137,11 +137,11 @@ int VptShutdown(void)
     if (_Vpt_ModuleActive) {
         VptFlushObjectTrashSync();
         if (_Vpt_ViewportList) {
-            fn_801C69E4(_Vpt_ViewportList);
+            DSDelList(_Vpt_ViewportList);
             _Vpt_ViewportList = 0;
         }
         if (_Vpt_CallbackList) {
-            fn_801C69E4(_Vpt_CallbackList);
+            DSDelList(_Vpt_CallbackList);
             _Vpt_CallbackList = 0;
         }
         MatDelStack(_Vpt_MatrixStackIndex);
@@ -160,7 +160,7 @@ Viewport_t *VptOpen(ViewportDesc_t *pDesc)
     int err = 0;
     int i;
 
-    pObject = fn_801C6A20(_Vpt_ViewportList);
+    pObject = DSNewListNode(_Vpt_ViewportList);
     if (pObject) {
         pObject->mUnknown0 = pDesc->mUnknown0;
         pObject->mUnknown46 = pObject->mUnknown47 = pDesc->mUnknown3;
@@ -181,7 +181,7 @@ Viewport_t *VptOpen(ViewportDesc_t *pDesc)
         pObject->mUnknown72 = 0;
         pObject->mUnknown68 = 0;
         pObject->mUnknown240 = 1.0f;
-        fn_801C6AA4(_Vpt_ViewportList, pObject, 0);
+        DSAddListNode(_Vpt_ViewportList, pObject, 0);
         err = VptLLOpen(pDesc, pObject);
         if (err) {
             fn_801F7BD4(err);
@@ -201,8 +201,8 @@ int VptClose(Viewport_t *pObject)
     }
     match.mUnknown0 = pObject;
     match.mUnknown4 = 0;
-    fn_801C6D34(_Vpt_CallbackList, 0, &match, 0, _VptTraverseRemoveCallback, 1);
-    fn_801C6C0C(_Vpt_ViewportList, pObject);
+    DSTraverseList(_Vpt_CallbackList, 0, &match, 0, _VptTraverseRemoveCallback, 1);
+    DSDelListNode(_Vpt_ViewportList, pObject);
     return err;
 }
 
@@ -211,13 +211,13 @@ int VptSetCallback(Viewport_t *pObject, int event, VptCallbackFuncT fn, int key)
     VptCallback_t *pEntry;
     int err = 0;
 
-    pEntry = fn_801C6A20(_Vpt_CallbackList);
+    pEntry = DSNewListNode(_Vpt_CallbackList);
     if (pEntry) {
         pEntry->mUnknown0 = key;
         pEntry->mUnknown4 = event;
         pEntry->mUnknown8 = fn;
         pEntry->mUnknown12 = pObject;
-        fn_801C6AA4(_Vpt_CallbackList, pEntry, 0);
+        DSAddListNode(_Vpt_CallbackList, pEntry, 0);
     } else {
         err = fn_801F7C88();
     }
@@ -230,7 +230,7 @@ void VptRemoveCallback(Viewport_t *pObject, VptCallbackFuncT fn)
 
     match.mUnknown0 = pObject;
     match.mUnknown4 = fn;
-    fn_801C6D34(_Vpt_CallbackList, 0, &match, 0, _VptTraverseRemoveCallback, 1);
+    DSTraverseList(_Vpt_CallbackList, 0, &match, 0, _VptTraverseRemoveCallback, 1);
 }
 
 void VptUpdateCamera(Viewport_t *pObject)
@@ -258,7 +258,7 @@ void VptProcessViewports(void)
     if (!_Vpt_IsProcessing) {
         GlibSetUpRender();
         _Vpt_IsProcessing = 1;
-        fn_801C6D34(_Vpt_ViewportList, 0, 0, 0, _VptTraverseProcessViewport, 1);
+        DSTraverseList(_Vpt_ViewportList, 0, 0, 0, _VptTraverseProcessViewport, 1);
         GlibFinishRender();
         VptFlushObjectTrash();
         _Vpt_IsProcessing = 0;

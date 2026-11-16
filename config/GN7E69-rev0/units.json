@@ -13543,6 +13543,19 @@
       ]
     },
     {
+      "source": "src/engine/list.c",
+      "profile": "engine_c",
+      "evidence": "evidence.tsv unit row 0x801C665C-0x801C6E5C (src/engine/list.c), its compiler, function, name, type and source-form rows; all 17 functions exact (DSNewList through a labeled fake-match form), promoted from comparison-only. The file has no allocated constants; the list-type table 0x803D4FB8 (.bss) stays external.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x801C665C",
+          "end": "0x801C6E5C"
+        }
+      ]
+    },
+    {
       "source": "src/engine/linklist.c",
       "profile": "engine_c",
       "evidence": "evidence.tsv unit row 0x801C6E5C-0x801C735C (src/engine/linklist.c) and its data rows; every function exact, promoted from comparison-only.",

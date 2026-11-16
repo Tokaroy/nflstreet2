@@ -87,7 +87,7 @@
 #include "game/fn_800F06F4.h"
 #include "game/PlaySet.h"
 #include "game/fn_801C1F94.h"
-#include "game/fn_801C68FC.h"
+#include "engine/dslist.h"
 #include <string.h>
 #include "game/fn_801D2B7C.h"
 #include "game/Block_800B0CFC.h"
@@ -11729,15 +11729,15 @@ typedef Desc_80238424 Args_800B1478;
 
 extern "C" {
 int fn_801D27A0(void);
-int fn_801C6858(int a, int b, int c);
+int DSGetListMemSize(int a, int b, int c);
 int fn_801C1FEC(const void *pA, const void *pB, int size);
 void fn_801C1FBC(void *pDest, void *pSrc, unsigned int size);
-void *fn_801C6A20(void *pool);
-void *fn_801C6B4C(void *pool, void *item);
-void fn_801C6C0C(void *pool, void *item);
-void *fn_801C6C84(void *pool, void *item);
-int fn_801C6D34(void *pool, void *pItem, void *pContext, void *pResult, int (*pMatch)(void *pItem, void *pContext, void *pResult), int d);
-int fn_801C6DCC(void *pool, void *pItem, void *pContext, void *pResult, int (*pMatch)(void *pItem, void *pContext, void *pResult));
+void *DSNewListNode(void *pool);
+void *DSGetListNode(void *pool, void *item);
+void DSDelListNode(void *pool, void *item);
+void *DSNextListNode(void *pool, void *item);
+int DSTraverseList(void *pool, void *pItem, void *pContext, void *pResult, int (*pMatch)(void *pItem, void *pContext, void *pResult), int d);
+int DSSearchList(void *pool, void *pItem, void *pContext, void *pResult, int (*pMatch)(void *pItem, void *pContext, void *pResult));
 int CharSkelGetJointByName(void *p, const char *pName);
 void *fn_801C47EC(void *p, int a, int b, int c);
 void fn_8009BD2C(Object_80039F5C *p, int *pRef);
@@ -11778,7 +11778,7 @@ extern "C" Item_800AF13C *fn_800AF13C(int key)
 {
     Item_800AF13C *pFound;
 
-    if (lbl_803EAB00 == 0 || fn_801C6DCC(lbl_803EAB00, 0, &key, &pFound, fn_800AF198) != 2) {
+    if (lbl_803EAB00 == 0 || DSSearchList(lbl_803EAB00, 0, &key, &pFound, fn_800AF198) != 2) {
         pFound = 0;
     }
     return pFound;
@@ -11798,20 +11798,20 @@ extern "C" int fn_800AF198(void *pItem, void *pContext, void *pResult)
 extern "C" void fn_800AF1BC(int a, int count)
 {
     lbl_803EC974 = a;
-    lbl_803EAB00 = fn_801C68FC(a, 0, count, sizeof(Item_800AF13C), 0, 0);
+    lbl_803EAB00 = DSNewList(a, 0, count, sizeof(Item_800AF13C), 0, 0);
 }
 
 extern "C" void fn_800AF1FC(void)
 {
-    Item_800AF13C *pItem = (Item_800AF13C *)fn_801C6B4C(lbl_803EAB00, 0);
+    Item_800AF13C *pItem = (Item_800AF13C *)DSGetListNode(lbl_803EAB00, 0);
 
     while (pItem != 0) {
-        Item_800AF13C *pNext = (Item_800AF13C *)fn_801C6C84(lbl_803EAB00, pItem);
+        Item_800AF13C *pNext = (Item_800AF13C *)DSNextListNode(lbl_803EAB00, pItem);
 
         fn_800AF264(pItem->mUnknown8);
         pItem = pNext;
     }
-    fn_801C69E4(lbl_803EAB00);
+    DSDelList(lbl_803EAB00);
     lbl_803EAB00 = 0;
 }
 
@@ -11821,7 +11821,7 @@ extern "C" void fn_800AF264(int key)
 
     if (pItem != 0) {
         ResUnLoad(pItem->mpUnknown0, pItem->mUnknown4);
-        fn_801C6C0C(lbl_803EAB00, pItem);
+        DSDelListNode(lbl_803EAB00, pItem);
     }
 }
 
@@ -11955,13 +11955,13 @@ extern "C" int fn_800AFA60(void *p, int value)
 {
     Block_800AFCB8 *pBlock = (Block_800AFCB8 *)p;
 
-    pBlock->mpUnknown4 = fn_801C68FC(fn_801D27A0(), 0, pBlock->mUnknown0, 4, 0, 0);
+    pBlock->mpUnknown4 = DSNewList(fn_801D27A0(), 0, pBlock->mUnknown0, 4, 0, 0);
     return 0;
 }
 
 extern "C" int fn_800AFAAC(void *p, int value)
 {
-    fn_801C69E4(((Block_800AFCB8 *)p)->mpUnknown4);
+    DSDelList(((Block_800AFCB8 *)p)->mpUnknown4);
     return 0;
 }
 
@@ -11972,10 +11972,10 @@ extern "C" int fn_800AFAD4(void *p, void *q)
     int result;
 
     if (pOther != 0) {
-        result = fn_801C1FEC(pBlock->mpUnknown4, pOther->mpUnknown4, fn_801C6858(0, pBlock->mUnknown0, 4));
+        result = fn_801C1FEC(pBlock->mpUnknown4, pOther->mpUnknown4, DSGetListMemSize(0, pBlock->mUnknown0, 4));
     } else {
         result = fn_80238278(pBlock, 4, 0);
-        result = fn_80238278(pBlock->mpUnknown4, fn_801C6858(0, pBlock->mUnknown0, 4), result);
+        result = fn_80238278(pBlock->mpUnknown4, DSGetListMemSize(0, pBlock->mUnknown0, 4), result);
     }
     return result;
 }
@@ -11987,7 +11987,7 @@ extern "C" int fn_800AFB70(void *p, void *pBuffer)
 
     fn_801C1FBC(pDest, pBlock, sizeof(Block_800AFCB8));
     pDest += sizeof(Block_800AFCB8);
-    fn_801C1FBC(pDest, pBlock->mpUnknown4, fn_801C6858(0, pBlock->mUnknown0, 4));
+    fn_801C1FBC(pDest, pBlock->mpUnknown4, DSGetListMemSize(0, pBlock->mUnknown0, 4));
     return 1;
 }
 
@@ -11995,13 +11995,13 @@ extern "C" int fn_800AFBD8(void *p, void *pBuffer)
 {
     Block_800AFCB8 *pBlock = (Block_800AFCB8 *)p;
 
-    fn_801C1FBC(pBlock->mpUnknown4, (char *)pBuffer + sizeof(Block_800AFCB8), fn_801C6858(0, pBlock->mUnknown0, 4));
+    fn_801C1FBC(pBlock->mpUnknown4, (char *)pBuffer + sizeof(Block_800AFCB8), DSGetListMemSize(0, pBlock->mUnknown0, 4));
     return 1;
 }
 
 extern "C" int fn_800AFC28(void *p)
 {
-    return fn_801C6858(0, lbl_803EAB0C->mUnknown0, 4) + sizeof(Block_800AFCB8);
+    return DSGetListMemSize(0, lbl_803EAB0C->mUnknown0, 4) + sizeof(Block_800AFCB8);
 }
 
 extern "C" int fn_800AFC5C(void *pItem, void *pContext, void *pResult)
@@ -12047,16 +12047,16 @@ extern "C" void fn_800AFD58(int a, int b, float c)
         args.mUnknown4 = b;
         args.mUnknown8 = c;
         pool = pBlock->mpUnknown4;
-        fn_801C6D34(pool, fn_801C6B4C(pool, 0), &args, 0, fn_800AFC5C, 1);
+        DSTraverseList(pool, DSGetListNode(pool, 0), &args, 0, fn_800AFC5C, 1);
     }
 }
 
 extern "C" void fn_800AFDD4(Callback_800AFC5C pCallback)
 {
-    Item_800AFC5C *pItem = (Item_800AFC5C *)fn_801C6A20(lbl_803EAB0C->mpUnknown4);
+    Item_800AFC5C *pItem = (Item_800AFC5C *)DSNewListNode(lbl_803EAB0C->mpUnknown4);
 
     pItem->mpCallback0 = pCallback;
-    fn_801C6AA4(lbl_803EAB0C->mpUnknown4, pItem, 1);
+    DSAddListNode(lbl_803EAB0C->mpUnknown4, pItem, 1);
 }
 
 extern "C" void fn_800AFE20(Callback_800AFC5C pCallback)
@@ -12067,8 +12067,8 @@ extern "C" void fn_800AFE20(Callback_800AFC5C pCallback)
 
     key.mpCallback0 = pCallback;
     pool = lbl_803EAB0C->mpUnknown4;
-    fn_801C6D34(pool, fn_801C6B4C(pool, 0), &key, &pFound, fn_800AFC94, 1);
-    fn_801C6C0C(lbl_803EAB0C->mpUnknown4, pFound);
+    DSTraverseList(pool, DSGetListNode(pool, 0), &key, &pFound, fn_800AFC94, 1);
+    DSDelListNode(lbl_803EAB0C->mpUnknown4, pFound);
 }
 
 extern "C" int fn_800AFE8C(int group, int index, int ref)

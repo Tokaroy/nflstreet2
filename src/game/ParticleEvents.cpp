@@ -5,7 +5,7 @@
 #include "game/ParticleSys.h"
 #include "game/ParticleEvent.h"
 #include "game/Ball.h"
-#include "game/fn_801C68FC.h"
+#include "engine/dslist.h"
 #include "game/ParticleTrail.h"
 #include "engine/llquat.h"
 
@@ -29,11 +29,11 @@ void ParticleTrailShutdown(void);
 void ParticleTrailInit(ParticleTrailSet_t *pObject);
 void ParticleTrailResetAll(void);
 void ParticleTrailUpdateAll(void);
-void *fn_801C6A20(void *pool);
-void *fn_801C6B4C(void *pool, void *item);
-void fn_801C6C0C(void *pool, void *item);
-void *fn_801C6C84(void *pool, void *item);
-int fn_801C6D34(void *pool, int b, void *ctx, int d, int (*fn)(void *, void *), int f);
+void *DSNewListNode(void *pool);
+void *DSGetListNode(void *pool, void *item);
+void DSDelListNode(void *pool, void *item);
+void *DSNextListNode(void *pool, void *item);
+int DSTraverseList(void *pool, int b, void *ctx, int d, int (*fn)(void *, void *), int f);
 void MatMakeUnitMatrix(Mtx44 m);
 void MatPushUnit(void);
 void MatPop(void);
@@ -134,8 +134,8 @@ static void _ParticlesFreeFinished(void)
     unsigned int i;
     ParticleSpawn_t *pEntry;
 
-    for (pEntry = (ParticleSpawn_t *)fn_801C6B4C(_Particles_pSpawnPool, 0); pEntry != 0;
-         pEntry = (ParticleSpawn_t *)fn_801C6C84(_Particles_pSpawnPool, pEntry)) {
+    for (pEntry = (ParticleSpawn_t *)DSGetListNode(_Particles_pSpawnPool, 0); pEntry != 0;
+         pEntry = (ParticleSpawn_t *)DSNextListNode(_Particles_pSpawnPool, pEntry)) {
         PsysEmitter_t *pObject = pEntry->mUnknown40;
         if (pObject == 0) {
             pDone[count++] = pEntry;
@@ -145,7 +145,7 @@ static void _ParticlesFreeFinished(void)
         }
     }
     for (i = 0; i < count; i++) {
-        fn_801C6C0C(_Particles_pSpawnPool, pDone[i]);
+        DSDelListNode(_Particles_pSpawnPool, pDone[i]);
     }
 }
 
@@ -156,8 +156,8 @@ void ParticlesInit(void)
     for (i = 0; i < 2; i++) {
         _Particles_pBallTrails[i] = 0;
     }
-    _Particles_pEventPool = fn_801C68FC(1, 0, 75, sizeof(ParticleEvent_t), 0, 0);
-    _Particles_pSpawnPool = fn_801C68FC(1, 0, 64, sizeof(ParticleSpawn_t), 0, 0);
+    _Particles_pEventPool = DSNewList(1, 0, 75, sizeof(ParticleEvent_t), 0, 0);
+    _Particles_pSpawnPool = DSNewList(1, 0, 64, sizeof(ParticleSpawn_t), 0, 0);
     ParticleTrailStartup();
     gParticles_bInit = 1;
 }
@@ -165,11 +165,11 @@ void ParticlesInit(void)
 void ParticlesShutdown(void)
 {
     if (_Particles_pEventPool != 0) {
-        fn_801C69E4(_Particles_pEventPool);
+        DSDelList(_Particles_pEventPool);
         _Particles_pEventPool = 0;
     }
     if (_Particles_pSpawnPool != 0) {
-        fn_801C69E4(_Particles_pSpawnPool);
+        DSDelList(_Particles_pSpawnPool);
         _Particles_pSpawnPool = 0;
     }
     ParticleTrailShutdown();
@@ -178,7 +178,7 @@ void ParticlesShutdown(void)
 
 void ParticlesAddPlayerEvent(int type, float (*pMatrix)[4][4], Object_80039F5C *pPlayer, int c)
 {
-    ParticleEvent_t *pEvent = (ParticleEvent_t *)fn_801C6A20(_Particles_pEventPool);
+    ParticleEvent_t *pEvent = (ParticleEvent_t *)DSNewListNode(_Particles_pEventPool);
 
     if (pEvent != 0) {
         pEvent->mType = type;
@@ -189,13 +189,13 @@ void ParticlesAddPlayerEvent(int type, float (*pMatrix)[4][4], Object_80039F5C *
         pEvent->mUnknown10 = 0;
         pEvent->mUnknown14 = c;
         pEvent->mUnknown1C = 21;
-        fn_801C6AA4(_Particles_pEventPool, pEvent, 0);
+        DSAddListNode(_Particles_pEventPool, pEvent, 0);
     }
 }
 
 void ParticlesAddBallEvent(int type, Ball_t *pBall)
 {
-    ParticleEvent_t *pEvent = (ParticleEvent_t *)fn_801C6A20(_Particles_pEventPool);
+    ParticleEvent_t *pEvent = (ParticleEvent_t *)DSNewListNode(_Particles_pEventPool);
 
     if (pEvent != 0) {
         pEvent->mType = type;
@@ -206,14 +206,14 @@ void ParticlesAddBallEvent(int type, Ball_t *pBall)
         pEvent->mUnknown10 = pBall;
         pEvent->mUnknown14 = 0;
         pEvent->mUnknown1C = 21;
-        fn_801C6AA4(_Particles_pEventPool, pEvent, 0);
+        DSAddListNode(_Particles_pEventPool, pEvent, 0);
     }
 }
 
 void ParticlesProcess(void)
 {
     if (_Particles_pEventPool != 0) {
-        fn_801C6D34(_Particles_pEventPool, 0, 0, 0, _ParticleEventUpdate, 1);
+        DSTraverseList(_Particles_pEventPool, 0, 0, 0, _ParticleEventUpdate, 1);
     }
     _ParticlesFreeFinished();
     _ParticlesFollowBall();
@@ -224,7 +224,7 @@ void ParticlesProcess(void)
 void ParticlesResetEvents(void)
 {
     if (_Particles_pEventPool != 0) {
-        fn_801C6D34(_Particles_pEventPool, 0, 0, 0, _ParticleEventReset, 1);
+        DSTraverseList(_Particles_pEventPool, 0, 0, 0, _ParticleEventReset, 1);
     }
 }
 
@@ -237,7 +237,7 @@ void ParticlesSpawnAt(int a, float *pPos, float *pRot, ParticleSource_t *pSource
     if (_Particles_pSpawnPool == 0) {
         return;
     }
-    pEntry = (ParticleSpawn_t *)fn_801C6A20(_Particles_pSpawnPool);
+    pEntry = (ParticleSpawn_t *)DSNewListNode(_Particles_pSpawnPool);
     if (pEntry == 0) {
         return;
     }
@@ -259,13 +259,13 @@ void ParticlesSpawnAt(int a, float *pPos, float *pRot, ParticleSource_t *pSource
     args.mUnknown08 = &m;
     args.mUnknown00 = a;
     pEntry->mUnknown40 = ParticleSysSpawnEmitter(&args, 0, pSource);
-    fn_801C6AA4(_Particles_pSpawnPool, pEntry, 0);
+    DSAddListNode(_Particles_pSpawnPool, pEntry, 0);
 }
 
 void ParticlesStopOnEnter(void)
 {
     if (_Particles_pEventPool != 0) {
-        fn_801C6D34(_Particles_pEventPool, 0, 0, 0, _ParticleEventStop, 1);
+        DSTraverseList(_Particles_pEventPool, 0, 0, 0, _ParticleEventStop, 1);
     }
     ParticleTrailResetAll();
 }
@@ -278,7 +278,7 @@ void ParticlesFlush(void)
 void ParticlesStopOnLeave(void)
 {
     if (_Particles_pEventPool != 0) {
-        fn_801C6D34(_Particles_pEventPool, 0, 0, 0, _ParticleEventStop, 1);
+        DSTraverseList(_Particles_pEventPool, 0, 0, 0, _ParticleEventStop, 1);
     }
     ParticleTrailResetAll();
 }
