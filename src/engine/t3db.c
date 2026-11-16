@@ -241,6 +241,19 @@ static inline void Notify_801F8A54(int type, int a, int b)
     }
 }
 
+/* Finds the open database with this id, in any state. */
+static inline TDbDb_801F88F0 *LookupDb_801F9228(int db)
+{
+    TDbDb_801F88F0 *pDb;
+
+    for (pDb = lbl_803EBE88; pDb != 0; pDb = pDb->pNext) {
+        if (db == pDb->mId) {
+            break;
+        }
+    }
+    return pDb;
+}
+
 static inline TDbDb_801F88F0 *FindDb_801F88F0(int db)
 {
     TDbDb_801F88F0 *pDb;
@@ -597,22 +610,17 @@ void fn_801F9228(TDbAsync_801F9228 *pReq, void (*pStart)(TDbJob_801F9228 *pJob),
 {
     TDbJob_801F9228 job;
     TDbDb_801F88F0 *pDb;
-    int db;
 
-    job.mUnk0 = 0;
-    job.mUnk4 = b;
+    /* FAKEMATCH: job stores in a search-found order, only for the target's store schedule */
     job.pReq = pReq;
     job.mUnkC = 0;
-    job.pRun = fn_801F93AC;
+    job.mUnk0 = 0;
     job.mUnk14 = a;
+    job.mUnk4 = b;
+    job.pRun = fn_801F93AC;
     *pReq->pResult = 0x2E;
     pReq->mIsLoad = 1;
-    db = pReq->mDb;
-    for (pDb = lbl_803EBE88; pDb != 0; pDb = pDb->pNext) {
-        if (db == pDb->mId) {
-            break;
-        }
-    }
+    pDb = LookupDb_801F9228(pReq->mDb);
     if (pDb == 0) {
         *pReq->pResult = 5;
     } else if (pDb->mState == 1) {
@@ -627,22 +635,17 @@ void fn_801F92EC(TDbAsync_801F9228 *pReq, void (*pStart)(TDbJob_801F9228 *pJob),
 {
     TDbJob_801F9228 job;
     TDbDb_801F88F0 *pDb;
-    int db;
 
-    job.mUnk0 = 0;
-    job.mUnk4 = b;
+    /* FAKEMATCH: job stores in a search-found order, only for the target's store schedule */
     job.pReq = pReq;
     job.mUnkC = 0;
-    job.pRun = fn_801F93AC;
+    job.mUnk0 = 0;
     job.mUnk14 = a;
+    job.mUnk4 = b;
+    job.pRun = fn_801F93AC;
     *pReq->pResult = 0x2E;
     pReq->mIsLoad = 0;
-    db = pReq->mDb;
-    for (pDb = lbl_803EBE88; pDb != 0; pDb = pDb->pNext) {
-        if (db == pDb->mId) {
-            break;
-        }
-    }
+    pDb = LookupDb_801F9228(pReq->mDb);
     if (pDb == 0) {
         *pReq->pResult = 5;
     } else if (pDb->mState == 1) {
@@ -1056,12 +1059,13 @@ int fn_801F9D70(int db, int tbl, TDbTerm_801FA4B0 *pFilter, unsigned short *pCou
         if (pFilter == 0) {
             n = pTbl->mUnk44 - pTbl->mUnk46;
         } else {
-            qry.mUnk4 = 0;
+            /* FAKEMATCH: mUnk4 cleared last, only for the target's store schedule */
             qry.mSel.mUnkC8 = 0;
             qry.mSel.mUnkA0 = 0;
             qry.mSel.mUnk50 = 0;
             qry.mSel.mUnk78 = 0;
             qry.mRow.mUnk0 = 0;
+            qry.mUnk4 = 0;
             qry.mSel.pTbl = pTbl;
             qry.mRow.mUnk14 = 2;
             qry.mUnk0 = 1;

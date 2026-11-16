@@ -960,6 +960,8 @@ static int _ResInitResourceFile(ResFile_t *pRes, char *pName)
         }
         tag = block.mTag;
         switch (tag) {
+        case 0x54455246:
+            break;
         case 0x44495231:
             if (pRes->mDirTag == 0) {
                 size = _ResGetBaseBlockSize(0x44495231, pRes->mNumRes);
@@ -1029,8 +1031,6 @@ static int _ResInitResourceFile(ResFile_t *pRes, char *pName)
         default:
             err = 0xF0005;
             goto cleanup;
-        case 0x54455246:
-            break;
         }
         FileSeek(file, position + block.mSize, 0);
         position = FileGetPosition(file);
