@@ -228,7 +228,7 @@ int fn_801D4204(int port)
     return chan;
 }
 
-static void fn_801D4230(void)
+static void fn_801D4230(int port)
 {
     if ((lbl_80384CC0.mMounted >> lbl_80384CD0.mPort) & 1) {
         // FAKEMATCH: mounted/present bit before the added/removed bit, chosen by testing (all six pairs here and in fn_801D42D4)
@@ -969,4 +969,225 @@ int fn_801D5824(int enable, int size)
         lbl_803EBCF8 = 0;
     }
     return 0;
+}
+
+int fn_801D5840(int *pResult)
+{
+    int state = lbl_80384CD0.mState;
+    int done = -1;
+    int result = 0;
+
+    if (state != -1) {
+        if (lbl_80384CD0.mBusy) {
+            done = 1;
+            result = CARDGetResultCode(lbl_80384CD0.mPort);
+            if (result == CARD_RESULT_BUSY) {
+                done = 0;
+            }
+        } else {
+            result = lbl_80384CD0.mResult;
+            done = 1;
+        }
+        switch (lbl_80384CD0.mState) {
+        case 13:
+            result = lbl_80384CD0.mResult;
+            done = (signed char)lbl_80384CD0.mUnknown10;
+            break;
+        case 1:
+            if (lbl_80384CD0.mResult == -1) {
+                fn_801D444C(lbl_80384CD0.mPort);
+                if (lbl_80384CD0.mResult == -1) {
+                    done = 0;
+                } else {
+                    result = lbl_80384CD0.mResult;
+                    done = 1;
+                }
+            }
+            break;
+        }
+        if (done != 1) {
+            goto pending;
+        }
+        switch (lbl_80384CD0.mState) {
+        case 2:
+            switch (result) {
+            case CARD_RESULT_IOERROR:
+            case CARD_RESULT_FATAL_ERROR:
+                lbl_80384DB8.mUnknown14 = 4;
+                result = 0;
+                break;
+            case CARD_RESULT_BROKEN:
+                lbl_80384DB8.mUnknown14 = 1;
+                result = 0;
+                break;
+            case CARD_RESULT_ENCODING:
+                lbl_80384DB8.mUnknown14 = 3;
+                result = 0;
+                break;
+            case CARD_RESULT_NOCARD:
+            case CARD_RESULT_WRONGDEVICE:
+            case CARD_RESULT_BUSY:
+                break;
+            case CARD_RESULT_READY:
+                lbl_80384DB8.mUnknown14 = 0;
+                break;
+            }
+            break;
+        case 6:
+            switch (result) {
+            case CARD_RESULT_IOERROR:
+            case CARD_RESULT_FATAL_ERROR:
+                lbl_80384DB8.mUnknown14 = 4;
+                result = 0;
+                break;
+            case CARD_RESULT_BROKEN:
+                lbl_80384DB8.mUnknown14 = 2;
+                result = 0;
+                break;
+            case CARD_RESULT_ENCODING:
+                lbl_80384DB8.mUnknown14 = 3;
+                result = 0;
+                break;
+            case CARD_RESULT_NOCARD:
+            case CARD_RESULT_BUSY:
+                break;
+            case CARD_RESULT_READY:
+                lbl_80384DB8.mUnknown14 = 0;
+                break;
+            }
+            break;
+        case 20:
+        case 21:
+            if (result == CARD_RESULT_LIMIT) {
+                lbl_80384CD0.mSize = 0;
+                result = 0;
+            }
+            break;
+        }
+        if (result < 0) {
+            // FAKEMATCH: pending-clear order length, state, write, read chosen by testing all 24 orders
+            lbl_80384CD0.mPendingLength = 0;
+            lbl_80384CD0.mPendingState = -1;
+            lbl_80384CD0.mPendingWrite = 0;
+            lbl_80384CD0.mPendingRead = 0;
+            switch (result) {
+            case CARD_RESULT_BUSY:
+                break;
+            case CARD_RESULT_WRONGDEVICE:
+                result = -9;
+                break;
+            case CARD_RESULT_NOCARD:
+                result = -2;
+                break;
+            case CARD_RESULT_NOFILE:
+                result = -3;
+                break;
+            case CARD_RESULT_NOENT:
+                result = -5;
+                break;
+            case CARD_RESULT_INSSPACE:
+                result = -4;
+                break;
+            case CARD_RESULT_NOPERM:
+                result = -7;
+                break;
+            case CARD_RESULT_EXIST:
+            case CARD_RESULT_LIMIT:
+                result = -99;
+                break;
+            case CARD_RESULT_NAMETOOLONG: // FAKEMATCH: own copy of the -99 body so -12 and -11 stay separate case nodes (target jump tree)
+                result = -99;
+                break;
+            case CARD_RESULT_ENCODING:
+                result = -8;
+                break;
+            case CARD_RESULT_BROKEN:
+            case CARD_RESULT_CANCELED:
+                result = -100;
+                break;
+            case CARD_RESULT_IOERROR:
+            case CARD_RESULT_FATAL_ERROR:
+                result = -10;
+                break;
+            }
+        } else {
+            switch (lbl_80384CD0.mState) {
+            case 8:
+                result = lbl_80384DB8.mFreeBytes;
+                break;
+            case 9:
+                result = lbl_80384DB8.mFreeFiles;
+                break;
+            case 12:
+                result = lbl_80384DB8.mNumEntries;
+                break;
+            case 1:
+                result = lbl_80384DB8.mType;
+                if (result == 8) {
+                    fn_801D42D4(lbl_80384CD0.mPort, 0);
+                } else if (result == 0) {
+                    result = -2;
+                    fn_801D4230(lbl_80384CD0.mPort);
+                } else {
+                    fn_801D42D4(lbl_80384CD0.mPort, 1);
+                }
+                break;
+            case 2:
+            case 6:
+                result = lbl_80384DB8.mUnknown14;
+                break;
+            case 20:
+            case 21:
+                result = lbl_80384CD0.mSize;
+                break;
+            case 19:
+                result = lbl_80384CD0.mPos;
+                break;
+            }
+        }
+        // FAKEMATCH: completion reset order state, busy, result chosen by testing all six orders
+        lbl_80384CD0.mState = -1;
+        lbl_80384CD0.mBusy = 0;
+        lbl_80384CD0.mResult = -99;
+    }
+pending:
+    if (lbl_80384CD0.mCache != 0 && done == 1 && result >= 0) {
+        int pendingState = lbl_80384CD0.mPendingState;
+        char *pRead = lbl_80384CD0.mPendingRead;
+        char *pWrite = lbl_80384CD0.mPendingWrite;
+        int length = lbl_80384CD0.mPendingLength;
+
+        lbl_80384CD0.mBusy = 0;
+        lbl_80384CD0.mResult = -99;
+        lbl_80384CD0.mPendingState = -1;
+        lbl_80384CD0.mPendingLength = 0;
+        lbl_80384CD0.mState = -1;
+        lbl_80384CD0.mPendingRead = 0;
+        lbl_80384CD0.mPendingWrite = 0;
+        if (pendingState != -1) {
+            switch (pendingState) {
+            case 20:
+                fn_801D5288(lbl_80384CD0.mHandle, pRead, length);
+                break;
+            case 21:
+                fn_801D546C(lbl_80384CD0.mHandle, pWrite, length);
+                break;
+            case 16:
+                fn_801D4E6C(lbl_80384CD0.mHandle);
+                break;
+            case 19:
+                break;
+            }
+            return 0;
+        }
+        switch (state) {
+        case 20:
+        case 21:
+            result = lbl_80384CD0.mUnknownD4;
+            break;
+        }
+    }
+out:
+    *pResult = result;
+    return done;
 }

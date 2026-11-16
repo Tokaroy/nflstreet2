@@ -34187,7 +34187,7 @@
     {
       "source": "src/engine/memorycard.c",
       "profile": "engine_c",
-      "evidence": "evidence.tsv compiler row 0x801D3C68-0x801D5D30 (src/engine/memorycard.c), its function rows and the exact .rodata data row 0x802AFCC8-0x802AFCF8. Draft comparisons only; original assembly remains linked. The string constants after 0x802AFCF8 stay extern (lbl_), and MemCAsyncPoll 0x801D5840 has no draft yet.",
+      "evidence": "evidence.tsv compiler row 0x801D3C68-0x801D5D30 (src/engine/memorycard.c), its function rows and the exact .rodata data row 0x802AFCC8-0x802AFCF8. Draft comparisons only; original assembly remains linked. The string constants after 0x802AFCF8 stay extern (lbl_), and MemCAsyncPoll 0x801D5840 is drafted (partial, 99.65%: pending-tail store order and one cross-jumped branch in the case-2 result switch; see the store-block source-form row).",
       "sections": [
         {
           "section": ".text",
@@ -34392,6 +34392,11 @@
           "symbol": "fn_801D5824",
           "start": "0x801D5824",
           "end": "0x801D5840"
+        },
+        {
+          "symbol": "fn_801D5840",
+          "start": "0x801D5840",
+          "end": "0x801D5D30"
         }
       ]
     },
