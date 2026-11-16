@@ -390,12 +390,13 @@ int fn_801FD97C(TDbParseInfo_801FC9D4 *pInfo, TDbLexer_801FCE10 *pLexer, int res
 {
     unsigned int table;
     unsigned int column;
+    unsigned int zero = 0; // FAKEMATCH: the zero of the three clears held in one local, for the target callee-saved zero (li r27,0)
 
     TDbLexNext_801FD3C0(pLexer);
     result = fn_801FD3C0(pInfo, pLexer, result, &pLexer->mTokens[0], &table, &column);
     pRef->mTableId = table;
     pRef->mId = column;
-    pRef->mUnknown0 = 0;
+    pRef->mUnknown0 = zero;
     if (pLexer->mTokens[1].mType == 0x17 && (mode == 0 || mode == 2)) {
         result = fn_801FD47C(pInfo, pLexer, result, pVar);
         if (pVar->mType == 0) {
@@ -404,8 +405,8 @@ int fn_801FD97C(TDbParseInfo_801FC9D4 *pInfo, TDbLexer_801FCE10 *pLexer, int res
             pRef->mUnknown0 = pVar->mValue;
         }
     } else {
-        pVar->mValue = 0;
-        pVar->mType = 0;
+        pVar->mValue = zero;
+        pVar->mType = zero;
     }
     return result;
 }
@@ -696,7 +697,6 @@ int fn_801FEA04(TDbParseInfo_801FC9D4 *pInfo, TDbLexer_801FCE10 *pLexer, int res
     unsigned int table;
     unsigned int column;
     unsigned int value;
-    float f;
 
     TDbLexNext_801FD3C0(pLexer);
     result = fn_801FD3C0(pInfo, pLexer, result, &pLexer->mTokens[0], &table, &column);
@@ -734,15 +734,13 @@ int fn_801FEA04(TDbParseInfo_801FC9D4 *pInfo, TDbLexer_801FCE10 *pLexer, int res
         pVar->mSize = 4;
         break;
     case 6:
-        f = va_arg(pInfo->mArgs, double);
+        *(float *)&value = va_arg(pInfo->mArgs, double);
         pVar->mType = TDB_TYPE_FLOAT;
-        value = *(unsigned int *)&f;
         pVar->mSize = 4;
         break;
     case 7:
-        f = va_arg(pInfo->mArgs, double);
+        *(float *)&value = va_arg(pInfo->mArgs, double);
         pVar->mType = TDB_TYPE_FLOAT;
-        value = *(unsigned int *)&f;
         pVar->mSize = 4;
         break;
     case 9:

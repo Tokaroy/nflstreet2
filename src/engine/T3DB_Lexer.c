@@ -150,7 +150,8 @@ char *fn_80200DD4(TDbLexer_801FCE10 *pLexer, char *p)
         }
         c = *p;
         while (c >= '0' && c <= '9') {
-            value = value * scale + c - '0';
+            value *= scale;
+            value += c - '0';
             scale = 10;
             c = *++p;
         }
