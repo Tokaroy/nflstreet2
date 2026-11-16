@@ -33180,13 +33180,19 @@
     {
       "source": "src/engine/t3db_query.c",
       "profile": "engine_c_fastmath",
-      "evidence": "evidence.tsv unit row 0x80205754-0x8020B564 (src/engine/t3db_query.c): first six functions of the original t3db_query.c (NASCAR 2005 symbol table); 0x80205DB8 has no source yet. Comparison only; original assembly stays linked.",
+      "evidence": "evidence.tsv unit row 0x80205754-0x8020B564 (src/engine/t3db_query.c, the whole original t3db_query.c of the NASCAR 2005 symbol table), its compiler row 0x8020840C-0x8020B564 (engine_c_fastmath, the profile all four former comparison pieces used), the source-form rows 0x8020651C-0x80207448, 0x80207448-0x802075F4, 0x802075F4-0x8020840C and 0x8020840C-0x802176E8, and the exact .rodata data row 0x802B1B90-0x802B1BB0. One source since c19c (the former comparison pieces src/engine/cu_8020651C.c, cu_802075F4.c and cu_8020840C.c are joined in address order). 0x80205DB8, 0x8020840C, 0x802088FC, 0x8020925C, 0x80209F34, 0x8020A908, 0x8020AE88 and 0x8020B094 have no source yet; partial: 0x802067D4, 0x802069BC, 0x8020A660. Comparison only; original assembly stays linked.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x80205754",
-          "end": "0x80205DB8"
+          "end": "0x8020B564"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B1B90",
+          "end": "0x802B1BB0"
         }
       ],
       "functions": [
@@ -33219,28 +33225,7 @@
           "symbol": "fn_80205C44",
           "start": "0x80205C44",
           "end": "0x80205DB8"
-        }
-      ]
-    },
-    {
-      "source": "src/engine/cu_8020651C.c",
-      "profile": "engine_c_fastmath",
-      "evidence": "evidence.tsv unit row 0x80205754-0x8020B564 (src/engine/t3db_query.c; this source covers 0x8020651C-0x802075F4 as src/engine/cu_8020651C.c): eleven functions of the original t3db_query.c (NASCAR 2005 symbol table) after _TDbQryPrepComplexFilter 0x80205DB8, which has no source yet, through _TDbQryFindJoinColumn 0x80207448, plus the file's 32-byte .rodata 0x802B1B90-0x802B1BB0 (default column definitions copied by 0x80206EB8). 0x802067D4 is a same-size partial. Comparison only; original assembly stays linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x8020651C",
-          "end": "0x802075F4"
         },
-        {
-          "section": ".rodata",
-          "placement": ".data3",
-          "start": "0x802B1B90",
-          "end": "0x802B1BB0"
-        }
-      ],
-      "functions": [
         {
           "symbol": "fn_8020651C",
           "start": "0x8020651C",
@@ -33295,22 +33280,7 @@
           "symbol": "fn_80207448",
           "start": "0x80207448",
           "end": "0x802075F4"
-        }
-      ]
-    },
-    {
-      "source": "src/engine/cu_802075F4.c",
-      "profile": "engine_c_fastmath",
-      "evidence": "evidence.tsv unit row 0x80205754-0x8020B564 (src/engine/t3db_query.c; this source covers 0x802075F4-0x8020840C as src/engine/cu_802075F4.c): the last seven E5 functions of the original t3db_query.c (NASCAR 2005 symbol table), after _TDbQryFindJoinColumn 0x80207448 (compared in src/engine/cu_8020651C.c); the file continues into the E6 range. Comparison only; original assembly stays linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x802075F4",
-          "end": "0x8020840C"
-        }
-      ],
-      "functions": [
+        },
         {
           "symbol": "fn_802075F4",
           "start": "0x802075F4",
@@ -33345,6 +33315,46 @@
           "symbol": "fn_80208204",
           "start": "0x80208204",
           "end": "0x8020840C"
+        },
+        {
+          "symbol": "fn_802087D4",
+          "start": "0x802087D4",
+          "end": "0x802088A8"
+        },
+        {
+          "symbol": "fn_802088A8",
+          "start": "0x802088A8",
+          "end": "0x802088FC"
+        },
+        {
+          "symbol": "fn_80209E40",
+          "start": "0x80209E40",
+          "end": "0x80209F34"
+        },
+        {
+          "symbol": "fn_8020A3A0",
+          "start": "0x8020A3A0",
+          "end": "0x8020A540"
+        },
+        {
+          "symbol": "fn_8020A540",
+          "start": "0x8020A540",
+          "end": "0x8020A5A8"
+        },
+        {
+          "symbol": "fn_8020A5A8",
+          "start": "0x8020A5A8",
+          "end": "0x8020A660"
+        },
+        {
+          "symbol": "fn_8020A660",
+          "start": "0x8020A660",
+          "end": "0x8020A908"
+        },
+        {
+          "symbol": "fn_8020AD1C",
+          "start": "0x8020AD1C",
+          "end": "0x8020AE88"
         }
       ]
     },
@@ -36919,61 +36929,6 @@
           "symbol": "fn_801CFE40",
           "start": "0x801CFE40",
           "end": "0x801CFF34"
-        }
-      ]
-    },
-    {
-      "source": "src/engine/cu_8020840C.c",
-      "profile": "engine_c_fastmath",
-      "evidence": "evidence.tsv unit row 0x80205754-0x8020B564 (src/engine/t3db_query.c; this source covers 0x8020840C-0x8020B564 as src/engine/cu_8020840C.c), its compiler row, the source-form row 0x8020840C-0x802176E8 and the exact function rows. 8 drafted bodies, partial: 0x8020A660. Comparison only; original assembly stays linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x8020840C",
-          "end": "0x8020B564"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "fn_802087D4",
-          "start": "0x802087D4",
-          "end": "0x802088A8"
-        },
-        {
-          "symbol": "fn_802088A8",
-          "start": "0x802088A8",
-          "end": "0x802088FC"
-        },
-        {
-          "symbol": "fn_80209E40",
-          "start": "0x80209E40",
-          "end": "0x80209F34"
-        },
-        {
-          "symbol": "fn_8020A3A0",
-          "start": "0x8020A3A0",
-          "end": "0x8020A540"
-        },
-        {
-          "symbol": "fn_8020A540",
-          "start": "0x8020A540",
-          "end": "0x8020A5A8"
-        },
-        {
-          "symbol": "fn_8020A5A8",
-          "start": "0x8020A5A8",
-          "end": "0x8020A660"
-        },
-        {
-          "symbol": "fn_8020A660",
-          "start": "0x8020A660",
-          "end": "0x8020A908"
-        },
-        {
-          "symbol": "fn_8020AD1C",
-          "start": "0x8020AD1C",
-          "end": "0x8020AE88"
         }
       ]
     },
