@@ -20,11 +20,27 @@ struct UTALKSTATE_CODA {
     float m684[432];
 };
 
-/* 3432-byte MT block decoder used by src/engine/mtdecf.cpp (the MT unpack filter constructors in
-   src/engine/supmutf.c, src/engine/supmutlf.c and src/engine/supmutpf.c allocate it with
-   fn_8027C020(3432)): the decode state, then the delivery fields +0xD44-+0xD67. */
+/* The decoder state the MT unpack filters save and restore around a loop jump: the bit buffer +0x4,
+   the samples left in the current frame +0xD44 and the header word +0xD5C. */
+struct MTFSTATE {
+    int m0;
+    int m4;
+    int m8;
+};
+
+/* 3432-byte MT block decoder used by the MT unpack filters in src/engine/supmutf.c,
+   src/engine/supmutlf.c and src/engine/supmutpf.c: the decode state, then the delivery fields
+   +0xD44-+0xD67. */
 class CMTBLKDecf : public UTALKSTATE_CODA {
 public:
+    static void *operator new(unsigned int size);
+    static void operator delete(void *p);
+    CMTBLKDecf();
+    int Feed(void *data, int size, int count);
+    int Decode(float **dst, int count);
+    MTFSTATE GetState();
+    void SetState(MTFSTATE *state, int flags);
+    void SetCodecVersion(int version);
     void initmut(unsigned char *data, UTALKSTATE_CODA *state, int header);
 
     int mD44;
@@ -40,28 +56,5 @@ public:
 };
 
 }
-
-typedef Snd::CMTBLKDecf Codec_8027CF9C;
-
-typedef struct Format_8027D284 {
-    int m0;
-    int m4;
-    int m8;
-} Format_8027D284;
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-Codec_8027CF9C *fn_8027CF9C(void *memory);
-int fn_8027CFCC(Codec_8027CF9C *p, unsigned char *data, int size, int count);
-int CodecReadSamples(Codec_8027CF9C *p, float **dst, int count);
-Format_8027D284 fn_8027D284(Codec_8027CF9C *p);
-void fn_8027D2C4(Codec_8027CF9C *p, Format_8027D284 *format, int flags);
-void fn_8027D2E0(Codec_8027CF9C *p, int mode);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

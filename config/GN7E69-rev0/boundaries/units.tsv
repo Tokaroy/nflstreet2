@@ -169,7 +169,7 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x8027A8A4	0x8027A8EC	sinitxa.c	1	1	1	1	0	-	-
 0x8027A8EC	0x8027A91C	smixc.c	1	1	1	1	0	-	-
 0x8027BAFC	0x8027C020	eaxadecf.cpp	9	9	9	9	0	-	-
-0x8027C020	0x8027D2E8	mtdecf.cpp	16	16	16	8	8	-	-
+0x8027C020	0x8027D2E8	mtdecf.cpp	16	16	16	16	0	-	-
 0x8027D2E8	0x8027D3AC	scrsfl.c	1	1	1	1	0	-	SNDI_findprime.c
 0x8027EFAC	0x8027F0DC	date.c	3	3	3	3	0	-	-
 0x8027F0DC	0x8027FB2C	GCmp.c	16	16	16	16	0	-	-

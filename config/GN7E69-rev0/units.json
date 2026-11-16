@@ -1993,10 +1993,6 @@
       "address": "0x8020E7EC",
       "evidence": "evidence.tsv function and name rows for 0x8020E7EC (documented holdout 0x8020E7EC-0x8020E9D0 at the start of src/engine/lltextur.c: draft registered in comparisons.json, original bytes). Called by ResTexture.cpp."
     },
-    "CodecReadSamples": {
-      "address": "0x8027D05C",
-      "evidence": "evidence.tsv function/name rows for 0x8027D05C; exact but unlinked in the comparison-only src/engine/mtdecf.cpp, which keeps its original bytes until the whole file can be linked; called here by name."
-    },
     "PlyrRollContestedCatch": {
       "address": "0x8009A77C",
       "evidence": "evidence.tsv function and name rows for 0x8009A77C (unlinked; called from linked src/game/LooseBall.cpp and src/game/Pursue.cpp)."
@@ -15966,6 +15962,31 @@
           "placement": ".data4",
           "start": "0x80301008",
           "end": "0x80301428"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/mtdecf.cpp",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8027C020-0x8027D2E8 (src/engine/mtdecf.cpp), its 16 function and name rows (NASCAR 2005 / FIFA 2005 names), the Snd::UTALKSTATE_CODA, Snd::CMTBLKDecf, Snd::MTFSTATE and Snd::MtCommand_t type rows, the source-form rows 0x8027C120-0x8027CF9C, the exact .rodata data row 0x802C2308-0x802C2370, the exact .data row 0x80301428-0x803018A8 with the Snd::bitmask, Snd::coeff_table, Snd::index_table and Snd::decode_table data rows, and the sound_cxx compiler rows; every function exact, completed in the c20 wave and linked.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8027C020",
+          "end": "0x8027D2E8"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C2308",
+          "end": "0x802C2370"
+        },
+        {
+          "section": ".data",
+          "placement": ".data4",
+          "start": "0x80301428",
+          "end": "0x803018A8"
         }
       ]
     },

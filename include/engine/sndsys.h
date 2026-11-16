@@ -186,12 +186,12 @@ typedef struct SndMtSampleUnpackFilter_t {
     unsigned int m1C;
     unsigned int m20;
     int m24;
-    Codec_8027CF9C *m28;
+    Snd::CMTBLKDecf *m28;
 } SndMtSampleUnpackFilter_t;
 
 typedef struct SndMtLoopUnpackFilter_t {
     Node_80279D90 mNode;
-    Codec_8027CF9C *m1C;
+    Snd::CMTBLKDecf *m1C;
     int m20;
     int m24;
     int m28;
@@ -207,7 +207,7 @@ typedef struct SndMtUnpackFilter_t {
     unsigned short mPacketPosition;
     unsigned char unk_0x2E[2];
     int mMode;
-    Codec_8027CF9C *mpCodec;
+    Snd::CMTBLKDecf *mpCodec;
     unsigned char mChannel;
 } SndMtUnpackFilter_t;
 
@@ -265,7 +265,6 @@ extern "C" {
 extern SndPacketPlayers_t sndpps;
 extern Struct_803B53EC lbl_803B53EC;
 extern unsigned char sndcents[];
-extern unsigned int lbl_80301428[];
 extern int lbl_803A772C;
 
 void *SNDMEMI_allocz(int size);
@@ -281,8 +280,6 @@ void iSNDcalcpitch(int index);
 int SNDI_getb(unsigned char *p, int size);
 float SNDI_cos(float x);
 float SNDI_sin(float x);
-void *fn_8027C020(int size);
-void fn_8027C04C(void *p);
 void calcFIRCoeffs(SndFirState_t *state, int type);
 void SNDI_fir8init(SndFirState_t *state);
 void SNDI_fir8(SndFirState_t *state, int count, float *in, float *out);
