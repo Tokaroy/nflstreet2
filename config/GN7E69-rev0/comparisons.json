@@ -33180,7 +33180,7 @@
     {
       "source": "src/engine/t3db_query.c",
       "profile": "engine_c_fastmath",
-      "evidence": "evidence.tsv unit row 0x80205754-0x8020B564 (src/engine/t3db_query.c, the whole original t3db_query.c of the NASCAR 2005 symbol table), its compiler row 0x8020840C-0x8020B564 (engine_c_fastmath, the profile all four former comparison pieces used), the source-form rows 0x8020651C-0x80207448, 0x80207448-0x802075F4, 0x802075F4-0x8020840C and 0x8020840C-0x802176E8, and the exact .rodata data row 0x802B1B90-0x802B1BB0. One source since c19c (the former comparison pieces src/engine/cu_8020651C.c, cu_802075F4.c and cu_8020840C.c are joined in address order). 0x80205DB8, 0x8020840C, 0x802088FC, 0x8020925C, 0x80209F34, 0x8020A908, 0x8020AE88 and 0x8020B094 have no source yet; partial: 0x802067D4, 0x802069BC, 0x8020A660. Comparison only; original assembly stays linked.",
+      "evidence": "evidence.tsv unit row 0x80205754-0x8020B564 (src/engine/t3db_query.c, the whole original t3db_query.c of the NASCAR 2005 symbol table), its compiler row 0x8020840C-0x8020B564 (engine_c_fastmath, the profile all four former comparison pieces used), the source-form rows 0x8020651C-0x80207448, 0x80207448-0x802075F4, 0x802075F4-0x8020840C and 0x8020840C-0x802176E8, and the exact .rodata data row 0x802B1B90-0x802B1BB0. One source since c19c (the former comparison pieces src/engine/cu_8020651C.c, cu_802075F4.c and cu_8020840C.c are joined in address order). 0x80205DB8, 0x8020840C, 0x802088FC, 0x8020925C, 0x80209F34, 0x8020A908 and 0x8020B094 have no source yet; partial: 0x802067D4, 0x802069BC, 0x8020A660, 0x8020AE88 (c19c draft, 98.02%: the target copies the zero result register into the key count, mr r24,r30, where ours loads li r24,0; the counter/initializer forms tried all give li). Comparison only; original assembly stays linked.",
       "sections": [
         {
           "section": ".text",
@@ -33355,6 +33355,11 @@
           "symbol": "fn_8020AD1C",
           "start": "0x8020AD1C",
           "end": "0x8020AE88"
+        },
+        {
+          "symbol": "fn_8020AE88",
+          "start": "0x8020AE88",
+          "end": "0x8020B094"
         }
       ]
     },

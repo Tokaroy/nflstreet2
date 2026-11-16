@@ -1312,3 +1312,56 @@ int fn_8020AD1C(int unused, TDbStmt_80205754 *pStmt, TDbLitRef_t *pLits, int bFi
     pResult->mErr = err;
     return err;
 }
+
+int fn_8020AE88(int unused, TDbStmt_80205754 *pStmt, unsigned long long *pKeys, TDbExpr_t **ppExprs,
+                TDbResult_8020AD1C *pResult)
+{
+    TDbValue_t value;
+    TDbLitRef_t lits[33];
+    unsigned int mask[8];
+    unsigned int count;
+    unsigned int i;
+    int err = 0;
+
+    memset(mask, 0, sizeof(mask));
+    pResult->mCount = err;
+    for (count = 0; (int)pKeys[count] != -1; count++) {
+        lits[count].mId = (int)pKeys[count];
+        lits[count].mTableId = pKeys[count] >> 32;
+    }
+    lits[count].mId = -1;
+    fn_8020A540();
+    if (pStmt->mTableCount == 1) {
+        err = fn_80207E24(pStmt, 0, 0);
+    } else {
+        err = fn_80208094(pStmt);
+    }
+    if (err == 0) {
+        pResult->mCount = err;
+        err = fn_80209E40(pStmt, lits);
+        if (err == 0) {
+            err = fn_80205B88(pStmt);
+            if (err == 0) {
+                for (err = fn_802075F4(pStmt, 0); err == 0; err = fn_80207988(pStmt, pStmt->mTableCount - 1)) {
+                    _TDbExprTest(pStmt->mWhere, &value, pStmt->mTables, pStmt->mRows);
+                    if (value.mValue.i != 0) {
+                        pResult->mCount++;
+                        for (i = 0; i < count; i++) {
+                            _TDbExprTest(ppExprs[i], &value, pStmt->mTables, pStmt->mRows);
+                            lits[i].mUnknown0 = value.mValue.i;
+                        }
+                        fn_80209F34(pStmt, lits, mask);
+                    }
+                }
+                fn_80205754(pStmt, lits, mask);
+                fn_80205C08(pStmt);
+            }
+        }
+        if (pResult->mCount != 0 && err == 0x17) {
+            err = 0;
+        }
+        fn_8020A5A8();
+    }
+    pResult->mErr = err;
+    return err;
+}
