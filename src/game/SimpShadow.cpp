@@ -31,7 +31,7 @@ void MatSetStack(int a);
 void MatPush(void);
 void MatPop(void);
 void MatCat(Mtx44 m);
-void MatScaleRow(float x, float y, float z);
+void MatScaleCol(float x, float y, float z);
 void MatStore(Mtx44 m);
 int MemFill(void *pDest, int size, int value, int width);
 void TMRenderReset(void);
@@ -198,7 +198,7 @@ void SimpShadowDrawAll(void)
             }
         }
         MatPush();
-        MatScaleRow(1.0f, 1.0f, 0.0f);
+        MatScaleCol(1.0f, 1.0f, 0.0f);
         MatStore(mtx);
         GXLoadPosMtxImm(mtx, 0);
         GXSetCurrentMtx(0);

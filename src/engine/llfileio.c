@@ -547,7 +547,7 @@ void FileAsyncCheckError(void)
         fn_801CE2B8(0);
         MatSetStack(VptGetMatrixStack());
         MatPushUnit();
-        MatScaleRow(0.0014705883f, -0.002232143f, 1.0f);
+        MatScaleCol(0.0014705883f, -0.002232143f, 1.0f);
         do {
             if (status != -1) {
                 fn_801F8768();

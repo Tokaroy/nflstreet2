@@ -64,7 +64,7 @@ void MatPush(void);
 void MatPop(void);
 void MatRotZ(int a);
 void MatTranslate(void *a);
-void MatScaleRow(float x, float y, float z);
+void MatScaleCol(float x, float y, float z);
 void MatStore(Mtx44 m);
 }
 
@@ -165,7 +165,7 @@ void DivotRenderDrawOne(DivotDrawView *pObject)
         MatPush();
         MatTranslate(pObject);
         MatRotZ(pObject->mUnknown30);
-        MatScaleRow(pObject->mUnknownC, pObject->mUnknown10, pObject->mUnknown14);
+        MatScaleCol(pObject->mUnknownC, pObject->mUnknown10, pObject->mUnknown14);
         MatStore(mtx);
         GXLoadPosMtxImm(mtx, 0);
         GXSetCurrentMtx(0);

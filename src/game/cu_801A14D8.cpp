@@ -213,7 +213,7 @@ void MatLoad(void *pMatrix);
 void MatRotY(int a);
 void MatTranslate(float *p);
 void MatScale(float scale);
-void MatScaleRow(float x, float y, float z);
+void MatScaleCol(float x, float y, float z);
 void MatStore(float (*pMatrix)[4]);
 int fn_801D2BB0(int a, void *p, int b, int c);
 void fn_801D2BD0(int handle);
@@ -612,7 +612,7 @@ void fn_801A209C(Object_8003DEC4 *pPlayer, float *pScale, float (*pMatrix)[4], P
     MatCat(pMatrix);
     MatScale(pPlayer->mUnknown24);
     if (pScale) {
-        MatScaleRow(pScale[0], pScale[1], pScale[2]);
+        MatScaleCol(pScale[0], pScale[1], pScale[2]);
     }
     MatPush();
     fn_80233BE0();

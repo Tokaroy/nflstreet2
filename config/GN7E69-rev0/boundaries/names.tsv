@@ -766,7 +766,7 @@ address	size	sibling_name	how	sibling_file	unit
 0x801D0BCC	64	MatRotZYX	name	llmatrix.c	llmatrix.c
 0x801D0C58	164	MatTranslate	name	llmatrix.c	llmatrix.c
 0x801D0CFC	152	MatScale	name	llmatrix.c	llmatrix.c
-0x801D0D94	176	MatScaleRow	name	llmatrix.c	llmatrix.c
+0x801D0D94	176	MatScaleCol	name	llmatrix.c	llmatrix.c
 0x801D0E94	80	MatTranspose	name	llmatrix.c	llmatrix.c
 0x801D0F80	56	MatStore	name	llmatrix.c	llmatrix.c
 0x801D0FB8	68	MatGetPos	name	llmatrix.c	llmatrix.c

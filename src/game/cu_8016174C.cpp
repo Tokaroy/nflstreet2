@@ -65,7 +65,7 @@ void MatRotX(int);
 void MatRotZ(int);
 void MatTranslate(void *);
 void MatScale(float);
-void MatScaleRow(float, float, float);
+void MatScaleCol(float, float, float);
 void MatLoadSlot(int);
 int fn_801CFE40(float, float);
 void fn_80227E40(void *, void *);
@@ -208,7 +208,7 @@ int fn_80161B38(Object_801618D8 *item) {
                 float scale = item->mUnknown1C;
                 MatTranslate(&item->mUnknown4);
                 MatRotZ(item->mUnknown14);
-                MatScaleRow(scale, scale, 1.0f);
+                MatScaleCol(scale, scale, 1.0f);
                 fn_80161AD4(item->mUnknown3C, item->mUnknown30);
                 if (!lbl_803EB388)
                     draw = 0;
@@ -246,7 +246,7 @@ int fn_80161B38(Object_801618D8 *item) {
                 float scale = item->mUnknown1C * item->mUnknown18;
                 MatTranslate(&item->mUnknown4);
                 MatRotZ(item->mUnknown14);
-                MatScaleRow(scale, scale, 1.0f);
+                MatScaleCol(scale, scale, 1.0f);
                 fn_80161AD4(item->mUnknown3C, item->mUnknown30);
                 if (!lbl_803EB38A)
                     draw = 0;

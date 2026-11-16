@@ -366,7 +366,7 @@ void fn_80221198(void *p)
         MatRotY((int)(pXf->mRotation[1] * 46603.38f));
         MatRotZ((int)(pXf->mRotation[2] * 46603.38f));
     }
-    MatScaleRow(pXf->mScale[0], pXf->mScale[1], pXf->mScale[2]);
+    MatScaleCol(pXf->mScale[0], pXf->mScale[1], pXf->mScale[2]);
     aNeg[0] = -pXf->mPivot[0];
     aNeg[1] = -pXf->mPivot[1];
     aNeg[2] = -pXf->mPivot[2];

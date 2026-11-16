@@ -32,7 +32,7 @@ void MatRotZYX(int z, int y, int x);
 void MatSetAxes(float *pMatrix, float *pX, float *pY, float *pZ);
 void MatTranslate(float *pPos);
 void MatScale(float scale);
-void MatScaleRow(float x, float y, float z);
+void MatScaleCol(float x, float y, float z);
 void MatScalePos(float scale);
 void MatTranspose(void);
 void MatInvertRigid(void);

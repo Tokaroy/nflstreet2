@@ -19,7 +19,7 @@ void MatRotX(int);
 void MatRotY(int);
 void MatRotZ(int);
 void MatTranslate(void *);
-void MatScaleRow(float, float, float);
+void MatScaleCol(float, float, float);
 int ObjNewType_(int, int, int, void (*)(UISModel_t *, UISModelDesc_t *), void (*)(UISModel_t *));
 int ObjDelType(int);
 int ObjSetListObjFunc(void *, int, int, int (*)(UISModel_t *, int));
@@ -113,7 +113,7 @@ int UISModelDraw(UISModel_t *pObject, int value)
     MatRotX(pObject->mUnknown1A8);
     MatRotY(pObject->mUnknown1AC);
     MatRotZ(pObject->mUnknown1B0);
-    MatScaleRow(pObject->mUnknown1C0.mX, pObject->mUnknown1C0.mY, pObject->mUnknown1C0.mZ);
+    MatScaleCol(pObject->mUnknown1C0.mX, pObject->mUnknown1C0.mY, pObject->mUnknown1C0.mZ);
     if (pObject->mUnknown198 & 1) {
         if (pObject->mUnknown1E4 == 255) {
             fn_80235740(&pObject->mUnknown48, context);

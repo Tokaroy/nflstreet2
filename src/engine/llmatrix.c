@@ -5,7 +5,7 @@
 #include "engine/matrix.h"
 #include "engine/llmatrix.h"
 
-static MatStack_t *_Mat_pCurStack = 0;
+MatStack_t *_Mat_pCurStack = 0;
 static MatMatrix_t _LLMatrix_SlotArray[16];
 
 void PSMTXConcat(float *pA, float *pB, float *pDst);
@@ -311,7 +311,7 @@ void MatScale(float scale)
     p[10] *= scale;
 }
 
-void MatScaleRow(float x, float y, float z)
+void MatScaleCol(float x, float y, float z)
 {
     float *p = MatGetCurMatrixPtr();
 
