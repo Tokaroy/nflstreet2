@@ -19616,6 +19616,25 @@
       ]
     },
     {
+      "source": "src/engine/sstrstat.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8026EF88-0x8026F19C (src/engine/sstrstat.c), its function and name rows, the exact data row 0x802B7980-0x802B79A0 of its .rodata literals, the source-form row for its rounding helper and the sound_cxx compiler row 0x8026E4C0-0x80270494; every function exact, promoted from comparison-only. No owned .data or .bss.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8026EF88",
+          "end": "0x8026F19C"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B7980",
+          "end": "0x802B79A0"
+        }
+      ]
+    },
+    {
       "source": "src/engine/sstsetgl.c",
       "profile": "sound_cxx",
       "evidence": "evidence.tsv unit row 0x8026F19C-0x8026F1E8 (src/engine/sstsetgl.c), its function and name rows, and the sound_cxx compiler row 0x8026E4C0-0x80270494; every function exact, promoted from comparison-only. No owned .data or .bss.",

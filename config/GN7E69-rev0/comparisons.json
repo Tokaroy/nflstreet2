@@ -41142,32 +41142,6 @@
       ]
     },
     {
-      "source": "src/engine/sstrstat.c",
-      "profile": "sound_cxx",
-      "evidence": "evidence.tsv unit row for src/engine/sstrstat.c; draft comparison.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x8026EF88",
-          "end": "0x8026F19C"
-        },
-        {
-          "section": ".rodata",
-          "placement": ".data3",
-          "start": "0x802B7980",
-          "end": "0x802B79A0"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "SNDSTRM_requeststatus",
-          "start": "0x8026EF88",
-          "end": "0x8026F19C"
-        }
-      ]
-    },
-    {
       "source": "src/engine/sst3dpos.c",
       "profile": "sound_cxx",
       "evidence": "evidence.tsv unit row for src/engine/sst3dpos.c; draft comparison.",

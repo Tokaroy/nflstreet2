@@ -157,7 +157,7 @@ int SNDstop(int handle);
 int SNDSTRM_overhead(int a, int b);
 int SNDSTRM_pitchmult(int handle, int a);
 int SNDSTRM_drylevel(int handle, int a);
-int fn_8026EF88(int a, int b);
+int SNDSTRM_requeststatus(int a, int b);
 void SNDSTRM_status(int handle, int *pStatus);
 void SNDSYS_service(void);
 int fn_802714A8(int handle, int value);
@@ -769,7 +769,7 @@ int SndStreamGetPosition(int a, int b)
     result = -1;
     if (SND_READY()) {
         SND_LOCK();
-        result = fn_8026EF88(a, b);
+        result = SNDSTRM_requeststatus(a, b);
         SND_UNLOCK();
     }
     return result;
