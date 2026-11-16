@@ -193,8 +193,6 @@ extern int gFilterSetting[8];
 extern char spchlibauthor[];
 extern SpchAllocator *gSPCH_Allocator;
 extern int gSPCH_Initialized;
-extern int gAddEventStatus;
-extern int gSPCHPlayStatus;
 extern int gGameNum;
 extern int gDataRate;
 extern int gPreLoadTicks;

@@ -2353,14 +2353,6 @@
       "address": "0x8037E234",
       "evidence": "evidence.tsv data/name rows for 0x8037E234 (target extent, related name); speech-library storage, original-owned."
     },
-    "gAddEventStatus": {
-      "address": "0x803EBB18",
-      "evidence": "evidence.tsv data/name rows for 0x803EBB18 (target extent, related name); speech-library storage, original-owned."
-    },
-    "gSPCHPlayStatus": {
-      "address": "0x803EBB1C",
-      "evidence": "evidence.tsv data/name rows for 0x803EBB1C (target extent, related name); speech-library storage, original-owned."
-    },
     "gPreLoadTicks": {
       "address": "0x803ECEA8",
       "evidence": "evidence.tsv data/name rows for 0x803ECEA8 (target extent, related name); speech-library storage, original-owned."
@@ -20508,13 +20500,19 @@
     {
       "source": "src/engine/spchevnt.c",
       "profile": "speech_cxx",
-      "evidence": "evidence.tsv unit row 0x801AE3E4-0x801AF60C (src/engine/spchevnt.c), its function, name, type and source-form rows (FAKEMATCH rows 0x801AE444, 0x801AE474, 0x801AE658, 0x801AE9A0) and the speech_cxx compiler row; all 46 functions exact, named from NASCAR 2005's spchevnt.c (same order, every size equal), promoted from comparison-only. The file defines no data: the speech-library storage it uses (gCallbacks, gEventDats, gVoxEvents, gVoxInGame, gFilterSetting, gSPCH_Allocator, gAddEventStatus, gSPCHPlayStatus, gGameNum, gDataRate, gPreLoadTicks, gLastTick, gLastSubTick) stays original-owned, referenced through externals (their data and name rows).",
+      "evidence": "evidence.tsv unit row 0x801AE3E4-0x801AF60C (src/engine/spchevnt.c), its function, name, type and source-form rows (FAKEMATCH rows 0x801AE444, 0x801AE474, 0x801AE658, 0x801AE9A0) and the speech_cxx compiler row; all 46 functions exact, named from NASCAR 2005's spchevnt.c (same order, every size equal), promoted from comparison-only. It defines its own .sdata, the two file-static re-entry guards gAddEventStatus and gSPCHPlayStatus (0x803EBB18-0x803EBB20, their data rows: NASCAR 2005 lists both as locals under its spchevnt.c marker, and they sit between gSPCH_AddEvent and spchrand.c's gRandArrayIndex as in the gRandArray data row). The rest of the speech-library storage it uses (gCallbacks, gEventDats, gVoxEvents, gVoxInGame, gFilterSetting, gSPCH_Allocator, gGameNum, gDataRate, gPreLoadTicks, gLastTick, gLastSubTick) is global in NASCAR 2005 and belongs to the data-only spchdata.c that is linked before this file (gRandArray data row), so it stays original-owned, referenced through externals (their data and name rows).",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x801AE3E4",
           "end": "0x801AF60C"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EBB18",
+          "end": "0x803EBB20"
         }
       ]
     }
