@@ -33180,7 +33180,7 @@
     {
       "source": "src/engine/t3db_query.c",
       "profile": "engine_c_fastmath",
-      "evidence": "evidence.tsv unit row 0x80205754-0x8020B564 (src/engine/t3db_query.c, the whole original t3db_query.c of the NASCAR 2005 symbol table), its compiler row 0x8020840C-0x8020B564 (engine_c_fastmath, the profile all four former comparison pieces used), the source-form rows 0x8020651C-0x80207448, 0x80207448-0x802075F4, 0x802075F4-0x8020840C and 0x8020840C-0x802176E8, and the exact .rodata data row 0x802B1B90-0x802B1BB0. One source since c19c (the former comparison pieces src/engine/cu_8020651C.c, cu_802075F4.c and cu_8020840C.c are joined in address order). 0x80205DB8, 0x8020840C, 0x802088FC, 0x8020925C, 0x80209F34, 0x8020A908 and 0x8020B094 have no source yet; partial: 0x802067D4, 0x802069BC, 0x8020A660, 0x8020AE88 (c19c draft, 98.02%: the target copies the zero result register into the key count, mr r24,r30, where ours loads li r24,0; the counter/initializer forms tried all give li). Comparison only; original assembly stays linked.",
+      "evidence": "evidence.tsv unit row 0x80205754-0x8020B564 (src/engine/t3db_query.c, the whole original t3db_query.c of the NASCAR 2005 symbol table), its compiler row 0x8020840C-0x8020B564 (engine_c_fastmath, the profile all four former comparison pieces used), the source-form rows 0x8020651C-0x80207448, 0x80207448-0x802075F4, 0x802075F4-0x8020840C and 0x8020840C-0x802176E8, and the exact .rodata data row 0x802B1B90-0x802B1BB0. One source since c19c (the former comparison pieces src/engine/cu_8020651C.c, cu_802075F4.c and cu_8020840C.c are joined in address order). All 40 functions drafted (the seven bodies 0x80205DB8, 0x8020840C, 0x802088FC, 0x8020925C, 0x80209F34, 0x8020A908 and 0x8020B094 from the 2026-10-30 s72a/s73a drafts, ported by c19c); 37 exact. Partial: 0x802067D4 (95.70%, ~140 forms by s73a), 0x8020925C (99.98%, one inverted branch after the mErr == 7 test), 0x8020AE88 (98.02%: the target copies the zero result register into the key count, mr r24,r30). Labeled forms: the source-form row 0x80205754-0x8020B564 't3db_query.c labeled forms'. Comparison only; original assembly stays linked.",
       "sections": [
         {
           "section": ".text",
@@ -33225,6 +33225,11 @@
           "symbol": "fn_80205C44",
           "start": "0x80205C44",
           "end": "0x80205DB8"
+        },
+        {
+          "symbol": "fn_80205DB8",
+          "start": "0x80205DB8",
+          "end": "0x8020651C"
         },
         {
           "symbol": "fn_8020651C",
@@ -33317,6 +33322,11 @@
           "end": "0x8020840C"
         },
         {
+          "symbol": "fn_8020840C",
+          "start": "0x8020840C",
+          "end": "0x802087D4"
+        },
+        {
           "symbol": "fn_802087D4",
           "start": "0x802087D4",
           "end": "0x802088A8"
@@ -33327,9 +33337,24 @@
           "end": "0x802088FC"
         },
         {
+          "symbol": "fn_802088FC",
+          "start": "0x802088FC",
+          "end": "0x8020925C"
+        },
+        {
+          "symbol": "fn_8020925C",
+          "start": "0x8020925C",
+          "end": "0x80209E40"
+        },
+        {
           "symbol": "fn_80209E40",
           "start": "0x80209E40",
           "end": "0x80209F34"
+        },
+        {
+          "symbol": "fn_80209F34",
+          "start": "0x80209F34",
+          "end": "0x8020A3A0"
         },
         {
           "symbol": "fn_8020A3A0",
@@ -33352,6 +33377,11 @@
           "end": "0x8020A908"
         },
         {
+          "symbol": "fn_8020A908",
+          "start": "0x8020A908",
+          "end": "0x8020AD1C"
+        },
+        {
           "symbol": "fn_8020AD1C",
           "start": "0x8020AD1C",
           "end": "0x8020AE88"
@@ -33360,6 +33390,11 @@
           "symbol": "fn_8020AE88",
           "start": "0x8020AE88",
           "end": "0x8020B094"
+        },
+        {
+          "symbol": "fn_8020B094",
+          "start": "0x8020B094",
+          "end": "0x8020B564"
         }
       ]
     },
