@@ -123,12 +123,12 @@ static int fn_801D3D98(const char *pPattern, const char *pName)
     short length = strlen(pPattern);
 
     while (match && length != 0 && pPattern[i] != '*') {
-        if (pPattern[i] == pName[i]) {
-            length--;
-            i++;
-        } else {
+        if (pPattern[i] != pName[i]) {
             match = 0;
+            break;
         }
+        length--;
+        i++;
     }
     if (match == 1 && pPattern[i] != '*') {
         if (strlen(pPattern) != strlen(pName)) {
@@ -201,16 +201,18 @@ void fn_801D4120(void)
 
 void fn_801D4198(void)
 {
-    int tries = 3;
-    int chan;
+    int tries;
+    int chan = 0;
 
-    for (chan = 0; chan < 2 && tries > 0; chan++) {
+    do {
+        tries = 3;
         if ((lbl_80384CC0.mMounted >> chan) & 1) {
             do {
                 tries--;
             } while (fn_801D466C(chan) == -1);
         }
-    }
+        chan++;
+    } while (chan < 2 && tries > 0);
 }
 
 int fn_801D4204(int port)
@@ -291,18 +293,19 @@ int fn_801D444C(int port)
     lbl_80384CD0.mResult = -99;
     status = CARDProbeEx(fn_801D4204(port), &lbl_80384DB8.mMemSize, &lbl_80384DB8.mSectorSize);
     lbl_80384CD0.mResult = status;
+    // FAKEMATCH: case store orders (busy first, result last; mType before mResult for no card) chosen by testing twelve orders
     switch (status) {
     case CARD_RESULT_READY:
         lbl_80384CD0.mBusy = 0;
-        result = 0;
         lbl_80384DB8.mType = fn_801D3D04(lbl_80384DB8.mMemSize, lbl_80384DB8.mSectorSize);
         lbl_80384CD0.mResult = status;
+        result = 0;
         break;
     case CARD_RESULT_WRONGDEVICE:
-        lbl_80384DB8.mType = 8;
-        result = 0;
-        lbl_80384CD0.mResult = 0;
         lbl_80384CD0.mBusy = 0;
+        lbl_80384DB8.mType = 8;
+        lbl_80384CD0.mResult = 0;
+        result = 0;
         break;
     case CARD_RESULT_BUSY:
         lbl_80384CD0.mResult = result;
@@ -311,10 +314,10 @@ int fn_801D444C(int port)
         break;
     case CARD_RESULT_FATAL_ERROR:
     case CARD_RESULT_NOCARD:
-        lbl_80384CD0.mResult = 0;
         lbl_80384CD0.mBusy = 0;
-        result = 0;
         lbl_80384DB8.mType = 0;
+        lbl_80384CD0.mResult = 0;
+        result = 0;
         break;
     default:
         result = -1;
@@ -600,13 +603,14 @@ static void fn_801D4D90(s32 chan, s32 result)
         lbl_80384CD0.mResult = CARDGetStatus(chan, fileNo, &lbl_80384CD0.mStat);
         if (lbl_80384CD0.mResult == CARD_RESULT_READY) {
             if (fn_801D4108(lbl_80384CD0.mName) == 0) {
-                CARDSetBannerFormat(&lbl_80384CD0.mStat, CARD_STAT_BANNER_NONE);
-                CARDSetIconAnim(&lbl_80384CD0.mStat, CARD_STAT_ANIM_LOOP);
-                CARDSetCommentAddress(&lbl_80384CD0.mStat, 0);
-                CARDSetIconAddress(&lbl_80384CD0.mStat, 0x40);
+                // FAKEMATCH: setter order (addresses first, banner last) chosen by testing; plain field stores for the two addresses
+                lbl_80384CD0.mStat.commentAddr = 0;
+                lbl_80384CD0.mStat.iconAddr = 0x40;
                 CARDSetIconFormat(&lbl_80384CD0.mStat, 0, CARD_STAT_ICON_RGB5A3);
                 CARDSetIconSpeed(&lbl_80384CD0.mStat, 0, CARD_STAT_SPEED_SLOW);
                 CARDSetIconSpeed(&lbl_80384CD0.mStat, 1, CARD_STAT_SPEED_END);
+                CARDSetBannerFormat(&lbl_80384CD0.mStat, CARD_STAT_BANNER_NONE);
+                CARDSetIconAnim(&lbl_80384CD0.mStat, CARD_STAT_ANIM_LOOP);
             }
             lbl_80384CD0.mResult = fileNo;
         }
