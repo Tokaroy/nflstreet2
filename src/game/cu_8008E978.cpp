@@ -10260,8 +10260,8 @@ StevRow_t *fn_8005FC7C(void);
 void fn_80177E6C(int a, int flip);
 int TutorialFinishCategory(void);
 int fn_80061D14(void);
-void fn_801CE720(void);
-void fn_801CE774(void);
+void GlibSetUpRender(void);
+void GlibFinishRender(void);
 void fn_800ABA90(void);
 }
 
@@ -10439,8 +10439,8 @@ void Class_80297B90::vfn_04(float dt)
         break;
     case 18:
         if (ScreenTransIsActive() == 0) {
-            fn_801CE720();
-            fn_801CE774();
+            GlibSetUpRender();
+            GlibFinishRender();
             SndgMusicFadeOut(250, 1);
             InGameStop();
         }

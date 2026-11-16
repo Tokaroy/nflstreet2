@@ -75,9 +75,9 @@ int FileHostRead(int handle, void *pDst, int size);
 int FileHostWrite(int handle, const void *pSrc, int size);
 int FileHostLSeek(int handle, int offset, int whence);
 int FileHostGetSize(int handle);
-void fn_801CEA7C(unsigned char clear);
-void fn_801CE908(unsigned char enable);
-void fn_801CE82C(void);
+void GlibSetClear(unsigned char clear);
+void GlibSetVIInt(unsigned char enable);
+void GlibSwapBuffers(void);
 void PSMTXIdentity(float (*pMtx)[4]);
 void GXSetProjection(float (*pMtx)[4], int type);
 
@@ -542,9 +542,9 @@ void FileAsyncCheckError(void)
         GXSetVtxAttrFmt(0, 13, 1, 4, 0);
         GXSetNumTexGens(0);
         GXSetNumTevStages(1);
-        fn_801CEA7C(1);
-        fn_801CE908(0);
-        fn_801CE2B8(0);
+        GlibSetClear(1);
+        GlibSetVIInt(0);
+        GlibEnableVIRetraceCallback(0);
         MatSetStack(VptGetMatrixStack());
         MatPushUnit();
         MatScaleCol(0.0014705883f, -0.002232143f, 1.0f);
@@ -557,18 +557,18 @@ void FileAsyncCheckError(void)
             fn_801CD308(0, lbl_802F4A74);
             fn_801CDD18();
             _FileDisplayErrorString(&pos, status);
-            fn_801CE82C();
+            GlibSwapBuffers();
         } while (current == status);
         fn_801CD2A4();
         fn_801CD308(0, lbl_802F4A74);
         fn_801CDD18();
         pos.y = 0.0f;
         fn_801CDB5C(lbl_803ECEF8, "Loading...", 1, 0.0f, &pos.x);
-        fn_801CE82C();
+        GlibSwapBuffers();
         MatPop();
         fn_801F7AD4(level);
-        fn_801CE908(1);
-        fn_801CE2B8(1);
+        GlibSetVIInt(1);
+        GlibEnableVIRetraceCallback(1);
     }
 }
 

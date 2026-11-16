@@ -28,8 +28,8 @@ Mtx44Ptr MatGetCurMatrixPtr(void);
 void GXLoadPosMtxImm(Mtx44 m, int a);
 void fn_80227490(float *pOut, float *pIn, int a, int b, int c);
 void fn_8022765C(float *pOut, float *pA, float *pB);
-int fn_801CEA08(void);
-int fn_801CEA14(void);
+int GlibGetScreenWidth(void);
+int GlibGetScreenHeight(void);
 }
 
 /* The texture of one marker kind: 0x4C bytes of .bss, of which the draw code uses only the
@@ -246,8 +246,8 @@ unsigned int FieldMarkerReadDepth(float x, float y)
     u32 depth = 0;
     if (x <= -1.0f || y <= -1.0f || x >= 1.0f || y >= 1.0f)
         return depth;
-    unsigned short screenX = (unsigned short)((x + 1.0f) * fn_801CEA08() * 0.5f);
-    unsigned short screenY = (unsigned short)((1.0f - y) * fn_801CEA14() * 0.5f);
+    unsigned short screenX = (unsigned short)((x + 1.0f) * GlibGetScreenWidth() * 0.5f);
+    unsigned short screenY = (unsigned short)((1.0f - y) * GlibGetScreenHeight() * 0.5f);
     GXPeekZ(screenX, screenY, &depth);
     return depth;
 }

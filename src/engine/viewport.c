@@ -24,9 +24,9 @@ typedef struct VptCallbackMatch_t {
 } VptCallbackMatch_t;
 
 extern void FileAsyncCheckError(void);
-extern void fn_801CE720(void);
-extern void fn_801CE774(void);
-extern int fn_801CEA14(void);
+extern void GlibSetUpRender(void);
+extern void GlibFinishRender(void);
+extern int GlibGetScreenHeight(void);
 extern float fn_801CFD28(int angle);
 extern int MatNewStack(unsigned int a, unsigned int b);
 extern int MatDelStack(unsigned int a);
@@ -168,7 +168,7 @@ Viewport_t *VptOpen(ViewportDesc_t *pDesc)
             pObject->mUnknown48[i] = pDesc->mUnknown4[i];
         }
         pObject->mUnknown4 = 0.0f;
-        pObject->mUnknown8 = ((float)fn_801CEA14() - (float)pDesc->mUnknown16) * 0.5f;
+        pObject->mUnknown8 = ((float)GlibGetScreenHeight() - (float)pDesc->mUnknown16) * 0.5f;
         pObject->mUnknown12 = pDesc->mUnknown18;
         pObject->mUnknown16 = pDesc->mUnknown16;
         pObject->mUnknown20 = pDesc->mUnknown18;
@@ -256,10 +256,10 @@ void VptProcessViewports(void)
     FileAsyncCheckError();
     fn_801F8768();
     if (!_Vpt_IsProcessing) {
-        fn_801CE720();
+        GlibSetUpRender();
         _Vpt_IsProcessing = 1;
         fn_801C6D34(_Vpt_ViewportList, 0, 0, 0, _VptTraverseProcessViewport, 1);
-        fn_801CE774();
+        GlibFinishRender();
         VptFlushObjectTrash();
         _Vpt_IsProcessing = 0;
     }

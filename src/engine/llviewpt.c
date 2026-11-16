@@ -10,7 +10,7 @@
 #include "engine/llglib.h"
 #include "engine/llmatrix.h"
 
-extern void fn_801CEC48(int a, int b, int c, int d);
+extern void GlibSetScissor(int a, int b, int c, int d);
 extern float fn_801CFD28(int angle);
 extern int ObjNewList(int a, int b, int c, int d, int e, int f, int g, int h);
 extern void ObjDelList(int handle);
@@ -25,7 +25,7 @@ static int _Vpt_TrashLatency = 0;
 
 static void _VptSetupScissor(Viewport_t *pObject)
 {
-    fn_801CEC48((unsigned int)pObject->mUnknown4, (unsigned int)pObject->mUnknown20,
+    GlibSetScissor((unsigned int)pObject->mUnknown4, (unsigned int)pObject->mUnknown20,
                 (unsigned int)pObject->mUnknown8, (unsigned int)pObject->mUnknown24);
 }
 
@@ -91,9 +91,9 @@ void VptSetUpRender(Viewport_t *pObject)
     Mtx44 viewport;
     Mtx44 projection;
     Mtx44 m;
-    float width = fn_801CEA08();
-    float height = fn_801CEA14();
-    float depth = (float)((1 << fn_801CE93C()) - 1) * 0.0625f;
+    float width = GlibGetScreenWidth();
+    float height = GlibGetScreenHeight();
+    float depth = (float)((1 << GlibGetZDepthBits()) - 1) * 0.0625f;
 
     VptViewport(viewport, pObject->mUnknown4, pObject->mUnknown8, pObject->mUnknown20, pObject->mUnknown24, depth);
     if (pObject->mUnknown28 & 4) {
@@ -104,7 +104,7 @@ void VptSetUpRender(Viewport_t *pObject)
                     pObject->mUnknown224, pObject->mUnknown232, pObject->mUnknown236, pObject->mUnknown240);
     }
     MatCopyMatrix((float *)pObject->mUnknown140, projection[0]);
-    fn_801CEA20(projection);
+    GlibSetProjection(projection);
     GXSetViewport(pObject->mUnknown4, pObject->mUnknown8, pObject->mUnknown20, pObject->mUnknown24, 0.0f, 1.0f);
     MatSetSlot(2, projection[0]);
     MatSetSlot(1, viewport[0]);
@@ -159,7 +159,7 @@ void VptFlushObjectTrash(void)
 
 void VptFlushObjectTrashSync(void)
 {
-    fn_801CE910();
+    GlibSyncFrame();
     VptFlushObjectTrash();
     VptFlushObjectTrash();
     VptFlushObjectTrash();

@@ -38,9 +38,9 @@ float fn_80237260(int);
 unsigned char ParticleTrailIsEnabled(void);
 GlowTexture_t *GlowGetTexture(int);
 void GlowTransformPoint(Vector_80039F5C *, Vector_80039F5C *);
-int fn_801CEB4C(void);
-int fn_801CEC74(void);
-int fn_801CEA14(void);
+int GlibGetWidescreenMode(void);
+int GlibGetScreenLetterBoxHeight(void);
+int GlibGetScreenHeight(void);
 unsigned int FieldMarkerReadDepth(float, float);
 int TexGetNumMaterials(void *);
 int TexGetNumPalettes(void *);
@@ -397,9 +397,9 @@ void fn_80197FDC(void *unused, Glow_t *p)
         depth = depth < 0.0f ? 0.0f : (depth > 1.0f ? 1.0f : depth);
         unsigned int value = (unsigned int)(depth * 16777215.0f);
         if (!(projected[0] <= -1.0f || projected[0] >= 1.0f || projected[1] <= -1.0f || projected[1] >= 1.0f)) {
-            if (GameOptionsGet(6) == 1 || fn_801CEB4C() == 1) {
-                int height = fn_801CEC74();
-                projected[1] *= (float)height / (float)fn_801CEA14();
+            if (GameOptionsGet(6) == 1 || GlibGetWidescreenMode() == 1) {
+                int height = GlibGetScreenLetterBoxHeight();
+                projected[1] *= (float)height / (float)GlibGetScreenHeight();
             }
             if (value > FieldMarkerReadDepth(projected[0], projected[1]) || !GlowIsOnScreen((Vector_80039F5C *)projected)) p->mUnknown11 = 0;
             else p->mUnknown11 = 1;

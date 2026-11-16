@@ -56,8 +56,8 @@ static unsigned int _ScreenTrans_uOnceColor;
 static float _ScreenTrans_fOnceAlpha;
 static int _ScreenTrans_bDrawOnce;
 
-void fn_801CEA44(int);
-int fn_801CEC74(void);
+void GlibSetCopyFilter(int);
+int GlibGetScreenLetterBoxHeight(void);
 void GXSetNumChans(int);
 void GXSetChanMatColor(int, GXColor);
 void GXSetChanCtrl(int, int, int, int, int, int, int);
@@ -84,7 +84,7 @@ int _ScreenTransCaptureFrame(void) {
     GXSetCopyFilter(0, 0, 0, 0);
     GXCopyTex(_ScreenTrans_pCapture, 0);
     GXPixModeSync();
-    fn_801CEA44(1);
+    GlibSetCopyFilter(1);
     return 1;
 }
 void _ScreenTransDrawFrame(ScreenTrans_t *state, unsigned int mode) {
@@ -112,7 +112,7 @@ void _ScreenTransDrawFrame(ScreenTrans_t *state, unsigned int mode) {
     }
     if (GameOptionsGet(6) == 1) {
         const float height = 448.0f;
-        adjust = (float)((448 - fn_801CEC74()) / 2) / height;
+        adjust = (float)((448 - GlibGetScreenLetterBoxHeight()) / 2) / height;
     }
     if (_ScreenTrans_pCapture) {
         _ScreenTransSetupDraw(1, 0, state->mAlpha);

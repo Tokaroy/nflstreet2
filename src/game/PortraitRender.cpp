@@ -36,7 +36,7 @@ struct PortraitPoseDesc_t {
 };
 
 extern "C" {
-void fn_801CE95C(void);
+void GlibClearZBuffer(void);
 void MatMakeUnitMatrix(PortraitMtx44_t m);
 void MatSetStack(void);
 void MatPush(void);
@@ -457,7 +457,7 @@ void PortraitRenderDraw(PortraitJob_t *pObject)
     PortraitRenderDrawModels(pObject);
     PortraitRenderCapture(pObject);
     PortraitRenderAfterCapture();
-    fn_801CE95C();
+    GlibClearZBuffer();
 }
 
 void PortraitRenderGetColor(unsigned char (*pColors)[4], int index, unsigned char *pR, unsigned char *pG,

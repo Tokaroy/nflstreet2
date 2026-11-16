@@ -558,7 +558,7 @@ void *fn_801C6B4C(void *pool, void *item);
 void fn_801C6C0C(void *pool, void *item);
 void *fn_801C6C84(void *pool, void *item);
 int fn_801C6DCC(void *pool, int a, int key, void *pResult, int (*match)(SndgPathCallbackKey_t *, int, SndgPathCallbackKey_t **));
-void fn_801CE7D0(int a);
+void GlibVsync(int a);
 int fn_801CFE40(float y, float x);
 unsigned int fn_801D27F4(int a);
 int MemFill(void *p, int size, int value, int align);
@@ -1976,7 +1976,7 @@ extern "C" void SndgShutdown(void)
 
     if (_Sndg_sState.m20) {
         for (i = 0; i < 20; i++) {
-            fn_801CE7D0(1);
+            GlibVsync(1);
             SndService();
         }
         SndUnloadAll();
