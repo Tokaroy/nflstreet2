@@ -50,7 +50,7 @@ void fn_8009418C(void);
 void CamSetupAspect(void);
 void FEPlyrLoadUpdate(void);
 void MsgGameSetFEStarted(int a);
-void fn_80186EF4(void);
+void UserProfileInit(void);
 void GameTextReset(void);
 void GameTextServiceReset(void);
 void GameTextSetSetupActive(int a);
@@ -294,7 +294,7 @@ void FELoop::Boot()
     } else {
         CamSetupAspect();
     }
-    fn_80186EF4();
+    UserProfileInit();
     BootPlayIntroMovies();
     ResTrackLabel("FELoopBootFinish");
 }
