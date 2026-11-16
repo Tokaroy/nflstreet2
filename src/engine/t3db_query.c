@@ -518,18 +518,6 @@ unsigned int fn_802067D4(TDbIndex_t *pIndex, TDbExpr_t *pExpr, TDbIdxColumnDef_t
     return score;
 }
 
-static inline void TDbMemNotifyEnd(void)
-{
-    TDbMemEvent_t event;
-
-    if (_tDbMemAllocInfoCallback) {
-        event.mType = 4;
-        event.mUnknown4 = -1;
-        event.mUnknown8 = -1;
-        _tDbMemAllocInfoCallback(&event);
-    }
-}
-
 int fn_802069BC(TDbTable_t *pTable, TDbIdxColumnDef_t *pCols, TDbExpr_t *pFilter,
                 TDbIndex_t **ppIndex)
 {
@@ -595,7 +583,7 @@ int fn_802069BC(TDbTable_t *pTable, TDbIdxColumnDef_t *pCols, TDbExpr_t *pFilter
             TDbExtMemFree(pTable->mDb->mHeap, pIndex, count * sizeof(TDbIdxPart_t) + 0x3C);
         }
     }
-    TDbMemNotifyEnd();
+    _TDbMemNotifyEnd();
     return err;
 }
 
@@ -680,7 +668,7 @@ int fn_80206EB8(TDbStmt_80205754 *pStmt, TDbIdxColumnDef_t *pCols, TDbQIdx_80205
     }
     _TDbMemNotify(3, (int)pDb->mUnknown8, -1);
     err = TDbExtMemAlloc(pDb->mHeap, count * sizeof(TDbIdxPart_t) + 0x4C, ppQIdx);
-    _TDbMemNotify(4, -1, -1);
+    _TDbMemNotifyEnd();
     (*ppQIdx)->mCount = 0;
     if (err == 0) {
         (*ppQIdx)->mStmt = pStmt;
@@ -1751,7 +1739,7 @@ int fn_8020925C(TDbDatabase_801FAA00 *pDb, int tableId, TDbQuery_t *pQuery, unsi
     }
     _TDbMemNotify(3, (int)pDb->mUnknown8, tableId);
     pResult->mErr = TDbExtMemAlloc(pDb->mHeap, (n + 1) * sizeof(TDbColumn_t), &pCols);
-    TDbMemNotifyEnd();
+    _TDbMemNotifyEnd();
     if (pResult->mErr == 0) {
         pDef = pCols;
         for (p = pSpec; *p != (unsigned long long)-1; p++) {

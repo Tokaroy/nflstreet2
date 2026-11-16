@@ -241,6 +241,20 @@ static inline void Notify_801F8A54(int type, int a, int b)
     }
 }
 
+/* Closing memory event (type 4, both arguments -1). */
+/* FAKEMATCH: parameterless end-event inline (same event as Notify_801F8A54(4, -1, -1)); it sets the two -1 arguments after the callback test as the target does, see include/engine/t3db.h _TDbMemNotifyEnd */
+static inline void NotifyEnd_801F8A54(void)
+{
+    TDbEvent_801F8A54 event;
+
+    if (_tDbMemAllocInfoCallback != 0) {
+        event.mType = 4;
+        event.mUnk4 = -1;
+        event.mUnk8 = -1;
+        _tDbMemAllocInfoCallback(&event);
+    }
+}
+
 /* Finds the open database with this id, in any state. */
 /* FAKEMATCH: inline helper chosen for codegen; with the search loop written in place fn_801F9228 and fn_801F92EC give 95.71% and 95.62% */
 static inline TDbDb_801F88F0 *LookupDb_801F9228(int db)
@@ -398,7 +412,7 @@ int fn_801F8A54(TDbInitParms_801F8A0C *pParms)
         if (err != 0) {
             TDbExtMemShutdown(lbl_803EBE8C);
         }
-        Notify_801F8A54(4, -1, -1);
+        NotifyEnd_801F8A54();
         pFuncs = pParms->pStrFuncs;
         if (pFuncs != 0) {
             lbl_803EBE70 = (pFuncs->pStrlen != 0) ? pFuncs->pStrlen : strlen;
@@ -465,7 +479,7 @@ int fn_801F8D60(int db, int size)
         if (err == 0) {
             Notify_801F8A54(1, db, -1);
             err = TDbExtMemAlloc(heap, 0x14, &pDb);
-            Notify_801F8A54(4, -1, -1);
+            NotifyEnd_801F8A54();
             if (err != 0) {
                 TDbExtMemShutdown(heap);
             }
