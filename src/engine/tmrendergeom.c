@@ -178,7 +178,7 @@ static void _TMRenderGeom(TMRenderState_t *pState, TMGeomNode_t *pNode)
         int i;
 
         for (i = 0; i < pState->mNumHooks; i++) {
-            RenderHook_80211138 *pHook = pState->mapHooks[i];
+            TMRenderHook_t *pHook = pState->mapHooks[i];
 
             if (pHook->mFunc != 0) {
                 pHook->mFunc(pHook, pNode, &list);

@@ -17,7 +17,7 @@
 #include "engine/mtdecf.h"
 #include "engine/eaxadecf.h"
 
-typedef struct Object_80277404 {
+typedef struct TIMESTRETCHSTATE {
     Node_80279D90 mNode;
     unsigned char *m1C;
     int m20;
@@ -33,7 +33,7 @@ typedef struct Object_80277404 {
     float *m1828;
     int m182C;
     int m1830;
-} Object_80277404;
+} TIMESTRETCHSTATE;
 
 typedef struct SndMemEntry_t {
     unsigned int m0;

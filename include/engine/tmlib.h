@@ -504,7 +504,7 @@ typedef struct TMRenderState_t {
     void **mpChannels;
     TMRenderViewport_t mViewport;
     int mNumHooks;
-    struct RenderHook_80211138 *mapHooks[8];
+    struct TMRenderHook_t *mapHooks[8];
     int mUnknown60;
     void *mpExtn;
     void *mpInst;
@@ -548,13 +548,13 @@ typedef struct TMChannelList_t {
     unsigned char maFrac[8];
 } TMChannelList_t;
 
-typedef void (*RenderHookFunc_80211138)(struct RenderHook_80211138 *pHook, TMGeomNode_t *pNode,
-                                        TMChannelList_t *pList);
+typedef void (*TMRenderHookFunc_t)(struct TMRenderHook_t *pHook, TMGeomNode_t *pNode,
+                                   TMChannelList_t *pList);
 
-typedef struct RenderHook_80211138 {
+typedef struct TMRenderHook_t {
     unsigned char maUnknown0[0xC];
-    RenderHookFunc_80211138 mFunc;
-} RenderHook_80211138;
+    TMRenderHookFunc_t mFunc;
+} TMRenderHook_t;
 
 /* tmrendergeom.c */
 void TMRenderGeomSkin(TMRenderState_t *pState, TMGeomNode_t *pNode);

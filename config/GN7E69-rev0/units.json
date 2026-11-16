@@ -19749,7 +19749,7 @@
     {
       "source": "src/engine/stretch.c",
       "profile": "sound_cxx",
-      "evidence": "evidence.tsv unit row 0x80276B7C-0x802774C8 (src/engine/stretch.c), its ten function and name rows, the data row of its .rodata 0x802C1EC8-0x802C1F08, the Object_80277404 type row, the source-form rows 0x80276FD4-0x802773C0 and 0x80276C98-0x802774C8, and the sound_cxx compiler rows; every function exact, completed in the c18 wave and linked.",
+      "evidence": "evidence.tsv unit row 0x80276B7C-0x802774C8 (src/engine/stretch.c), its ten function and name rows, the data row of its .rodata 0x802C1EC8-0x802C1F08, the TIMESTRETCHSTATE type rows, the source-form rows 0x80276FD4-0x802773C0 and 0x80276C98-0x802774C8, and the sound_cxx compiler rows; every function exact, completed in the c18 wave and linked.",
       "sections": [
         {
           "section": ".text",

@@ -264,6 +264,7 @@ Int32 fn_80220B4C(Int32 a, Int32 b)
     pObject = UIGLibraryGetGlobal(1);
     Result = 0;
     if (pObject != NULL) {
+        // FAKEMATCH: cache word read into Result first and stored last (same logic as reading lbl_803ED008 after the if)
         Result = lbl_803ED008;
         if (Result == 0 || lbl_803ED004 != pObject || lbl_803ECFFC != a || lbl_803ED000 != b) {
             Result = UIGLibraryLoadItem(pObject, a, b);
