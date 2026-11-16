@@ -8,7 +8,7 @@
 
 typedef int (*LinkSearchFn_t)(void *, void *, void *);
 
-#define LINK_NODE_SIZE (lbl_803D4FB8[0].mNodeSize)
+#define LINK_NODE_SIZE (DSList_Interface[0].mNodeSize)
 
 static void _DSListInsertLinkAtHead(LinkList_t *pList, LinkNode_t *pNode)
 {
@@ -157,7 +157,7 @@ static int _DSListTraverseLinkedList(LinkList_t *pList, LinkNode_t *pNode, void 
         } else {
             pNext = pNode->mpNext;
         }
-        result = callback(pNode ? (char *)pNode + lbl_803D4FB8[0].mNodeSize : 0, pCtx, pArg);
+        result = callback(pNode ? (char *)pNode + DSList_Interface[0].mNodeSize : 0, pCtx, pArg);
         pNode = pNext;
     }
     return result == 0 ? 4 : 0;
@@ -171,7 +171,7 @@ static int _DSListSearchLinkedList(LinkList_t *pList, LinkNode_t *pNode, void *a
 
     while (pNode && result < 0) {
         pNext = pNode->mpNext;
-        result = callback(pNode ? (char *)pNode + lbl_803D4FB8[0].mNodeSize : 0, a, b);
+        result = callback(pNode ? (char *)pNode + DSList_Interface[0].mNodeSize : 0, a, b);
         pNode = pNext;
     }
     return result == 0 ? 2 : 3;

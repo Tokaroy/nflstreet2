@@ -78,7 +78,7 @@
       "include_dirs": [
         "include/libc"
       ],
-      "evidence": "evidence.tsv compiler row 0x801CE1F8-0x801CEC90 (engine_c_nogcse), the one file src/engine/llglib.c: engine_c's -O2 plus -fno-gcse (per-file profile, owner baseline of 2026-11-14: per-file flags allowed, no per-function options). In GlibLLInit 0x801CE2F4 the target forms the frame-buffer table address pMode->mpXfb (r31+0x54) separately in each block that indexes it (addi r9,r31,0x54 at 0x801CE508 for VISetNextFrameBuffer; addi r30,r31,0x54 at 0x801CE67C for the two GXCopyDisp calls); with global CSE the compiler hoists one copy to the top of the function and keeps it in a second saved register (stmw r27, 0x40-byte frame). The flag is not given to engine_c because it changes src/engine/list.c (fn_801C6AA4), src/engine/Font.c (fn_801CD63C) and src/engine/llsystem.c (fn_801F8248, fn_801F8574)."
+      "evidence": "evidence.tsv compiler row 0x801CE1F8-0x801CEC90 (engine_c_nogcse), the one file src/engine/llglib.c: engine_c's -O2 plus -fno-gcse (per-file profile, owner baseline of 2026-11-14: per-file flags allowed, no per-function options). In GlibLLInit 0x801CE2F4 the target forms the frame-buffer table address pMode->mpXfb (r31+0x54) separately in each block that indexes it (addi r9,r31,0x54 at 0x801CE508 for VISetNextFrameBuffer; addi r30,r31,0x54 at 0x801CE67C for the two GXCopyDisp calls); with global CSE the compiler hoists one copy to the top of the function and keeps it in a second saved register (stmw r27, 0x40-byte frame). The flag is not given to engine_c because it changes src/engine/list.c (DSAddListNode 0x801C6AA4), src/engine/Font.c (fn_801CD63C) and src/engine/llsystem.c (fn_801F8248, fn_801F8574)."
     },
     "path_cxx": {
       "flags": [
@@ -13537,13 +13537,20 @@
     {
       "source": "src/engine/list.c",
       "profile": "engine_c",
-      "evidence": "evidence.tsv unit row 0x801C665C-0x801C6E5C (src/engine/list.c), its compiler, function, name, type and source-form rows; all 17 functions exact (DSNewList through a labeled fake-match form), promoted from comparison-only. The file has no allocated constants; the list-type table 0x803D4FB8 (.bss) stays external.",
+      "evidence": "evidence.tsv unit row 0x801C665C-0x801C6E5C (src/engine/list.c), its compiler, function, name, type, data and source-form rows; all 17 functions exact (DSNewList through a labeled fake-match form), promoted from comparison-only. The file has no allocated constants; its list-type handler table DSList_Interface is an uninitialized global (a COMMON symbol) that the storage map places at its evidenced extent (data row 0x803D4FB8-0x803D5168).",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x801C665C",
           "end": "0x801C6E5C"
+        }
+      ],
+      "storage": [
+        {
+          "symbol": "DSList_Interface",
+          "start": "0x803D4FB8",
+          "end": "0x803D5168"
         }
       ]
     },
@@ -13694,7 +13701,7 @@
     {
       "source": "src/engine/llglib.c",
       "profile": "engine_c_nogcse",
-      "evidence": "evidence.tsv unit row 0x801CE1F8-0x801CEC90 (src/engine/llglib.c), its compiler, function, name, type and data rows; all 39 functions exact, promoted from comparison-only, with the .rodata 0x802AF4D8-0x802AF4E8. The display configuration 0x803E91F8, the render state 0x803E9224, the .sdata/.sbss words and the SDK render-mode tables stay external.",
+      "evidence": "evidence.tsv unit row 0x801CE1F8-0x801CEC90 (src/engine/llglib.c), its compiler, function, name, type, source-form and data rows; all 39 functions exact, promoted from comparison-only, with all of the file's storage: the .rodata 0x802AF4D8-0x802AF4E8, the .data texel/palette tables and render modes 0x802F7A00-0x802F7AC4, the .sdata run 0x803EBC68-0x803EBC90, the 2560-byte .bss scratch copy target garbage 0x80383DA0-0x803847A0 and the .sbss statics 0x803ECEFC-0x803ECF10 (the last three bytes alignment padding). The display configuration, render state and cycle words are uninitialized globals (COMMON symbols); the storage map places them at their evidenced extents (data rows 0x803E91F8, 0x803E9224, 0x803ED634-0x803ED640). Names from NASCAR 2005's llglib.c (same offsets within each run; name rows).",
       "sections": [
         {
           "section": ".text",
@@ -13707,6 +13714,57 @@
           "placement": ".data3",
           "start": "0x802AF4D8",
           "end": "0x802AF4E8"
+        },
+        {
+          "section": ".data",
+          "placement": ".data4",
+          "start": "0x802F7A00",
+          "end": "0x802F7AC4"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EBC68",
+          "end": "0x803EBC90"
+        },
+        {
+          "section": ".bss",
+          "placement": ".bss",
+          "start": "0x80383DA0",
+          "end": "0x803847A0"
+        },
+        {
+          "section": ".sbss",
+          "placement": ".sbss",
+          "start": "0x803ECEFC",
+          "end": "0x803ECF10"
+        }
+      ],
+      "storage": [
+        {
+          "symbol": "_Glib_LLInitBlock",
+          "start": "0x803E91F8",
+          "end": "0x803E9224"
+        },
+        {
+          "symbol": "_Glib_LLRenderObj",
+          "start": "0x803E9224",
+          "end": "0x803E9288"
+        },
+        {
+          "symbol": "_Glib_StartCycle",
+          "start": "0x803ED634",
+          "end": "0x803ED638"
+        },
+        {
+          "symbol": "_Glib_Cycle",
+          "start": "0x803ED638",
+          "end": "0x803ED63C"
+        },
+        {
+          "symbol": "_Glib_BreakCycle",
+          "start": "0x803ED63C",
+          "end": "0x803ED640"
         }
       ]
     },

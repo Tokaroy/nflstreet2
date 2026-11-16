@@ -15,7 +15,7 @@ typedef int (*BinVisitFn_t)(void *, int, int);
 #define BIN_IS_LEFT 0x10
 #define BIN_IS_RIGHT 0x20
 
-#define BIN_NODE_SIZE (lbl_803D4FB8[1].mNodeSize)
+#define BIN_NODE_SIZE (DSList_Interface[1].mNodeSize)
 #define BIN_ITEM(pNode) ((pNode) ? (char *)(pNode) + BIN_NODE_SIZE : 0)
 
 static void _DSListResetBinaryTree(BinTree_t *pTree, BinNode_t **ppNodes, int count);
@@ -169,7 +169,7 @@ static void _DSListResetBinaryTree(BinTree_t *pTree, BinNode_t **ppNodes, int co
 
 static int _DSListOptTrvFunc(void *pItem, BinNode_t **ppNodes, int *pIndex)
 {
-    ppNodes[*pIndex] = pItem ? (BinNode_t *)((char *)pItem - lbl_803D4FB8[1].mNodeSize) : 0;
+    ppNodes[*pIndex] = pItem ? (BinNode_t *)((char *)pItem - DSList_Interface[1].mNodeSize) : 0;
     (*pIndex)++;
     return 1;
 }
@@ -435,7 +435,7 @@ static BinNode_t *_DSListGetBinaryNode(BinTree_t *pTree, BinNode_t *pNode, unsig
             pResult = _DSListGetBinaryNext(pResult);
             break;
         default:
-            pResult = pNode ? (BinNode_t *)((char *)pNode - lbl_803D4FB8[1].mNodeSize) : 0;
+            pResult = pNode ? (BinNode_t *)((char *)pNode - DSList_Interface[1].mNodeSize) : 0;
             break;
         }
     } else {

@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 void *DSNewList(int a, int b, int count, int size,
-                   int (*cmp)(void *, void *), void *storage);
+              int (*cmp)(void *, void *), void *storage);
 int DSDelList(void *pool);
 void *DSAddListNode(void *pool, void *item, int c);
 #ifdef __cplusplus

@@ -36,7 +36,7 @@ typedef struct DSListType_t {
     unsigned char mActive;
 } DSListType_t;
 
-extern DSListType_t lbl_803D4FB8[9];
+extern DSListType_t DSList_Interface[9];
 
 typedef struct LinkNode_t {
     unsigned int mFlags;

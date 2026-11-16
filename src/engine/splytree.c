@@ -5,7 +5,7 @@
 
 typedef int (*VisitFn_801C7684)(void *, int, int);
 
-#define SPLAY_NODE_SIZE (lbl_803D4FB8[2].mNodeSize)
+#define SPLAY_NODE_SIZE (DSList_Interface[2].mNodeSize)
 #define SPLAY_ITEM(pNode) ((pNode) ? (char *)(pNode) + SPLAY_NODE_SIZE : 0)
 
 SplayNode_801C7684 *fn_801C77DC(SplayTree_801C7684 *pTree, SplayNode_801C7684 *pNode);
@@ -269,7 +269,7 @@ static int fn_801C7E30(SplayTree_801C7684 *pTree, SplayNode_801C7684 *pNode, int
     int cmp;
 
     do {
-        cmp = -callback(pCur ? (char *)pCur + lbl_803D4FB8[2].mNodeSize : 0, a, b);
+        cmp = -callback(pCur ? (char *)pCur + DSList_Interface[2].mNodeSize : 0, a, b);
         if (cmp < 0) {
             if (pCur->mpLeft == pTree->mpNil) {
                 result = 3;

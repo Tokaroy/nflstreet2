@@ -3,13 +3,17 @@
 #include "engine/fn_801F7BD4.h"
 #include "game/fn_801D2B7C.h"
 
+/* The handler table of each list type (0 linked, 1 binary tree, 2 splay tree, ...), filled by
+   DSAddListType. */
+DSListType_t DSList_Interface[9];
+
 void DSListInitLinkedModule(void);
 void fn_801C7EE4(void);
 void DSListInitBinTreeModule(void);
 
 static int _DSGetListNodeSize(int type, int size)
 {
-    return DSAlignSize(size) + lbl_803D4FB8[type].mNodeSize;
+    return DSAlignSize(size) + DSList_Interface[type].mNodeSize;
 }
 
 static int _DSGetListMemSize(int type, int count, int *pSize)
@@ -18,12 +22,12 @@ static int _DSGetListMemSize(int type, int count, int *pSize)
 
     *pSize = _DSGetListNodeSize(type, *pSize);
     size = DSGetNodeHandlerMemSize(count, *pSize);
-    return size + DSAlignSize(lbl_803D4FB8[type].mHeaderSize);
+    return size + DSAlignSize(DSList_Interface[type].mHeaderSize);
 }
 
 static void _DSRemoveListNode(DSList_t *pList, DSListNode_t *pNode)
 {
-    lbl_803D4FB8[pList->mType].mRemove(pList, pNode);
+    DSList_Interface[pList->mType].mRemove(pList, pNode);
     pNode->mFlags &= ~0x80000000;
 }
 
@@ -32,7 +36,7 @@ void DSListInitModule(void)
     int i;
 
     for (i = 0; i < 9; i++) {
-        lbl_803D4FB8[i].mActive = 0;
+        DSList_Interface[i].mActive = 0;
     }
     DSListInitLinkedModule();
     DSListInitBinTreeModule();
@@ -48,18 +52,18 @@ void DSAddListType(int type, void (*init)(DSList_t *), int (*del)(DSList_t *),
                  int (*search)(DSList_t *, DSListNode_t *, void *, void *, DSListSearchFn_t),
                  void (*optimize)(DSList_t *), int headerSize, int nodeSize)
 {
-    lbl_803D4FB8[type].mDelete = del;
-    lbl_803D4FB8[type].mInitNode = initNode;
-    lbl_803D4FB8[type].mAdd = add;
-    lbl_803D4FB8[type].mGet = get;
-    lbl_803D4FB8[type].mRemove = remove;
-    lbl_803D4FB8[type].mTraverse = traverse;
-    lbl_803D4FB8[type].mSearch = search;
-    lbl_803D4FB8[type].mOptimize = optimize;
-    lbl_803D4FB8[type].mInit = init;
-    lbl_803D4FB8[type].mHeaderSize = DSAlignSize(headerSize);
-    lbl_803D4FB8[type].mNodeSize = DSAlignSize(nodeSize);
-    lbl_803D4FB8[type].mActive = 1;
+    DSList_Interface[type].mDelete = del;
+    DSList_Interface[type].mInitNode = initNode;
+    DSList_Interface[type].mAdd = add;
+    DSList_Interface[type].mGet = get;
+    DSList_Interface[type].mRemove = remove;
+    DSList_Interface[type].mTraverse = traverse;
+    DSList_Interface[type].mSearch = search;
+    DSList_Interface[type].mOptimize = optimize;
+    DSList_Interface[type].mInit = init;
+    DSList_Interface[type].mHeaderSize = DSAlignSize(headerSize);
+    DSList_Interface[type].mNodeSize = DSAlignSize(nodeSize);
+    DSList_Interface[type].mActive = 1;
 }
 
 int DSGetListMemSize(int type, int count, int size)
@@ -113,9 +117,9 @@ void *DSNewList(int a, int b, int count, int size, int (*cmp)(void *, void *), v
         pList->mCount = 0;
         pList->mCompare = cmp;
         pList->mType = b;
-        pPool = (NodePool_t *)((char *)pList + DSAlignSize(lbl_803D4FB8[b].mHeaderSize));
+        pPool = (NodePool_t *)((char *)pList + DSAlignSize(DSList_Interface[b].mHeaderSize));
         pList->mpNodes = DSNewNodeHandler(0, count, size, pPool);
-        lbl_803D4FB8[b].mInit(pList);
+        DSList_Interface[b].mInit(pList);
         fn_801F7BD4(0);
     } else {
         pResult = 0;
@@ -127,7 +131,7 @@ int DSDelList(void *pool)
 {
     DSList_t *pList = pool;
 
-    return lbl_803D4FB8[pList->mType].mDelete(pList);
+    return DSList_Interface[pList->mType].mDelete(pList);
 }
 
 void *DSNewListNode(void *pool)
@@ -137,9 +141,9 @@ void *DSNewListNode(void *pool)
 
     pNode = DSNewNode(pList->mpNodes);
     if (pNode) {
-        lbl_803D4FB8[pList->mType].mInitNode(pNode, lbl_803D4FB8[pList->mType].mNodeSize);
+        DSList_Interface[pList->mType].mInitNode(pNode, DSList_Interface[pList->mType].mNodeSize);
         pNode->mFlags &= ~0x80000000;
-        pNode = (DSListNode_t *)((char *)pNode + lbl_803D4FB8[pList->mType].mNodeSize);
+        pNode = (DSListNode_t *)((char *)pNode + DSList_Interface[pList->mType].mNodeSize);
     }
     return pNode;
 }
@@ -148,30 +152,30 @@ void *DSAddListNode(void *pool, void *item, int c)
 {
     DSList_t *pList = pool;
 
-    item = item ? (char *)item - lbl_803D4FB8[pList->mType].mNodeSize : 0;
-    item = lbl_803D4FB8[pList->mType].mAdd(pList, item, c);
+    item = item ? (char *)item - DSList_Interface[pList->mType].mNodeSize : 0;
+    item = DSList_Interface[pList->mType].mAdd(pList, item, c);
     ((DSListNode_t *)item)->mFlags |= 0x80000000;
-    return item ? (char *)item + lbl_803D4FB8[pList->mType].mNodeSize : 0;
+    return item ? (char *)item + DSList_Interface[pList->mType].mNodeSize : 0;
 }
 
 void *DSGetListNode(DSList_t *pList, int mode)
 {
     DSListNode_t *pNode;
 
-    pNode = lbl_803D4FB8[pList->mType].mGet(pList, 0, mode);
-    return pNode ? (char *)pNode + lbl_803D4FB8[pList->mType].mNodeSize : 0;
+    pNode = DSList_Interface[pList->mType].mGet(pList, 0, mode);
+    return pNode ? (char *)pNode + DSList_Interface[pList->mType].mNodeSize : 0;
 }
 
 void DSRemoveListNode(DSList_t *pList, void *item)
 {
-    _DSRemoveListNode(pList, item ? (DSListNode_t *)((char *)item - lbl_803D4FB8[pList->mType].mNodeSize) : 0);
+    _DSRemoveListNode(pList, item ? (DSListNode_t *)((char *)item - DSList_Interface[pList->mType].mNodeSize) : 0);
 }
 
 void DSDelListNode(DSList_t *pList, void *item)
 {
     DSListNode_t *pNode;
 
-    pNode = item ? (DSListNode_t *)((char *)item - lbl_803D4FB8[pList->mType].mNodeSize) : 0;
+    pNode = item ? (DSListNode_t *)((char *)item - DSList_Interface[pList->mType].mNodeSize) : 0;
     if (pNode->mFlags & 0x80000000) {
         _DSRemoveListNode(pList, pNode);
     }
@@ -182,10 +186,10 @@ void *DSNextListNode(DSList_t *pList, void *item)
 {
     DSListNode_t *pNode = item;
 
-    pNode = pNode ? (DSListNode_t *)((char *)pNode - lbl_803D4FB8[pList->mType].mNodeSize) : 0;
+    pNode = pNode ? (DSListNode_t *)((char *)pNode - DSList_Interface[pList->mType].mNodeSize) : 0;
     if (pNode->mFlags & 0x80000000) {
-        pNode = lbl_803D4FB8[pList->mType].mGet(pList, pNode, 4);
-        pNode = pNode ? (DSListNode_t *)((char *)pNode + lbl_803D4FB8[pList->mType].mNodeSize) : 0;
+        pNode = DSList_Interface[pList->mType].mGet(pList, pNode, 4);
+        pNode = pNode ? (DSListNode_t *)((char *)pNode + DSList_Interface[pList->mType].mNodeSize) : 0;
     } else {
         pNode = 0;
     }
@@ -197,20 +201,20 @@ int DSTraverseList(DSList_t *pList, void *pStart, void *pCtx, void *pArg, DSList
 {
     DSListNode_t *pNode;
 
-    pNode = lbl_803D4FB8[pList->mType].mGet(pList, pStart, (int)pStart);
+    pNode = DSList_Interface[pList->mType].mGet(pList, pStart, (int)pStart);
     if (pNode == 0) {
         return 1;
     }
-    return lbl_803D4FB8[pList->mType].mTraverse(pList, pNode, pCtx, pArg, fn, direction);
+    return DSList_Interface[pList->mType].mTraverse(pList, pNode, pCtx, pArg, fn, direction);
 }
 
 int DSSearchList(DSList_t *pList, void *pStart, void *pKey, void *pResult, DSListSearchFn_t fn)
 {
     DSListNode_t *pNode;
 
-    pNode = lbl_803D4FB8[pList->mType].mGet(pList, pStart, (int)pStart);
+    pNode = DSList_Interface[pList->mType].mGet(pList, pStart, (int)pStart);
     if (pNode == 0) {
         return 1;
     }
-    return lbl_803D4FB8[pList->mType].mSearch(pList, pNode, pKey, pResult, fn);
+    return DSList_Interface[pList->mType].mSearch(pList, pNode, pKey, pResult, fn);
 }
