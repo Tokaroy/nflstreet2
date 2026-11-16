@@ -18,7 +18,7 @@ int fn_801B1D0C(unsigned char *p)
     return p[2] >> 2;
 }
 
-int fn_801B1D18(Item_801AE3F4 *p)
+int fn_801B1D18(VoxEvent_t *p)
 {
     return p->mUnknown7;
 }
@@ -33,7 +33,7 @@ char *fn_801B1D30(char *p, unsigned short *offsets, int i)
     return p + offsets[i] * 4;
 }
 
-char *fn_801B1D44(Item_801AE3F4 *p)
+char *fn_801B1D44(VoxEvent_t *p)
 {
     // FAKEMATCH: size computed then rounded up in place (reused local); the one-expression form ties the count load and the final sum into r9, the target keeps both in r0
     int size = p->mUnknown6 * 2;
@@ -41,7 +41,7 @@ char *fn_801B1D44(Item_801AE3F4 *p)
     return (char *)p + (size + 12);
 }
 
-char *fn_801B1D60(Item_801AE3F4 *p)
+char *fn_801B1D60(VoxEvent_t *p)
 {
     char *result = fn_801B1D44(p);
     return result + ((fn_801B1D18(p) * 3 + 3) & ~3);
@@ -76,7 +76,7 @@ struct SpchRule_t {
 
 #define GET_RULE(rule, data, i)           (rule).mId = (data)[(i) * 3];         (rule).mParm = (data)[(i) * 3 + 1];     (rule).mType = (data)[(i) * 3 + 2]
 
-int fn_801B1E58(Item_801AE3F4 *event, unsigned int index)
+int fn_801B1E58(VoxEvent_t *event, unsigned int index)
 {
     SpchRule_t rule;
     int id = -1;
@@ -89,12 +89,12 @@ int fn_801B1E58(Item_801AE3F4 *event, unsigned int index)
     return id;
 }
 
-void fn_801B1EC8(SpchEventKey_t *key, Item_801AE3F4 *event, int sentence, int *values)
+void fn_801B1EC8(SpchEventKey_t *key, VoxEvent_t *event, int sentence, int *values)
 {
     int game;
     SpchRule_t rule;
     if (gCallbacks.mUnknown8) {
-        fn_801AE760(key, &game);
+        iSPCH_GetDatID(key, &game);
         int count = fn_801B1D18(event);
         unsigned char *data = (unsigned char *)fn_801B1D44(event);
         unsigned char *p = (unsigned char *)fn_801B1D30((char *)event, (unsigned short *)((char *)event + 12), sentence);
@@ -117,11 +117,11 @@ void fn_801B1EC8(SpchEventKey_t *key, Item_801AE3F4 *event, int sentence, int *v
     }
 }
 
-unsigned int fn_801B1FD8(SpchEventKey_t *key, Item_801AE3F4 *event, int *values, unsigned int *ignored)
+unsigned int fn_801B1FD8(SpchEventKey_t *key, VoxEvent_t *event, int *values, unsigned int *ignored)
 {
     int game;
     SpchRule_t rule;
-    fn_801AE760(key, &game);
+    iSPCH_GetDatID(key, &game);
     unsigned int set = 0;
     unsigned int skip = 0;
     // FAKEMATCH: one parm local assigned in both loops (reused local); reading rule.mParm directly keeps the load register for the index, the target copies it (mr. r10,r0)
@@ -164,7 +164,7 @@ unsigned int fn_801B1FD8(SpchEventKey_t *key, Item_801AE3F4 *event, int *values,
     return set;
 }
 
-unsigned char *fn_801B2190(Item_801AE3F4 *item, int index, unsigned int *a, unsigned int *b)
+unsigned char *fn_801B2190(VoxEvent_t *item, int index, unsigned int *a, unsigned int *b)
 {
     *a = 0;
     *b = 0;
@@ -181,7 +181,7 @@ unsigned char *fn_801B2190(Item_801AE3F4 *item, int index, unsigned int *a, unsi
     return p;
 }
 
-int fn_801B2250(Item_801AE3F4 *item, int index, unsigned int value, unsigned int excluded)
+int fn_801B2250(VoxEvent_t *item, int index, unsigned int value, unsigned int excluded)
 {
     unsigned int a, b;
     fn_801B2190(item, index, &a, &b);

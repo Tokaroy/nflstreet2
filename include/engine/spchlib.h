@@ -9,7 +9,7 @@
 #include <stdarg.h>
 
 #include "engine/spchevnt.h"
-#include "engine/Object_80266AF8.h"
+#include "engine/VoxDatHeader.h"
 
 struct Entry_801AF84C {
     unsigned int mUnknown0;
@@ -106,7 +106,7 @@ union EventWord_801AFBD8 {
     unsigned short mHalfwords[2];
 };
 
-struct Item_801AE3F4 {
+struct VoxEvent_t {
     unsigned short mId;
     unsigned short mUnknown2;
     unsigned short mUnknown4;
@@ -118,7 +118,7 @@ struct Item_801AE3F4 {
     signed char mUnknownB;
 };
 
-struct Bank_801AE444 {
+struct VoxDat_t {
     unsigned char mUnknown0[4];
     int mUnknown4;
     unsigned char mUnknown8;
@@ -133,32 +133,32 @@ struct Bank_801AE444 {
     unsigned short mUnknown18[1];
 };
 
-struct Slot_8037E0B4 {
-    Bank_801AE444 *mBank;
+struct VoxDatSlot_t {
+    VoxDat_t *mBank;
     int mValue;
 };
 
-struct Voice_8037E0F4 {
+struct VoxEventSlot_t {
     unsigned int mTime;
     unsigned short mSequence;
     unsigned char mActive;
     unsigned char mChannel;
-    Item_801AE3F4 *mItem;
+    VoxEvent_t *mItem;
     int *mEvent;
 };
 
-struct State_8037E0F4 {
+struct VoxEventQueue_t {
     int mCount[8];
     int mCurrent[8];
-    Voice_8037E0F4 mVoices[16];
+    VoxEventSlot_t mVoices[16];
 };
 
-struct Pending_8037E234 {
+struct VoxInGameSlot_t {
     SpchEventKey_t mKey;
     int mUnknown4;
 };
 
-struct List_801AEDA4 {
+struct SpchFollowData_t {
     int mCount;
     unsigned short *mIds;
 };
@@ -186,20 +186,20 @@ public:
 extern "C" {
 extern SpchCallbacks_t gCallbacks;
 extern SpchExtVecs_t gExtVecs;
-extern Slot_8037E0B4 gEventDats[8];
-extern State_8037E0F4 lbl_8037E0F4;
-extern Pending_8037E234 lbl_8037E234[8];
+extern VoxDatSlot_t gEventDats[8];
+extern VoxEventQueue_t gVoxEvents;
+extern VoxInGameSlot_t gVoxInGame[8];
 extern int gFilterSetting[8];
 extern char spchlibauthor[];
 extern SpchAllocator *gSPCH_Allocator;
 extern int gSPCH_Initialized;
-extern int lbl_803EBB18;
-extern int lbl_803EBB1C;
+extern int gAddEventStatus;
+extern int gSPCHPlayStatus;
 extern int gGameNum;
 extern int gDataRate;
-extern int lbl_803ECEA8;
-extern unsigned int lbl_803ECEAC;
-extern unsigned short lbl_803ECEB0;
+extern int gPreLoadTicks;
+extern unsigned int gLastTick;
+extern unsigned short gLastSubTick;
 extern int gUniqueBankHandle;
 extern int gNumBanks;
 extern int gBankCount;
@@ -229,24 +229,24 @@ void fn_801B192C(int a);
 void iSPCH_InitBanks(void);
 void iSPCH_DisposeBanks(void);
 
-void *fn_801AF4A8(int size);
-void fn_801AF500(void *p);
-void fn_801AF128(unsigned int voice);
-int fn_801AF3D8(unsigned int channel);
-void fn_801AF544(void);
+void *iSPCH_MemAlloc(int size);
+void iSPCH_MemFree(void *p);
+void iSPCH_ClearEvent(unsigned int voice);
+int SPCH_Choose(unsigned int channel);
+void iSPCH_InitInGame(void);
 void iSPCH_InitCallbacks(void);
-int fn_801AEC58(int id, int count, ...);
+int SPCH_AddEventV(int id, int count, ...);
 
-Item_801AE3F4 *fn_801AE6BC(SpchEventKey_t *key);
-int fn_801AEAEC(int *event);
-void iSPCH_InitCsis(Bank_801AE444 *bank);
+VoxEvent_t *iSPCH_FindEvent(SpchEventKey_t *key);
+int iSPCH_AddEvent(int *event);
+void iSPCH_InitCsis(VoxDat_t *bank);
 SpchExtVecs_t *SPCH_GetExtVecs(void);
 
 /* Defined in another file of the library. */
-int fn_801AE760(SpchEventKey_t *key, int *out);
-int fn_801AE7B4(SpchEventKey_t *key, char **out);
-void fn_801AE808(void);
-void fn_801AE8DC(void);
+int iSPCH_GetDatID(SpchEventKey_t *key, int *out);
+int iSPCH_GetGlobalMatchParmsArray(SpchEventKey_t *key, char **out);
+void iSPCH_InitEventDat(void);
+void iSPCH_InitEventQueue(void);
 
 }
 

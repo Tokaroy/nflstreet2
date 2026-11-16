@@ -446,7 +446,7 @@ extern "C" void SpchIGUpdate(void)
     }
     SndgChannelFadeStream(4, 0, 127);
     if (status.mUnknown0 == 0) {
-        fn_801AF364(0);
+        SPCH_Play(0);
     }
 
     SndStreamGetStatus(SpchIGGetChannelStream(1), &status);
@@ -460,7 +460,7 @@ extern "C" void SpchIGUpdate(void)
     }
     SndgChannelFadeStream(5, 0, 127);
     if (status.mUnknown0 == 0) {
-        fn_801AF364(1);
+        SPCH_Play(1);
     }
 
     if (_SpchIG_bTutorial != 0) {
@@ -468,7 +468,7 @@ extern "C" void SpchIGUpdate(void)
         SndgChannelSetPosition(6, 0);
         SndgChannelFadeStream(6, 0, 127);
         if (status.mUnknown0 == 0) {
-            fn_801AF364(2);
+            SPCH_Play(2);
         }
     }
 }

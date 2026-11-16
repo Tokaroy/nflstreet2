@@ -64,32 +64,32 @@ char *fn_801AF8B0(unsigned char *p)
     return fn_801AF874(p) + size;
 }
 
-int fn_801AF8E4(Item_801AE3F4 *p)
+int fn_801AF8E4(VoxEvent_t *p)
 {
     return p->mUnknown7;
 }
 
-int fn_801AF8EC(Item_801AE3F4 *p)
+int fn_801AF8EC(VoxEvent_t *p)
 {
     return p->mUnknown8 & 15;
 }
 
-int fn_801AF8F8(Item_801AE3F4 *p)
+int fn_801AF8F8(VoxEvent_t *p)
 {
     return p->mUnknown8 >> 4;
 }
 
-int fn_801AF904(Item_801AE3F4 *p)
+int fn_801AF904(VoxEvent_t *p)
 {
     return p->mUnknownA & 1;
 }
 
-int fn_801AF910(Item_801AE3F4 *p)
+int fn_801AF910(VoxEvent_t *p)
 {
     return (p->mUnknownA >> 3) & 1;
 }
 
-int fn_801AF91C(Item_801AE3F4 *p)
+int fn_801AF91C(VoxEvent_t *p)
 {
     return (p->mUnknownA >> 5) & 1;
 }
@@ -104,7 +104,7 @@ char *fn_801AF938(char *p, unsigned short *offsets, int i)
     return p + offsets[i] * 4;
 }
 
-char *fn_801AF94C(Item_801AE3F4 *p)
+char *fn_801AF94C(VoxEvent_t *p)
 {
     // FAKEMATCH: size computed then rounded up in place (reused local); the one-expression form ties the count load and the final sum into r9, the target keeps both in r0
     int size = p->mUnknown6 * 2;
@@ -112,32 +112,32 @@ char *fn_801AF94C(Item_801AE3F4 *p)
     return (char *)p + (size + 12);
 }
 
-char *fn_801AF968(Item_801AE3F4 *p)
+char *fn_801AF968(VoxEvent_t *p)
 {
     char *result = fn_801AF94C(p);
     return result + ((fn_801AF8E4(p) * 3 + 3) & ~3);
 }
 
-char *fn_801AF9B4(Item_801AE3F4 *p)
+char *fn_801AF9B4(VoxEvent_t *p)
 {
     char *result = fn_801AF968(p);
     return result + ((((fn_801AF8E4(p) + 7) / 8) * p->mUnknown6 * 2 + 3) & ~3);
 }
 
-int fn_801AFA14(Item_801AE3F4 *p, int i)
+int fn_801AFA14(VoxEvent_t *p, int i)
 {
     char *result = fn_801AF9B4(p);
     result += (fn_801AF8F8(p) * 3 + 3) & ~3;
     return ((unsigned short *)(result + 4))[i];
 }
 
-int fn_801AFA70(Item_801AE3F4 *p)
+int fn_801AFA70(VoxEvent_t *p)
 {
     char *result = fn_801AF9B4(p);
     return *(int *)(result + ((fn_801AF8F8(p) * 3 + 3) & ~3));
 }
 
-void fn_801AFABC(Object_80266AF8 *p, int *a, int *b)
+void fn_801AFABC(VoxDatHeader_t *p, int *a, int *b)
 {
     *a = p->mUnknown8;
     *b = p->mUnknown9;
@@ -192,7 +192,7 @@ int fn_801AFBD8(unsigned char *p, Record_801AF75C *record, EventWord_801AFBD8 *e
                 } else {
                     SpchEventKey_t key = event[0].mKey;
                     char *text;
-                    if (fn_801AE7B4(&key, &text) && value == (unsigned char)text[flags]) result = 1;
+                    if (iSPCH_GetGlobalMatchParmsArray(&key, &text) && value == (unsigned char)text[flags]) result = 1;
                 }
             } else {
                 if (mask & event[id].mWord) result = 1;
@@ -340,12 +340,12 @@ int fn_801B02B8(unsigned char *p)
     return fn_801B029C(*p);
 }
 
-int fn_801B040C(Item_801AE3F4 *p, int channel)
+int fn_801B040C(VoxEvent_t *p, int channel)
 {
     int result = 1;
-    if (p->mId == lbl_8037E234[channel].mKey.mId) {
+    if (p->mId == gVoxInGame[channel].mKey.mId) {
         int limit = fn_801AF8EC(p);
-        if (limit > 0) result = lbl_8037E234[channel].mUnknown4 < limit;
+        if (limit > 0) result = gVoxInGame[channel].mUnknown4 < limit;
     }
     return result;
 }
@@ -455,7 +455,7 @@ int fn_801B0B18(WorkEntry_801B0B18 *p)
 void fn_801B0B5C(SpchEventKey_t *key, Work_801B10AC *work, unsigned char *p)
 {
     char *text;
-    if (fn_801AE7B4(key, &text)) {
+    if (iSPCH_GetGlobalMatchParmsArray(key, &text)) {
         int count = fn_801AF85C(p);
         for (int i = 0; i < count; i++) {
             Record_801AF75C *record = (Record_801AF75C *)fn_801AF928((char *)p, p + 8, i);
@@ -507,7 +507,7 @@ void fn_801B10D8(int channel)
 {
     Channel_801B118C *p = &lbl_8037E294[channel];
     if (p->mUnknownC) {
-        fn_801AF500(p->mUnknownC);
+        iSPCH_MemFree(p->mUnknownC);
         p->mUnknownC = 0;
     }
     p->mUnknown0 = 0;
@@ -564,7 +564,7 @@ int fn_801B1474(unsigned int bits, int value, int index)
     return result;
 }
 
-int fn_801B14B4(Item_801AE3F4 *p, int *values)
+int fn_801B14B4(VoxEvent_t *p, int *values)
 {
     unsigned int bits = fn_801AFA70(p);
     int result = 0;
@@ -585,7 +585,7 @@ int fn_801B15E4(unsigned char *p)
 
 void fn_801B192C(int value)
 {
-    lbl_803ECEA8 = value;
+    gPreLoadTicks = value;
 }
 
 // Advance the shared six-word generator and return its leading word.

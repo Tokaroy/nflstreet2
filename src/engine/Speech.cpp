@@ -84,8 +84,8 @@ SpchExtVecs_t *SPCH_GetExtVecs(void);
 void SpchInit(SpchInitParams_t *pParams);
 
 void *memset(void *dst, int value, size_t n);
-void fn_801AF060(void);
-void fn_801AF5E4(int (*pA)(void), void (*pB)(void));
+void SPCH_ClearEventQueue(void);
+void SPCH_InitRuleCallbacks(int (*pA)(void), void (*pB)(void));
 void SPCH_SetRuleCallback(void *pFunc);
 void SPCH_Deinit(void);
 void SPCH_AddBank(void *pData);
@@ -208,7 +208,7 @@ void fn_801F5C94(ResFile_t *pRes, unsigned int index, int a)
 
 void fn_801F5CCC(int (*pA)(void), void (*pB)(void))
 {
-    fn_801AF5E4(pA, pB);
+    SPCH_InitRuleCallbacks(pA, pB);
 }
 
 void fn_801F5CEC(void *pFunc)
@@ -218,7 +218,7 @@ void fn_801F5CEC(void *pFunc)
 
 void fn_801F5D0C(void)
 {
-    fn_801AF060();
+    SPCH_ClearEventQueue();
 }
 
 namespace EA {
