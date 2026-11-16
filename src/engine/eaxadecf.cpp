@@ -55,6 +55,7 @@ void process_raw_block(MXAPACKETF *packet)
     short value;
     unsigned int i;
 
+    // FAKEMATCH: each 16-bit read goes through its own block-scoped byte pointer (three blocks below)
     if (*packet->mpSrc == 0xEE) {
         packet->mpSrc++;
         {

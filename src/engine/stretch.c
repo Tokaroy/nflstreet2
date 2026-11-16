@@ -69,7 +69,7 @@ int determineaction(int count, unsigned char **data, float *error, float ratio)
     }
 }
 
-void applyaction(Object_80277404 *p, float **buffer, int n)
+void applyaction(TIMESTRETCHSTATE *p, float **buffer, int n)
 {
     float *src;
     float *dst;
@@ -103,7 +103,7 @@ void applyaction(Object_80277404 *p, float **buffer, int n)
     p->m3C = 0;
 }
 
-int transferframes(Object_80277404 *p, int *count, float **buffer)
+int transferframes(TIMESTRETCHSTATE *p, int *count, float **buffer)
 {
     float *src = &p->m838[p->m3C];
     float *dst = *buffer;
@@ -121,7 +121,7 @@ int transferframes(Object_80277404 *p, int *count, float **buffer)
     return n;
 }
 
-int stretchframesneeded(Object_80277404 *p, int count)
+int stretchframesneeded(TIMESTRETCHSTATE *p, int count)
 {
     unsigned char *data;
     float value;
@@ -178,7 +178,7 @@ int stretchframesneeded(Object_80277404 *p, int count)
     return 0;
 }
 
-int stretch(Object_80277404 *p, int count, float *src, float *dst)
+int stretch(TIMESTRETCHSTATE *p, int count, float *src, float *dst)
 {
     int total = transferframes(p, &count, &dst);
     int n;
@@ -220,14 +220,14 @@ int stretch(Object_80277404 *p, int count, float *src, float *dst)
 
 void SFILTER_timestretchsetratio(Node_80279D90 *node, int ratio)
 {
-    Object_80277404 *p = (Object_80277404 *)node;
+    TIMESTRETCHSTATE *p = (TIMESTRETCHSTATE *)node;
 
     p->m24 = ratio * (1.0f / 4096.0f);
 }
 
 int SFILTER_timestretch(Node_80279D90 *node, int count, float *a, float *b, int flag)
 {
-    Object_80277404 *p = (Object_80277404 *)node;
+    TIMESTRETCHSTATE *p = (TIMESTRETCHSTATE *)node;
     // FAKEMATCH: buffer pointer local (target keeps a and b in their saved registers in this order)
     float *buf = a;
     int n;
@@ -262,7 +262,7 @@ int SFILTER_timestretch(Node_80279D90 *node, int count, float *a, float *b, int 
     return count;
 }
 
-void SFILTER_timestretchrestore(Object_80277404 *p)
+void SFILTER_timestretchrestore(TIMESTRETCHSTATE *p)
 {
     if (p->m1828 != 0) {
         SNDMEMI_free(p->m1828);
@@ -273,7 +273,7 @@ void SFILTER_timestretchrestore(Object_80277404 *p)
 
 int SFILTER_timestretchinit(Node_80279D90 *node, unsigned char *data, int index)
 {
-    Object_80277404 *p = (Object_80277404 *)node;
+    TIMESTRETCHSTATE *p = (TIMESTRETCHSTATE *)node;
 
     p->mNode.m0 = SFILTER_timestretch;
     p->mNode.m4 = (void (*)(Node_80279D90 *))SFILTER_timestretchrestore;

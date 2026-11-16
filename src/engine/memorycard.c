@@ -180,6 +180,7 @@ static int fn_801D4108(const char *pGameCode)
 void fn_801D4120(void)
 {
     CARDInit();
+    // FAKEMATCH: reset/cache stores in struct declaration order, chosen by testing (same in fn_801D444C, fn_801D4E6C, fn_801D4F58, fn_801D5288)
     lbl_80384CC0.mMounted = 0;
     lbl_80384CC0.mPresent = 0;
     lbl_80384CC0.mAdded = 0;
@@ -230,6 +231,7 @@ int fn_801D4204(int port)
 static void fn_801D4230(void)
 {
     if ((lbl_80384CC0.mMounted >> lbl_80384CD0.mPort) & 1) {
+        // FAKEMATCH: mounted/present bit before the added/removed bit, chosen by testing (all six pairs here and in fn_801D42D4)
         lbl_80384CC0.mMounted &= ~(1 << lbl_80384CD0.mPort);
         lbl_80384CC0.mRemoved |= 1 << lbl_80384CD0.mPort;
     }
@@ -282,6 +284,7 @@ int fn_801D444C(int port)
     int result = -1;
     int status;
 
+    // FAKEMATCH: operation-start order port, state, busy, result chosen by testing four orders; used in all 17 such blocks of this file
     lbl_80384CD0.mPort = port;
     lbl_80384CD0.mState = 1;
     lbl_80384CD0.mBusy = 1;

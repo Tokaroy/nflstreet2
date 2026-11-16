@@ -49,8 +49,8 @@ void __VMBASEInvalidateEntireTLB(void);
 void __VMBASESetupVMRegisters(void);
 void __VMBASESetMSRAndSDR1(register u32 msr, register u32 sdr1, register u32 unused);
 void __VMBASESetMSRAndSDR1_RealMode(void);
-void __VMBASESetMSRAndSDR1_Resume(void);
 void __VMBASESetMSRAndSDR1_Done(void);
+void __VMBASESetMSRAndSDR1_Return(void);
 void __VMBASESetupExceptionHandlers(void);
 void __VMBASEDSIExceptionHandler(void);
 void __VMBASEDSIExceptionHandler_OriginalInstruction(void);
@@ -290,15 +290,15 @@ asm void __VMBASESetMSRAndSDR1_RealMode(void) {
     mfmsr r3
     ori r3, r3, 0x30
     mtsrr1 r3
-    lis r5, __VMBASESetMSRAndSDR1_Resume@ha
-    addi r5, r5, __VMBASESetMSRAndSDR1_Resume@l
+    lis r5, __VMBASESetMSRAndSDR1_Done@ha
+    addi r5, r5, __VMBASESetMSRAndSDR1_Done@l
     mtsrr0 r5
     rfi
-entry __VMBASESetMSRAndSDR1_Resume
+entry __VMBASESetMSRAndSDR1_Done
     nop
 }
 
-asm void __VMBASESetMSRAndSDR1_Done(void) {
+asm void __VMBASESetMSRAndSDR1_Return(void) {
     nofralloc
     blr
 }
