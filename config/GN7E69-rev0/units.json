@@ -2159,10 +2159,6 @@
       "address": "0x801E26FC",
       "evidence": "evidence.tsv function and name rows for 0x801E26FC (PerJoyDriverPollPADs in src/engine/PJoyDrvr.c, a comparison-only file); the linked src/engine/llperiph.c calls it and registers it as a callback, so it resolves to the original bytes."
     },
-    "SPCH_AddEventDB": {
-      "address": "0x80266CB8",
-      "evidence": "evidence.tsv function/name rows for 0x80266CB8 (target extent, related name); src/engine/spchrslv.c is comparison-only, so src/engine/Speech.cpp calls the original bytes."
-    },
     "gEventDats": {
       "address": "0x8037E0B4",
       "evidence": "evidence.tsv data/name rows for 0x8037E0B4 (target extent, related name); speech-library storage, original-owned."
@@ -20380,6 +20376,19 @@
           "placement": ".text",
           "start": "0x801B23A0",
           "end": "0x801B2AD4"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/spchrslv.c",
+      "profile": "speech_cxx",
+      "evidence": "evidence.tsv unit row 0x80266AF8-0x80266D00 (src/engine/spchrslv.c), its compiler, function, name and source-form rows; all four functions match the target (iSPCH_GetGlobalMatchParmAddr with the labelled rounded-size form, source-form row 0x80266AF8-0x80266B14), promoted from comparison-only. The file defines no data: the event-database slots gEventDats it searches are original-owned speech storage (units.json external). Part of the former src/engine/cu_80266A2C.c (split by c16a).",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80266AF8",
+          "end": "0x80266D00"
         }
       ]
     }

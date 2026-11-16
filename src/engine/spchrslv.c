@@ -7,7 +7,10 @@ extern "C" {
 
 unsigned char *iSPCH_GetGlobalMatchParmAddr(Bank_801AE444 *bank)
 {
-    return (unsigned char *)bank + (((bank->mUnknown10 + bank->mUnknown10 + 3) & ~3) + 24);
+    // FAKEMATCH: size computed then rounded up in place (reused local); the one-expression form ties the count load and the final sum into r9, the target keeps both in r0
+    int size = bank->mUnknown10 * 2;
+    size = (size + 3) & ~3;
+    return (unsigned char *)bank + (size + 24);
 }
 
 void SPCH_ClearMatchParmSettings(int key)

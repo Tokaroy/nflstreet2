@@ -106,7 +106,10 @@ char *fn_801AF938(char *p, unsigned short *offsets, int i)
 
 char *fn_801AF94C(Item_801AE3F4 *p)
 {
-    return (char *)p + (((p->mUnknown6 * 2 + 3) & ~3) + 12);
+    // FAKEMATCH: size computed then rounded up in place (reused local); the one-expression form ties the count load and the final sum into r9, the target keeps both in r0
+    int size = p->mUnknown6 * 2;
+    size = (size + 3) & ~3;
+    return (char *)p + (size + 12);
 }
 
 char *fn_801AF968(Item_801AE3F4 *p)

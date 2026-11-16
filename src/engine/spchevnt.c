@@ -47,7 +47,10 @@ int fn_801AE438(Item_801AE3F4 *item)
 
 char *fn_801AE444(Bank_801AE444 *bank)
 {
-    return (char *)bank->mUnknown18 + ((bank->mUnknown10 * 2 + 3) & ~3);
+    // FAKEMATCH: size computed then rounded up in place (reused local); the one-expression form ties the count load and the final sum into r9, the target keeps both in r0
+    int size = bank->mUnknown10 * 2;
+    size = (size + 3) & ~3;
+    return (char *)bank + (size + 24);
 }
 
 Item_801AE3F4 *fn_801AE460(Bank_801AE444 *bank, unsigned short *offsets, int i)
@@ -57,7 +60,10 @@ Item_801AE3F4 *fn_801AE460(Bank_801AE444 *bank, unsigned short *offsets, int i)
 
 char *fn_801AE474(Item_801AE3F4 *item)
 {
-    return (char *)(item + 1) + ((item->mUnknown6 * 2 + 3) & ~3);
+    // FAKEMATCH: size computed then rounded up in place (reused local); the one-expression form ties the count load and the final sum into r9, the target keeps both in r0
+    int size = item->mUnknown6 * 2;
+    size = (size + 3) & ~3;
+    return (char *)item + (size + 12);
 }
 
 char *fn_801AE490(Item_801AE3F4 *item)
