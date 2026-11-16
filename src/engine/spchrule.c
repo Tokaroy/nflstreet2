@@ -124,15 +124,18 @@ unsigned int fn_801B1FD8(SpchEventKey_t *key, Item_801AE3F4 *event, int *values,
     fn_801AE760(key, &game);
     unsigned int set = 0;
     unsigned int skip = 0;
+    // FAKEMATCH: one parm local assigned in both loops (reused local); reading rule.mParm directly keeps the load register for the index, the target copies it (mr. r10,r0)
+    int parm;
     int count = fn_801B1D18(event);
     unsigned char *data = (unsigned char *)fn_801B1D44(event);
     int i;
     for (i = 0; i < count; i++) {
         unsigned int mask = 0;
         GET_RULE(rule, data, i);
-        if (rule.mParm) {
+        parm = rule.mParm;
+        if (parm) {
             unsigned int bit = 1 << (31 - i);
-            int value = values[rule.mParm];
+            int value = values[parm];
             int result;
             if (gCallbacks.mUnknown4) result = gCallbacks.mUnknown4(key, rule.mId, value, game);
             else result = -1;
@@ -145,7 +148,8 @@ unsigned int fn_801B1FD8(SpchEventKey_t *key, Item_801AE3F4 *event, int *values,
     for (i = 0; i < count; i++) {
         unsigned int mask = 0;
         GET_RULE(rule, data, i);
-        if (rule.mParm == 0) {
+        parm = rule.mParm;
+        if (parm == 0) {
             unsigned int bit = 1 << (31 - i);
             int result;
             if (gCallbacks.mUnknown4) result = gCallbacks.mUnknown4(key, rule.mId, 0, game);

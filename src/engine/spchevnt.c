@@ -251,7 +251,9 @@ int fn_801AE9A0(unsigned int priority, int channel)
 
     for (i = 0; i <= 15; i++) {
         if (!lbl_8037E0F4.mVoices[i].mActive) {
-            return i;
+            // FAKEMATCH: result = i and goto done in place of return i (all three loops); with the returns the found cases return directly and the frame and registers differ
+            result = i;
+            goto done;
         }
     }
     now = fn_801B2368();
@@ -259,7 +261,8 @@ int fn_801AE9A0(unsigned int priority, int channel)
         unsigned int limit = lbl_8037E0F4.mVoices[i].mItem->mUnknown2;
         if (limit != 0 && now - lbl_8037E0F4.mVoices[i].mTime > limit && skip != i) {
             fn_801AF128(i);
-            return i;
+            result = i;
+            goto done;
         }
     }
     for (i = 0; i <= 15; i++) {
@@ -267,9 +270,11 @@ int fn_801AE9A0(unsigned int priority, int channel)
         if (lbl_8037E0F4.mVoices[i].mItem->mUnknown4 <= priority && c == channel) {
             lbl_8037E0F4.mVoices[i].mActive = 0;
             lbl_8037E0F4.mCount[c]--;
-            return i;
+            result = i;
+            goto done;
         }
     }
+done:
     return result;
 }
 
