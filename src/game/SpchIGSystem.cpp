@@ -14,7 +14,7 @@
 #include "game/Object_80039F5C.h"
 #include "engine/spchevnt.h"
 
-/* Block passed to fn_801F5B30; its first word holds SpchIGSampleRequest. */
+/* Block passed to SpchInit; its first word holds SpchIGSampleRequest. */
 struct SpchIGInitParams_t {
     int (*mpUnknown0)(struct SpchIGSampleRequest_t *);
     int mUnknown4;
@@ -86,7 +86,7 @@ void *ResOpenRam(void *pData, int a, int b, int c);
 void SndPurgeStream(int handle);
 void SndStreamSetPitchMult(int handle, int a);
 void SndSetMasterVol(int a, int b);
-void fn_801F5B30(SpchIGInitParams_t *pParams);
+void SpchInit(SpchIGInitParams_t *pParams);
 void fn_801F5C34(void);
 void fn_801F5C6C(void *a, int b, void *c, int d);
 void fn_801F5C94(void *pData, int a, int b);
@@ -362,7 +362,7 @@ extern "C" void SpchIGLoadChatData(SpchIGInitParams_t *pParams, int unused)
     _SpchIG_bUseSpeakerPos = 1;
     _SpchIG_sState.mpUnknown4 = ResOpenDevice(lbl_802EBE04, 44);
     _SpchIG_sState.mpUnknown8 = ResOpenRam(_SpchIG_sState.mpUnknown4, 0, 1, 1);
-    fn_801F5B30(pParams);
+    SpchInit(pParams);
     fn_801F5CEC(SpchIGCanPlayEvent);
     _SpchIG_sState.mUnknown0 = pParams->mUnknown14;
     fn_801F5C94(_SpchIG_sState.mpUnknown4, 1, 0);

@@ -2334,6 +2334,10 @@
     "STREAM_overhead": {
       "address": "0x801F685C",
       "evidence": "evidence.tsv function and name rows for 0x801F685C (STREAM_overhead, comparison only until its file is linked); the linked src/engine/pathreal5.c calls it by name."
+    },
+    "SpchInit": {
+      "address": "0x801F5B30",
+      "evidence": "evidence.tsv function/name rows for 0x801F5B30 (src/engine/Speech.cpp, comparison only); original-owned until Speech.cpp links."
     }
   },
   "units": [

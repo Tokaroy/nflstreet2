@@ -47,6 +47,32 @@ static int fn_801C7730(SplayTree_801C7684 *pTree, SplayNode_801C7684 *pNode, int
     return result == 0 ? 4 : 0;
 }
 
+SplayNode_801C7684 *fn_801C77DC(SplayTree_801C7684 *pTree, SplayNode_801C7684 *pNode)
+{
+    SplayNode_801C7684 *pNil = pTree->mpNil;
+
+    pNode = pNode->mpLeft;
+    if (pNode != pNil) {
+        while (pNode->mpRight != pNil) {
+            pNode = pNode->mpRight;
+        }
+    }
+    return pNode;
+}
+
+SplayNode_801C7684 *fn_801C7810(SplayTree_801C7684 *pTree, SplayNode_801C7684 *pNode)
+{
+    SplayNode_801C7684 *pNil = pTree->mpNil;
+
+    pNode = pNode->mpRight;
+    if (pNode != pNil) {
+        while (pNode->mpLeft != pNil) {
+            pNode = pNode->mpLeft;
+        }
+    }
+    return pNode;
+}
+
 static SplayNode_801C7684 *fn_801C7844(SplayNode_801C7684 *pNode, SplayTree_801C7684 *pTree)
 {
     SplayNode_801C7684 header;
