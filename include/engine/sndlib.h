@@ -211,18 +211,6 @@ struct Header_80273DF8 {
     Loop_80273DF8 *mE0[6];
 };
 
-struct Info_80274464 {
-    unsigned short m0;
-    unsigned char m2;
-};
-
-struct Struct_80274464 {
-    unsigned char mUnknown0[7];
-    unsigned char m7;
-    unsigned char mUnknown8[0x10];
-    void *m18[8];
-};
-
 struct Params_80279D0C {
     int m0;
     int m4;

@@ -31,6 +31,48 @@ typedef struct Params_803A6C40 {
     unsigned char mUnknown72[0x2A];
 } Params_803A6C40;
 
+/* The play options record that SNDplaysetdef fills (also read by SNDPKTPLAY_start). */
+typedef struct SndPlayOpts_t {
+    unsigned char m0;
+    unsigned char m1;
+    unsigned char m2;
+    unsigned char m3;
+    unsigned char m4;
+    unsigned char m5;
+    unsigned char unk_0x6[2];
+    unsigned short m8;
+    unsigned short mA;
+    unsigned short mC;
+    unsigned short mE;
+    unsigned short m10;
+    unsigned char unk_0x12[2];
+    unsigned short m14;
+    unsigned short m16;
+} SndPlayOpts_t;
+
+/* A packet player's stream format (copied whole into the player at +0x60): halfword +0x0, channel
+   count +0x2, byte +0x3. */
+typedef struct Info_80274464 {
+    unsigned short m0;
+    unsigned char m2;
+    unsigned char m3;
+} Info_80274464;
+
+/* The per-channel start parameters of a packet player: per-channel halfwords +0xC and data
+   pointers +0x18. */
+typedef struct Struct_80274464 {
+    unsigned short m0;
+    unsigned char mUnknown2;
+    unsigned char m3;
+    unsigned char mUnknown4[2];
+    signed char m6;
+    unsigned char m7;
+    unsigned short m8;
+    unsigned char mUnknownA[2];
+    unsigned short mC[6];
+    void *m18[8];
+} Struct_80274464;
+
 typedef struct Record_803A6DF0 {
     int m0;
     short m4[8];
@@ -43,10 +85,11 @@ typedef struct Record_803A6DF0 {
     unsigned char m23;
     unsigned short m24;
     unsigned char m26;
-    unsigned char mUnknown27;
+    unsigned char m27;
     short m28;
     unsigned char m2A;
-    unsigned char mUnknown2B[5];
+    unsigned char m2B;
+    unsigned char mUnknown2C[4];
     float m30;
     float m34;
     float m38;
@@ -57,13 +100,13 @@ typedef struct Record_803A6DF0 {
     unsigned short m4C;
     unsigned char m4E;
     unsigned char mUnknown4F;
-    unsigned short m50;
-    unsigned char mUnknown52[0xA];
+    unsigned short m50[6];
     signed char m5C;
     signed char m5D;
     signed char m5E;
     signed char m5F;
-    unsigned char mUnknown60[4];
+    unsigned char m60;
+    unsigned char mUnknown61[3];
     float *m64;
     signed char m68;
     unsigned char m69;
@@ -73,7 +116,7 @@ typedef struct Record_803A6DF0 {
     unsigned char m6D;
     unsigned short m6E;
     struct SndEnvStage_t *m70;
-    unsigned char mUnknown74[4];
+    int m74;
     signed char *m78;
     int m7C;
     signed char *m80;
@@ -120,8 +163,7 @@ typedef struct Struct_803A6C24 {
     Record_803A6DF0 *m1CC;
     struct SndBankSlot_t *m1D0;
     struct SndMemPool_t *m1D4;
-    unsigned char mUnknown1D8[0xC];
-    short m1E4[5][6];
+    short m1D8[6][6];
     void (*m220)(void);
     void (*m224)(void);
 } Struct_803A6C24;

@@ -1096,6 +1096,7 @@ address	size	sibling_name	how	sibling_file	unit
 0x801F155C	84	ProcHashHSH2	name	terfhash.c	terfhash.c
 0x801F15B0	560	ProcBuildHashTable	name	terfhash.c	terfhash.c
 0x801F17E0	88	_ResBlockToHashType	size	reswrite.c	reswrite.c
+0x801F1838	780	ResWriteResourceIgnoreCompression	size	reswrite.c	reswrite.c
 0x801F1B44	40	ResWriteResource	size	reswrite.c	reswrite.c
 0x801F1B6C	220	_ResCloseWrite	size	reswrite.c	reswrite.c
 0x801F1C48	140	_ProcGetBaseBlockSize	size	reswrite.c	reswrite.c

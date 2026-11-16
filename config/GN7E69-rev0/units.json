@@ -2311,6 +2311,10 @@
       "address": "0x802763E0",
       "evidence": "evidence.tsv function and name rows for 0x802763E0 (MIX_audioslice, smixer.c, registered in comparisons.json, original bytes linked); referenced by the linked src/engine/slinkmix.c, which installs it in the mixer hooks (c18 wave)."
     },
+    "SNDI_validrendermode": {
+      "address": "0x802796DC",
+      "evidence": "evidence.tsv function and name rows for 0x802796DC (SNDI_validrendermode, srender.c, registered in comparisons.json, original bytes linked); called by SNDPKTPLAY_start (spktplay.c comparison, c19 wave)."
+    },
     "SNDPKTPLAYI_get": {
       "address": "0x802792F0",
       "evidence": "evidence.tsv function and name rows for 0x802792F0 (SNDPKTPLAYI_get, spktplay.c, registered in comparisons.json, original bytes linked); called by the linked src/engine/suppf.c and src/engine/supmutpf.c (c18 wave)."

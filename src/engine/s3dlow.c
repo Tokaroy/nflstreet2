@@ -28,7 +28,7 @@ int SND3dpos(int id, int offset, int value)
                 record->m1E = clamped;
                 // FAKEMATCH: two-step sum (one store in the target) for the add operand order
                 record->m1C = record->m4C + offset;
-                record->m1C += record->m50;
+                record->m1C += record->m50[0];
                 if (lbl_803A772C == 0) {
                     record->m1C = 0;
                 }

@@ -95,12 +95,20 @@ typedef struct SndPacketPlayer_t {
     void (*m54)(int value, void *context);
     void (*m58)(int index, int value, void *context);
     void *m5C;
-    unsigned char mUnknown60[2];
-    unsigned char m62;
-    unsigned char mUnknown63;
+    Info_80274464 m60;
     void *m64[6];
     SndPacketEntry_t m7C[1];
 } SndPacketPlayer_t;
+
+/* A patch header (256 bytes; SNDPKTPLAY_start builds one on its stack): channel count +0x3 and the
+   render flags +0x18 that SNDI_validrendermode tests; the rest is not established. */
+typedef struct SndPatchHeader_t {
+    unsigned char mUnknown0[3];
+    unsigned char m3;
+    unsigned char mUnknown4[0x14];
+    unsigned short m18;
+    unsigned char mUnknown1A[0xE6];
+} SndPatchHeader_t;
 
 typedef struct SndPacketEvent_t {
     unsigned short m0;

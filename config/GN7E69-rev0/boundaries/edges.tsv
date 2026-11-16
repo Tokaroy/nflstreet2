@@ -217,7 +217,7 @@ section	address	low	high	class	crossing_data	crossing_calls	left	right
 .sdata	-	0x803EBC90	0x803EBC90	data	0	6/3	llglib.c	llrender.c
 .sdata	-	0x803EBCC0	0x803EBCC0	thin	0	3/1	matrix.c	llmatrix.c
 .sdata	-	0x803EBCC4	0x803EBCC4	thin	0	1/13	llmatrix.c	Memory.c
-.sdata	-	0x803EBD7D	0x803EBD80	thin	0	1/13	remap.c	Resource.c
+.sdata	-	0x803EBD7D	0x803EBD84	thin	0	1/12	remap.c	Resource.c
 .sdata	-	0x803EBDE0	0x803EBDE0	data	0	2/2	resquickload.c	rescache.c
 .sdata	-	0x803EBDE8	0x803EBDE8	data	0	2/2	rescache.c	resloosefile.c
 .sdata	-	0x803EBE20	0x803EBE20	thin	0	1/1	llsound.c	sort.c

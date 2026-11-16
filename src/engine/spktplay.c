@@ -1,8 +1,7 @@
 /* Sound packet players (spktplay.c): the streamed players that queue decoded audio packets per channel
-   for the voices that play them: create, submit, submit space, frames outstanding, purge, stop, destroy,
-   the packet fetch of the decoders, frame release and the callback flush. SNDPKTPLAY_start is not
-   reconstructed yet. Names from the GoldenEye: Rogue Agent, Medal of Honor: European Assault and
-   NASCAR 2005 symbol sets (spktplay.c). */
+   for the voices that play them: create, start, submit, submit space, frames outstanding, purge, stop,
+   destroy, the packet fetch of the decoders, frame release and the callback flush. Names from the
+   GoldenEye: Rogue Agent, Medal of Honor: European Assault and NASCAR 2005 symbol sets (spktplay.c). */
 
 #include "engine/sndsys.h"
 
@@ -12,6 +11,16 @@ int fn_802743A0(int index, void *stream);
 int SNDstop(int handle);
 void SNDPKTPLAYI_flushcallbackdata(void);
 int SNDPKTPLAY_purge(int index, int a, int b);
+void SNDI_checkplayopts(SndPlayOpts_t *opts);
+void iSNDcalcpitch(int index);
+int fn_80274464(int stream, int index, int a, int b, int c, Info_80274464 *info, Struct_80274464 *p);
+void fn_8026A0E8(int value);
+void fn_80273D7C(unsigned int flags, int *a, int *b);
+extern float lbl_80300028;
+int fn_80269D28(int count, int priority, int *handle, int rate, int format);
+int SNDI_validrendermode(int *mode, SndPatchHeader_t *header);
+void SetDefaultAzimuths(Record_803A6DF0 *p);
+int SNDPKTPLAYI_gethighchannel(int index, int count);
 
 int SNDPKTPLAYI_gethighchannel(int index, int count)
 {
@@ -73,6 +82,124 @@ found:
     return i;
 }
 
+int SNDPKTPLAY_start(int index, Info_80274464 *info, Struct_80274464 *params, SndPlayOpts_t *opts)
+{
+    SndPacketPlayer_t *stream;
+    Record_803A6DF0 *record;
+    Record_803A6DF0 *channel;
+    SndPatchHeader_t header;
+    int rate;
+    int format;
+    int handle;
+    int cursor = 0;
+    int found = 0;
+    int render;
+    int count;
+    int voice;
+    int result;
+    int i;
+
+    SNDI_checkplayopts(opts);
+    stream = sndpps.m304[index];
+    count = info->m2;
+    header.m3 = info->m2;
+    header.m18 = params->m8;
+    cursor = 0;
+    // FAKEMATCH: format copy before the queue resets and the channel-record store order below were found
+    // by search (the scheduler then gives the target load and store order); found is never set (break)
+    stream->m60 = *info;
+    stream->m4 = 0;
+    stream->m48 = 0;
+    stream->m4C = 0;
+    stream->mC = 0;
+    stream->m8 = 0;
+    stream->m46 = 0;
+    stream->m44 = 0;
+    for (i = 0; i < stream->m60.m2; i++) {
+        stream->m10[i] = 0;
+        stream->m34[i] = 0;
+        stream->m28[i] = 0;
+        stream->m64[i] = params->m18[i];
+    }
+    while (!found && (render = SNDI_validrendermode(&cursor, &header)) != 0) {
+        fn_80273D7C(render, &rate, &format);
+        voice = fn_80269D28(count, 101, &handle, rate, format);
+        if (voice < 0) {
+            stream->m0 = -9;
+            continue;
+        }
+        stream->m0 = handle;
+        stream->m42 = SNDPKTPLAYI_gethighchannel(voice, info->m2);
+        record = &lbl_803A6C24.m1CC[voice];
+        record->m18 = -1;
+        record->m14 = 0;
+        record->m20 = info->m0;
+        record->m22 = info->m3;
+        record->m23 = info->m2;
+        if (info->m2 == 1) {
+            record->m1C = opts->m8;
+        } else {
+            SetDefaultAzimuths(record);
+        }
+        record->m4[7] = -1;
+        record->m4C = 0;
+        record->m88 = params->m0;
+        record->m8C = opts->mC;
+        record->m68 = opts->m1;
+        record->m60 = opts->m5;
+        *record->m64 = (signed char)opts->m5 * (1.0f / 127.0f);
+        record->m86 = params->m6 * 100;
+        record->m26 = 0;
+        record->m27 = 0;
+        record->m78 = 0;
+        record->m80 = 0;
+        record->m38 = (signed char)opts->m0 * (1.0f / 127.0f);
+        for (i = 0; i < info->m2; i++) {
+            record->m50[i] = params->mC[i] - lbl_803A6C24.m1D8[info->m2 - 1][i];
+            channel = &lbl_803A6C24.m1CC[record->m4[i]];
+            // FAKEMATCH: search-found store order (see the comment at the format copy)
+            channel->m24 = render;
+            channel->m5F = opts->m4;
+            channel->m2B = params->m3;
+            channel->m38 = record->m38;
+            channel->m74 = 0;
+            channel->m5C = 1;
+            channel->m30 = 0.0f;
+            channel->m40 = 0x7F0000;
+            channel->m44 = 0x7FFFFFFF;
+            channel->m5E = 0;
+            channel->m5D = 0;
+            channel->m48 = channel->m38 * lbl_80300028;
+            channel->m3C = 0;
+            channel->m70 = 0;
+            channel->m7C = 0;
+            if (i == 5) {
+                channel->m4E = 1;
+            } else {
+                channel->m4E = 0;
+            }
+            channel->m1E = 0;
+        }
+        if (info->m2 == 1) {
+            record->m1E = opts->mA;
+        }
+        for (i = 0; i < info->m2; i++) {
+            lbl_803A6C24.m1CC[record->m4[i]].m1C += record->m50[i];
+        }
+        record->m8A = 0;
+        iSNDcalcpitch(voice);
+        result = fn_80274464(index, voice, opts->mE, opts->m14, opts->m16, info, params);
+        if (result >= 0) {
+            break;
+        }
+        for (i = 0; i < count; i++) {
+            fn_8026A0E8(lbl_803A6C24.m1CC[voice].m4[i]);
+        }
+        stream->m0 = result;
+    }
+    return stream->m0;
+}
+
 int SNDPKTPLAY_submit(int index, SndPacket_t *packet)
 {
     SndPacketPlayer_t *stream = sndpps.m304[index];
@@ -80,7 +207,7 @@ int SNDPKTPLAY_submit(int index, SndPacket_t *packet)
     int id;
     int i;
 
-    for (i = 0; i < stream->m62; i++) {
+    for (i = 0; i < stream->m60.m2; i++) {
         if (stream->m34[i] >= stream->m40 - 1) {
             return -13;
         }
@@ -89,7 +216,7 @@ int SNDPKTPLAY_submit(int index, SndPacket_t *packet)
     entry->m4 = packet->m4;
     entry->m4b = packet->m4b;
     entry->m0 = stream->m4;
-    for (i = 0; i < stream->m62; i++) {
+    for (i = 0; i < stream->m60.m2; i++) {
         entry->m8[i] = packet->mC[i];
         stream->m34[i]++;
     }
@@ -107,7 +234,7 @@ int SNDPKTPLAY_submitspace(int index)
     SndPacketPlayer_t *stream = sndpps.m304[index];
     int value = 0;
     int i;
-    for (i = 0; i < stream->m62; i++) {
+    for (i = 0; i < stream->m60.m2; i++) {
         if (stream->m34[i] >= value) {
             value = stream->m34[i];
         }
@@ -137,7 +264,7 @@ int SNDPKTPLAY_stop(int index)
     SNDPKTPLAYI_flushcallbackdata();
     SNDPKTPLAY_purge(index, 0, 0x7FFFFFFF);
     stream->m0 = -1;
-    for (i = 0; i < stream->m62; i++) {
+    for (i = 0; i < stream->m60.m2; i++) {
         if (stream->m64[i] != 0) {
             SNDMEMI_free(stream->m64[i]);
         }
@@ -166,7 +293,7 @@ unsigned char *SNDPKTPLAYI_get(int index, int channel, int *count, int *last)
     int all = 1;
     int done = 1;
 
-    for (i = 0; i < stream->m62; i++) {
+    for (i = 0; i < stream->m60.m2; i++) {
         if (stream->m10[i] <= stream->m8) {
             all = 0;
         }
@@ -200,7 +327,7 @@ unsigned char *SNDPKTPLAYI_get(int index, int channel, int *count, int *last)
             done = 0;
         }
         i++;
-    } while (done == 1 && i < stream->m62);
+    } while (done == 1 && i < stream->m60.m2);
     if (done) {
         stream->mC++;
         stream->m48 -= entry->m4;

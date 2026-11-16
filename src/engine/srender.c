@@ -5,12 +5,6 @@
 
 extern "C" {
 
-/* The patch header fields this file reads; partial layout. */
-typedef struct SndPatchHeader_t {
-    unsigned char mUnknown0[0x18];
-    unsigned short m18;
-} SndPatchHeader_t;
-
 int SNDI_validrendermode(int *mode, SndPatchHeader_t *header)
 {
     int result = 0;

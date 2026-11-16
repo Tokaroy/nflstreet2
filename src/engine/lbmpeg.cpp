@@ -41,6 +41,7 @@ int CMpegBase::ProcessHeader(unsigned int header)
     unsigned int rate;
     int layer;
     int lsf;
+    unsigned char sfreq;
 
     if ((header & 0xFFE00000) != 0xFFE00000) {
         return -1;
@@ -56,21 +57,24 @@ int CMpegBase::ProcessHeader(unsigned int header)
     m41 = (header >> 3) & 1;
     m42 = (header >> 2) & 1;
     if (header & 0x100000) {
-        m37 = id ^ 1;
+        // FAKEMATCH: lsf read back from the stored id field (m3A) and the sampling-frequency byte local below
+        // are the forms found by search that give the target register allocation
+        m37 = m3A ? 0 : 1;
         m36 = 0;
     } else {
-        m36 = 1;
         m37 = 1;
+        m36 = 1;
     }
     if (m36 != 0) {
         m3D = ((header >> 10) & 3) + 6;
     } else {
         m3D = ((header >> 10) & 3) + m37 * 3;
         if (m37 == 0) {
-            m38 = ((header >> 10) & 3) + 3;
+            sfreq = ((header >> 10) & 3) + 3;
         } else {
-            m38 = (header >> 10) & 3;
+            sfreq = (header >> 10) & 3;
         }
+        m38 = sfreq;
     }
     channels = 2;
     if (m3F == 3) {
