@@ -16782,6 +16782,49 @@
       ]
     },
     {
+      "source": "src/game/cu_80186A44.cpp",
+      "profile": "game_cpp",
+      "evidence": "evidence.tsv unit row 0x80186A44-0x80187AD4 (src/game/cu_80186A44.cpp) and its data, name and source-form rows.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80186A44",
+          "end": "0x80187AD4"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802A6EC8",
+          "end": "0x802A7910"
+        },
+        {
+          "section": ".data",
+          "placement": ".data4",
+          "start": "0x802EAA40",
+          "end": "0x802EAB80"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EB5E0",
+          "end": "0x803EB5E4"
+        },
+        {
+          "section": ".bss",
+          "placement": ".bss",
+          "start": "0x80362B7C",
+          "end": "0x80362BB0"
+        },
+        {
+          "section": ".sbss",
+          "placement": ".sbss",
+          "start": "0x803ECB88",
+          "end": "0x803ECB94"
+        }
+      ]
+    },
+    {
       "source": "src/game/ResBank.cpp",
       "profile": "game_cpp",
       "evidence": "evidence.tsv unit row 0x801882B4-0x80188A30 (src/game/ResBank.cpp) and its compiler and source-form rows.",

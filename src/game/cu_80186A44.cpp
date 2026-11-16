@@ -66,7 +66,7 @@ static Entry_80186BAC lbl_802EAA40[] = {
     { 0x0000000D, 0x00000000, 0x00000000, 0x00000000 },
 };
 static signed char lbl_803ECB88[2];
-extern unsigned int lbl_803ECB8C[2];
+static unsigned int lbl_803ECB8C[2];
 static unsigned int lbl_803EB5E0 = 0;
 static char lbl_80362B7C[4][13];
 
