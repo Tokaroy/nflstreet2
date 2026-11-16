@@ -65,6 +65,7 @@ void readsamples(UTALKSTATE_CODA *s, int multipulse, float *out, int stride)
     int cnt;
     int x;
     int n;
+    int len;
 
     if (multipulse) {
         model = 0;
@@ -100,6 +101,8 @@ void readsamples(UTALKSTATE_CODA *s, int multipulse, float *out, int stride)
         }
     } else {
         x = 0;
+        // FAKEMATCH: sample count held in a local; keeps the loop test at cmpwi 108/blt (a literal folds to <= 107)
+        len = 108;
         do {
             i = s->m4 & 3;
             if (i == 1) {
@@ -112,7 +115,7 @@ void readsamples(UTALKSTATE_CODA *s, int multipulse, float *out, int stride)
                 out[x] = 0.0f;
                 discardbits(s, 1);
             }
-        } while ((x += stride) < 108);
+        } while ((x += stride) < len);
     }
 }
 
