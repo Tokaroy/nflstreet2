@@ -17,10 +17,10 @@ struct MtCommand_t {
 };
 
 /* Low-bit masks for 0 to 8 bits (getbits). */
-unsigned int bitmask[9] = { 0, 1, 3, 7, 15, 31, 63, 127, 255 };
+static unsigned int bitmask[9] = { 0, 1, 3, 7, 15, 31, 63, 127, 255 };
 
 /* Reflection-coefficient quantizer levels (decodemut). */
-float coeff_table[64] = {
+static float coeff_table[64] = {
     0.0f, -0.996776f, -0.990327f, -0.983879f, -0.977431f, -0.970982f, -0.964534f, -0.958085f,
     -0.951637f, -0.930754f, -0.90496f, -0.879167f, -0.853373f, -0.827579f, -0.801786f, -0.775992f,
     -0.750198f, -0.724405f, -0.698611f, -0.670635f, -0.619048f, -0.56746f, -0.515873f, -0.464286f,
@@ -32,7 +32,7 @@ float coeff_table[64] = {
 };
 
 /* Next-code lookup by the low 8 bits of the bit buffer, one table per code row (readsamples). */
-unsigned char index_table[2][256] = {
+static unsigned char index_table[2][256] = {
     {
         4, 6, 5, 9, 4, 6, 5, 13, 4, 6, 5, 10, 4, 6, 5, 17,
         4, 6, 5, 9, 4, 6, 5, 14, 4, 6, 5, 10, 4, 6, 5, 21,
@@ -72,7 +72,7 @@ unsigned char index_table[2][256] = {
 };
 
 /* The multi-pulse codes indexed by index_table (readsamples). */
-MtCommand_t decode_table[29] = {
+static MtCommand_t decode_table[29] = {
     { 1, 8, 0.0f },
     { 1, 7, 0.0f },
     { 0, 8, 0.0f },

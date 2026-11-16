@@ -18,7 +18,7 @@ extern TDbTable_t *_TDbTblFindTable(TDbDatabase_801FAA00 *pDb, int id);
 extern int _TDbTblDestroy(TDbTable_t *pTable);
 extern int _TDbTblRowGrow(TDbTable_t *pTable, int count);
 int fn_801FAEDC(TDbTable_t *pTable, TDbIOStream_801FA8C8 *pStream, int skip);
-int fn_801FB5C0(TDbTable_t *pTable, TDbIOStream_801FA8C8 *pStream, int mode);
+int fn_801FB5C0(TDbTable_t *pTable, TDbIOStream_801FA8C8 *pStream, int skip);
 int fn_801FB9D0(TDbExpr_t *pExpr, TDbIOStream_801FA8C8 *pStream, int release);
 
 static inline unsigned short TDbTableFree_801FAAF8(TDbTable_t *pTable)
@@ -341,6 +341,7 @@ int fn_801FB0F8(TDbDatabase_801FAA00 *pDb, TDbIOTableHdr_801FAAF8 *pHdr, int id,
             }
         }
         if (err == 0) {
+            // FAKEMATCH: err == 0 tested again inside the outer err test, kept because every single-test form scores lower (95.92-96.86%)
             if ((pTable->mFlags & 0x60) && err == 0 && pTable->mUnknown2C != 0) {
                 err = TDbExtMemAlloc(pDb->mHeap, pTable->mUnknown2C, &pTable->mUnknown18);
                 if (err == 0) {

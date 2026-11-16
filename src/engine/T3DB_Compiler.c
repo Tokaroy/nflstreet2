@@ -734,11 +734,13 @@ int fn_801FEA04(TDbParseInfo_801FC9D4 *pInfo, TDbLexer_801FCE10 *pLexer, int res
         pVar->mSize = 4;
         break;
     case 6:
+        // FAKEMATCH: float stored straight into the unsigned value word (no float local), for the target size-store schedule
         *(float *)&value = va_arg(pInfo->mArgs, double);
         pVar->mType = TDB_TYPE_FLOAT;
         pVar->mSize = 4;
         break;
     case 7:
+        // FAKEMATCH: as case 6
         *(float *)&value = va_arg(pInfo->mArgs, double);
         pVar->mType = TDB_TYPE_FLOAT;
         pVar->mSize = 4;
