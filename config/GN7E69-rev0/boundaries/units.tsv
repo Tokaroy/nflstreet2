@@ -32,7 +32,7 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x801C5008	0x801C53A8	CurveList.c	5	5	5	5	0	-	-
 0x801C53A8	0x801C5B9C	polynomial.c	4	4	4	4	0	-	lldma.c,dmamem.c,dma.c
 0x801C6584	0x801C665C	ds.c	4	4	4	4	0	-	-
-0x801C665C	0x801C6E5C	list.c	17	17	17	0	17	-	-
+0x801C665C	0x801C6E5C	list.c	17	17	17	17	0	-	-
 0x801C6E5C	0x801C735C	linklist.c	14	14	14	14	0	-	-
 0x801C735C	0x801C7684	node.c	10	10	10	10	0	-	-
 0x801C7684	0x801C7F70	splytree.c	15	15	15	0	15	-	-
@@ -44,7 +44,7 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x801CBC1C	0x801CBC50	filehost.c	8	7	7	7	0	-	-
 0x801CCA64	0x801CD79C	Font.c	24	23	23	0	23	-	-
 0x801CE138	0x801CE1E8	glib.c	2	2	3	2	0	-	-
-0x801CE1F8	0x801CEC90	llglib.c	39	35	36	0	35	-	-
+0x801CE1F8	0x801CEC90	llglib.c	39	35	36	35	0	-	-
 0x801CEC90	0x801CEE54	llrender.c	8	7	8	7	0	-	-
 0x801CEE54	0x801CEEF4	llrenderbin.c	2	2	4	2	0	-	-
 0x801CEF48	0x801CEFF0	maths.c	2	2	2	2	0	-	-
