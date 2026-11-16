@@ -104,9 +104,10 @@ int SNDPKTPLAY_start(int index, Info_80274464 *info, Struct_80274464 *params, Sn
     count = info->m2;
     header.m3 = info->m2;
     header.m18 = params->m8;
+    // FAKEMATCH: duplicate store of the initialized cursor, kept for the scheduler (without it 99.26%, 1108 vs 1112 bytes)
     cursor = 0;
     // FAKEMATCH: format copy before the queue resets and the channel-record store order below were found
-    // by search (the scheduler then gives the target load and store order); found is never set (break)
+    // by search (the scheduler then gives the target load and store order)
     stream->m60 = *info;
     stream->m4 = 0;
     stream->m48 = 0;
@@ -121,6 +122,7 @@ int SNDPKTPLAY_start(int index, Info_80274464 *info, Struct_80274464 *params, Sn
         stream->m28[i] = 0;
         stream->m64[i] = params->m18[i];
     }
+    // FAKEMATCH: found is never set (success leaves by break); without the test 80.87%
     while (!found && (render = SNDI_validrendermode(&cursor, &header)) != 0) {
         fn_80273D7C(render, &rate, &format);
         voice = fn_80269D28(count, 101, &handle, rate, format);

@@ -242,6 +242,7 @@ static inline void Notify_801F8A54(int type, int a, int b)
 }
 
 /* Finds the open database with this id, in any state. */
+/* FAKEMATCH: inline helper chosen for codegen; with the search loop written in place fn_801F9228 and fn_801F92EC give 95.71% and 95.62% */
 static inline TDbDb_801F88F0 *LookupDb_801F9228(int db)
 {
     TDbDb_801F88F0 *pDb;

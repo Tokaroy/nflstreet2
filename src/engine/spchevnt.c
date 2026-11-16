@@ -5,6 +5,10 @@
 
 extern "C" {
 
+// Re-entry guards of iSPCH_AddEvent and of SPCH_PlayLastEvent/SPCH_Play.
+static int gAddEventStatus = 0;
+static int gSPCHPlayStatus = 0;
+
 int ExactMatch_NumBytes(int n)
 {
     return (n * 2 + 7) & ~3;
@@ -245,6 +249,7 @@ void iSPCH_InitEventQueue(void)
 int iSPCH_FindEventSlot(unsigned int priority, int channel)
 {
     int result = -1;
+    // FAKEMATCH: never-set skip index (always -1) tested in the expiry loop; the literal i != -1 gives 97.54%, no test 95.65%
     int skip = -1;
     int i;
     unsigned int now;
@@ -259,6 +264,7 @@ int iSPCH_FindEventSlot(unsigned int priority, int channel)
     now = fn_801B2368();
     for (i = 0; i <= 15; i++) {
         unsigned int limit = gVoxEvents.mVoices[i].mItem->mUnknown2;
+        // FAKEMATCH: the never-set skip test (declaration above)
         if (limit != 0 && now - gVoxEvents.mVoices[i].mTime > limit && skip != i) {
             iSPCH_ClearEvent(i);
             result = i;
