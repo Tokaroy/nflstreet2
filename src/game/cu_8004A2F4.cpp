@@ -1322,7 +1322,7 @@ void ObjSetListObjFunc(int, int, int, int (*)(DynObjChild *));
 DynObjChild *ObjNewInList(int, int, int, BigObjDesc_t *);
 void ObjRemoveFromList(int, DynObjChild *);
 void VptTrashObject(DynObjChild *); void VptFlushObjectTrash(void); void VptFlushObjectTrashSync(void);
-int fn_801F7C88(void);
+int SysGetLastError(void);
 BigObj_t *BigObjFindByKey(int, unsigned int);
 void DynObjChildRefreshFrame(DynObjChild *);
 void *ResLoadToBuffer(void *, int, char *);
@@ -1443,7 +1443,7 @@ void fn_8004CFCC(int handle, int count)
     if (handle) ObjSetListObjFunc(handle, 31, 0, fn_8004D2F8);
     lbl_803EA4F4 = (DynObjChild **)fn_801D2B7C(count * 4, 0, 0);
     memset(lbl_803EA4F4, 0, count * 4);
-    fn_801F7C88();
+    SysGetLastError();
     lbl_803EC7D0 = 0;
     lbl_803EC7D2 = count;
 }
@@ -2712,10 +2712,10 @@ void fn_800518E0(Object_80039F5C *pPlayer)
 
 }
 
-class Time_801E8C78 {
+class PhysicsTime {
 public:
-    Time_801E8C78();
-    virtual ~Time_801E8C78() {}
+    PhysicsTime();
+    virtual ~PhysicsTime() {}
     void fn_801E8D14(float delta);
 
     unsigned int mIntegral;
@@ -2723,13 +2723,13 @@ public:
 };
 
 extern "C" {
-Time_801E8C78 lbl_803084B8;
+PhysicsTime lbl_803084B8;
 extern unsigned char lbl_803EA534;
-void fn_801E92D0(void *pWorld, Time_801E8C78 *pOldTime, Time_801E8C78 *pNewTime);
+void fn_801E92D0(void *pWorld, PhysicsTime *pOldTime, PhysicsTime *pNewTime);
 
 void fn_8005122C(float dt)
 {
-    Time_801E8C78 next;
+    PhysicsTime next;
     fn_80050964();
     fn_80050CCC();
     if (!lbl_803EA534) {

@@ -197,13 +197,14 @@
       "flags": [
         "-O2",
         "-G0",
-        "-fno-strength-reduce"
+        "-fno-strength-reduce",
+        "-mps-float"
       ],
       "include_dirs": [
         "include/libc"
       ],
       "language": "c++",
-      "evidence": "evidence.tsv compiler rows 0x802714A8-0x8027CF9C (sound_cxx): the sound files sdspmix.c, snddrv.c, slinklst.c, saramman.c and supmutpf.c carry NASCAR 2005's .c names, and NASCAR's symbols for every function of those files are C++-mangled (SNDDRV_DSPMixerSetAuxBus__FP6_AXVPBUsi in sdspmix.c, SNDPLATFORM_stop__Fi in snddrv.c, SNDLINKI_push__FP11SNDLINKLISTP11SNDLINKNODE in slinklst.c, SNDARAM_alloc__Fi in saramman.c, SFILTER_unpackmtpf__FPviT0T0i in supmutpf.c), so the original build compiled them as C++. -O2 -G0 are measured on the former files src/engine/cu_802714A8.cpp and src/engine/cu_80276DE4.cpp (their compiler rows): no r13 or r2 access in the range, and default -G8 would turn absolute word accesses into SDA relocations. -fno-strength-reduce (owner ruling of 2026-11-14, per-profile flag): the target recomputes loop indexes on every pass (mulli r3,r31,88 in 0x80271EC4; slwi/lfsx at 0x80279BD4/0x80279BD8) and the flag turns no exact function of the range inexact. The neutral .cpp files of the same range use this profile too."
+      "evidence": "evidence.tsv compiler rows 0x802714A8-0x8027CF9C (sound_cxx): the sound files sdspmix.c, snddrv.c, slinklst.c, saramman.c and supmutpf.c carry NASCAR 2005's .c names, and NASCAR's symbols for every function of those files are C++-mangled (SNDDRV_DSPMixerSetAuxBus__FP6_AXVPBUsi in sdspmix.c, SNDPLATFORM_stop__Fi in snddrv.c, SNDLINKI_push__FP11SNDLINKLISTP11SNDLINKNODE in slinklst.c, SNDARAM_alloc__Fi in saramman.c, SFILTER_unpackmtpf__FPviT0T0i in supmutpf.c), so the original build compiled them as C++. -O2 -G0 are measured on the former files src/engine/cu_802714A8.cpp and src/engine/cu_80276DE4.cpp (their compiler rows): no r13 or r2 access in the range, and default -G8 would turn absolute word accesses into SDA relocations. -fno-strength-reduce (owner ruling of 2026-11-14, per-profile flag): the target recomputes loop indexes on every pass (mulli r3,r31,88 in 0x80271EC4; slwi/lfsx at 0x80279BD4/0x80279BD8) and the flag turns no exact function of the range inexact. The neutral .cpp files of the same range use this profile too. -mps-float (SN's paired-single float switch): evidence.tsv compiler row 0x80266E88-0x8027D3AC; it gives the target frame of every sound function that saves floating-point registers (8 bytes per saved register above the locals) and changes nothing else."
     },
     "path_cxx": {
       "flags": [
@@ -624,10 +625,6 @@
     "ReadBitStream__FP11BitStream_tUi": {
       "address": "0x80190F18",
       "evidence": "evidence.tsv external row 0x80190F18 (ReadBitStream__FP11BitStream_tUi), name row 0x80190F18 and type row BitStream_t."
-    },
-    "__cvt_fp2unsigned": {
-      "address": "0x801AD424",
-      "evidence": "evidence.tsv external row for GXPixel resolved caller and related SDK/runtime callee identity."
     },
     "_stack_addr": {
       "address": "0x803FE4C0",
@@ -1101,27 +1098,31 @@
       "address": "0x80307470",
       "evidence": "Existing ModuleGroup_8003450C.h declaration and original group initializer 0x800360F8; evidence.tsv external row for gTutorialGame. InGame dependency pointer written at 0x80032B7C."
     },
-    "fn_801E279C__14Class_801E274CP14Class_801E8E04": {
+    "fn_801E279C__14Class_801E274CP12PhysicsWorld": {
       "address": "0x801E279C",
-      "evidence": "evidence.tsv external row for 0x801E279C (fn_801E279C__14Class_801E274CP14Class_801E8E04) and function row 0x801E279C (comparison unit; original assembly remains linked)."
+      "evidence": "evidence.tsv external row for 0x801E279C (fn_801E279C__14Class_801E274CP12PhysicsWorld) and function row 0x801E279C (comparison unit; original assembly remains linked)."
     },
-    "fn_801E2C3C__14Class_801E27A4": {
+    "fn_801E2C3C__9BodyGroup": {
       "address": "0x801E2C3C",
-      "evidence": "evidence.tsv external row for 0x801E2C3C (fn_801E2C3C__14Class_801E27A4) and function row 0x801E2C3C (comparison unit; original assembly remains linked)."
+      "evidence": "evidence.tsv external row for 0x801E2C3C (fn_801E2C3C__9BodyGroup) and function row 0x801E2C3C (comparison unit; original assembly remains linked)."
     },
-    "fn_801E2C64__14Class_801E27A4PP13Node_801E2878": {
+    "fn_801E2C64__9BodyGroupPP13BodyGroupNode": {
       "address": "0x801E2C64",
-      "evidence": "evidence.tsv external row for 0x801E2C64 (fn_801E2C64__14Class_801E27A4PP13Node_801E2878) and function row 0x801E2C64 (comparison unit; original assembly remains linked)."
+      "evidence": "evidence.tsv external row for 0x801E2C64 (fn_801E2C64__9BodyGroupPP13BodyGroupNode) and function row 0x801E2C64 (comparison unit; original assembly remains linked)."
     },
     "_vt.14Class_802A2A40": {
       "address": "0x802A2A40",
       "evidence": "evidence.tsv external row for 0x802A2A40 (_vt.14Class_802A2A40)."
     },
-    "__13Time_801E8C78": {
+    "__11PhysicsTime": {
       "address": "0x801E8C78",
       "evidence": "Target constructor initializes u32+0/f32+4 and vptr+8; inferred class contract."
     },
-    "fn_801E8D14__13Time_801E8C78f": {
+    "_vt.11PhysicsTime": {
+      "address": "0x8028DD58",
+      "evidence": "evidence.tsv external row for 0x8028DD58 (_vt.11PhysicsTime, the PhysicsTime vtable in the game rodata) and source-form row 0x801E92D0 (include/engine/phystime.h #pragma interface); src/engine/physworld.cpp references it from the inlined destructors of PhysicsWorld::Step."
+    },
+    "fn_801E8D14__11PhysicsTimef": {
       "address": "0x801E8D14",
       "evidence": "Target member increments u32+0/f32+4 with f1 delta; inferred member contract."
     },
@@ -1604,62 +1605,6 @@
     "SstlFetchEntry": {
       "address": "0x8018EB20",
       "evidence": "evidence.tsv function/name rows for 0x8018EB20 (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
-    },
-    "StoryIsEventCompleted": {
-      "address": "0x8018E5F4",
-      "evidence": "evidence.tsv function/name rows for 0x8018E5F4 (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
-    },
-    "StoryAddCompletedEvent": {
-      "address": "0x8018E658",
-      "evidence": "evidence.tsv function/name rows for 0x8018E658 (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
-    },
-    "StoryCountRemainingEvents": {
-      "address": "0x8018E6A4",
-      "evidence": "evidence.tsv function/name rows for 0x8018E6A4 (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
-    },
-    "StoryAreGroupEventsCompleted": {
-      "address": "0x8018E6E0",
-      "evidence": "evidence.tsv function/name rows for 0x8018E6E0 (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
-    },
-    "StoryIsNew": {
-      "address": "0x8018E774",
-      "evidence": "evidence.tsv function/name rows for 0x8018E774 (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
-    },
-    "StorySetNew": {
-      "address": "0x8018E7A0",
-      "evidence": "evidence.tsv function/name rows for 0x8018E7A0 (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
-    },
-    "StoryGetLkss": {
-      "address": "0x8018E7CC",
-      "evidence": "evidence.tsv function/name rows for 0x8018E7CC (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
-    },
-    "StorySetLkss": {
-      "address": "0x8018E828",
-      "evidence": "evidence.tsv function/name rows for 0x8018E828 (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
-    },
-    "StoryTestIndexedFlag": {
-      "address": "0x8018E874",
-      "evidence": "evidence.tsv function/name rows for 0x8018E874 (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
-    },
-    "StorySetIndexedFlag": {
-      "address": "0x8018E8B0",
-      "evidence": "evidence.tsv function/name rows for 0x8018E8B0 (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
-    },
-    "StoryGetFlag100": {
-      "address": "0x8018E8F4",
-      "evidence": "evidence.tsv function/name rows for 0x8018E8F4 (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
-    },
-    "StorySetFlag100": {
-      "address": "0x8018E920",
-      "evidence": "evidence.tsv function/name rows for 0x8018E920 (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
-    },
-    "StoryGetFlag200": {
-      "address": "0x8018E94C",
-      "evidence": "evidence.tsv function/name rows for 0x8018E94C (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
-    },
-    "StorySetFlag200": {
-      "address": "0x8018E978",
-      "evidence": "evidence.tsv function/name rows for 0x8018E978 (target extent, inferred name); the function keeps its original bytes until its draft in comparisons.json is linked."
     },
     "PlyrFixWristBones": {
       "address": "0x8003830C",
@@ -2253,14 +2198,6 @@
       "address": "0x8026B7D8",
       "evidence": "evidence.tsv function and name rows for SNDMEMI_free 0x8026B7D8; the draft src/engine/smemman.c is registered in comparisons.json (one of its five functions, SNDMEMI_allocz, differs), so the original provider stays linked and linked callers resolve this name to it."
     },
-    "SNDSTRM_setvol": {
-      "address": "0x8026F334",
-      "evidence": "evidence.tsv function/name rows for 0x8026F334 (src/engine/sstvol.c, comparison only until linked)."
-    },
-    "SNDSTRM_setazimuth": {
-      "address": "0x8026E4C0",
-      "evidence": "evidence.tsv function/name rows for 0x8026E4C0 (src/engine/sst3dpos.c, comparison only until linked); the linked src/engine/saemsstr.c calls it by name (integration of c16a and c16c)."
-    },
     "MIX_create": {
       "address": "0x80275BBC",
       "evidence": "evidence.tsv function and name rows for 0x80275BBC (MIX_create, smixer.c, registered in comparisons.json, original bytes linked); referenced by the linked src/engine/slinkmix.c, which installs it in the mixer hooks."
@@ -2292,10 +2229,6 @@
     "SNDPKTPLAYI_freeframes": {
       "address": "0x8027952C",
       "evidence": "evidence.tsv function/name rows for 0x8027952C (SNDPKTPLAYI_freeframes in src/engine/spktplay.c, comparison only until linked); the linked src/engine/supmutpf.c calls it by name."
-    },
-    "SFILTER_unpackxapfinit": {
-      "address": "0x8027BA6C",
-      "evidence": "evidence.tsv function/name rows for 0x8027BA6C; exact but unlinked in the comparison-only src/engine/supxapf.cpp, which keeps its original bytes until the whole file can be linked; stored by name in the constructor table of src/engine/sinitxa.c."
     },
     "SNDPKTPLAY_overhead": {
       "address": "0x80278AC8",
@@ -2664,6 +2597,42 @@
           "placement": ".text",
           "start": "0x801DC9C8",
           "end": "0x801DCA10"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/system.c",
+      "profile": "engine_c",
+      "evidence": "evidence.tsv unit row 0x801F77DC-0x801F7DF4 (src/engine/system.c), its compiler, function, name, data, type and source-form rows; every function exact and the file-owned .sdata linked; the file defines the _Sys_TimerList, _Sys_CallbackList and _SysCS COMMON globals and the unit's storage map places each at its exact data row.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x801F77DC",
+          "end": "0x801F7DF4"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EBE30",
+          "end": "0x803EBE4C"
+        }
+      ],
+      "storage": [
+        {
+          "symbol": "_SysCS",
+          "start": "0x8039B3F8",
+          "end": "0x8039B418"
+        },
+        {
+          "symbol": "_Sys_TimerList",
+          "start": "0x803ECFA4",
+          "end": "0x803ECFA8"
+        },
+        {
+          "symbol": "_Sys_CallbackList",
+          "start": "0x803ECFA8",
+          "end": "0x803ECFAC"
         }
       ]
     },
@@ -5470,6 +5439,44 @@
           "placement": ".text",
           "start": "0x80257CF4",
           "end": "0x80258070"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/svol.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x802714A8-0x80271624 (src/engine/svol.c, NASCAR 2005 svol.c), the function and name rows of SNDvol, the data row of its .rodata literal pool 0x802B7A88-0x802B7A98, and the sound_cxx compiler rows 0x802714A8-0x8027CF9C (with -mps-float, compiler row 0x80266E88-0x8027D3AC); its one function is exact and linked (d3 wave).",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x802714A8",
+          "end": "0x80271624"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B7A88",
+          "end": "0x802B7A98"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/supxapf.cpp",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8027B888-0x8027BAFC (src/engine/supxapf.cpp), its three function and name rows, the data row of its .rodata double 0x802C2250-0x802C2258, and the sound_cxx compiler rows 0x80276DE4-0x8027CF9C (with -mps-float, compiler row 0x80266E88-0x8027D3AC); every function exact and linked (d3 wave).",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8027B888",
+          "end": "0x8027BAFC"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C2250",
+          "end": "0x802C2258"
         }
       ]
     },
@@ -14833,6 +14840,19 @@
       ]
     },
     {
+      "source": "src/engine/sattrdef.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x80277CF0-0x80277D88 (src/engine/sattrdef.c), the function, name and source-form rows of SND_attrsetdef and the SndSampleAttr_t type row; sound_cxx compiler rows 0x80276DE4-0x8027CF9C. Complete native .text, no owned data.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80277CF0",
+          "end": "0x80277D88"
+        }
+      ]
+    },
+    {
       "source": "src/engine/supmutpf.c",
       "profile": "sound_cxx",
       "sections": [
@@ -14943,6 +14963,25 @@
           "placement": ".text",
           "start": "0x802623A8",
           "end": "0x80262440"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/sn_malloc.c",
+      "profile": "engine_c",
+      "evidence": "evidence.tsv unit row 0x80262440-0x8026247C (src/engine/sn_malloc.c), its function, name, source-form and data rows; the one function and its .rodata string 0x802B733C-0x802B73BC are exact.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80262440",
+          "end": "0x8026247C"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B733C",
+          "end": "0x802B73BC"
         }
       ]
     },
@@ -15372,7 +15411,7 @@
     {
       "source": "src/game/StoryData.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv unit row 0x8018DF98-0x8018E5F4 (src/game/StoryData.cpp) and its data, linker, compiler and source-form rows.",
+      "evidence": "evidence.tsv unit row 0x8018DF98-0x8018E9A4 (src/game/StoryData.cpp) and its data, linker, compiler and source-form rows.",
       "link_roots": {
         "symbols": [
           "StoryTestFlag",
@@ -15390,7 +15429,21 @@
           "StoryClearFlags",
           "StoryStartNew",
           "StoryClearCompletedEvents",
-          "StoryCountCompletedEvents"
+          "StoryCountCompletedEvents",
+          "StoryIsEventCompleted",
+          "StoryAddCompletedEvent",
+          "StoryCountRemainingEvents",
+          "StoryAreGroupEventsCompleted",
+          "StoryIsNew",
+          "StorySetNew",
+          "StoryGetLkss",
+          "StorySetLkss",
+          "StoryTestIndexedFlag",
+          "StorySetIndexedFlag",
+          "StoryGetFlag100",
+          "StorySetFlag100",
+          "StoryGetFlag200",
+          "StorySetFlag200"
         ],
         "discarded": [
           "ResetYptsTadsCetsTables"
@@ -15402,13 +15455,13 @@
           "section": ".text",
           "placement": ".text",
           "start": "0x8018DF98",
-          "end": "0x8018E5F4"
+          "end": "0x8018E9A4"
         },
         {
           "section": ".rodata",
           "placement": ".data3",
           "start": "0x802AAD90",
-          "end": "0x802AAEE8"
+          "end": "0x802AAF9C"
         }
       ]
     },
@@ -15938,6 +15991,37 @@
           "placement": ".bss",
           "start": "0x8031B6A0",
           "end": "0x8031B6AC"
+        }
+      ]
+    },
+    {
+      "source": "src/game/camshot.cpp",
+      "profile": "game_cpp",
+      "evidence": "evidence.tsv unit row 0x8013E514-0x8013F460 (src/game/camshot.cpp) and its function, name and data rows; every function exact, promoted from comparison-only.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8013E514",
+          "end": "0x8013F460"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802A01C0",
+          "end": "0x802A01E8"
+        },
+        {
+          "section": ".data",
+          "placement": ".data4",
+          "start": "0x802DBDD4",
+          "end": "0x802DBDE0"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EB1D0",
+          "end": "0x803EB1E4"
         }
       ]
     },
@@ -18250,13 +18334,19 @@
     {
       "source": "src/engine/sn_cwhelpers.c",
       "profile": "engine_cpp_nosda",
-      "evidence": "evidence.tsv unit row 0x801AD424-0x801AD488 (src/engine/sn_cwhelpers.c), its function, name and source-form rows; the seven branch stubs 0x801AD46C-0x801AD488 are linked (no data); the documented holdout __cvt_fp2unsigned 0x801AD424-0x801AD46C at the start of .text (with its double 0x802AE9F8-0x802AEA00) keeps its original bytes and stays a comparison.",
+      "evidence": "evidence.tsv unit row 0x801AD424-0x801AD488 (src/engine/sn_cwhelpers.c), its function, name, data, assembly and source-form rows; the whole file is linked: __cvt_fp2unsigned and the seven branch stubs 0x801AD424-0x801AD488 and the double __cvt_fp2unsigned_two31 0x802AE9F8-0x802AEA00.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
-          "start": "0x801AD46C",
+          "start": "0x801AD424",
           "end": "0x801AD488"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802AE9F8",
+          "end": "0x802AEA00"
         }
       ]
     },
@@ -18442,15 +18532,15 @@
       ]
     },
     {
-      "source": "src/engine/cu_801E8E04.cpp",
+      "source": "src/engine/physworld.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv linker row 0x801E8E04-0x801E92D0 for the unchanged native contribution from src/engine/cu_801E8E04.cpp; existing function/type/compiler evidence and larger-file ownership remain in force. This is a linked native range, not a claim that its original source file is complete or closed.",
+      "evidence": "evidence.tsv linker row 0x801E8E04-0x801E92D0 for the native contribution from src/engine/physworld.cpp (unit row 0x801E8E04-0x801E9538, all eleven functions and the vtable 0x802B1660); PhysicsWorld::Step 0x801E92D0 joined in the d2 wave (source-form row on include/engine/phystime.h).",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x801E8E04",
-          "end": "0x801E92D0"
+          "end": "0x801E9538"
         },
         {
           "section": ".rodata",
@@ -18461,15 +18551,27 @@
       ]
     },
     {
-      "source": "src/engine/cu_801BC65C.c",
+      "source": "src/engine/animmot.c",
       "profile": "engine_c_fastmath",
-      "evidence": "evidence.tsv linker row 0x801BC65C-0x801BC7C0 for the unchanged native contribution from src/engine/cu_801BC65C.c; existing function/type/compiler evidence and larger-file ownership remain in force. This is a linked native range, not a claim that its original source file is complete or closed.",
+      "evidence": "evidence.tsv unit row 0x801BC65C-0x801BCA74 (src/engine/animmot.c, head of NASCAR 2005's animmot.c), its four function and name rows, the data rows of its .rodata 0x802AEDB8-0x802AEDC0 and .bss _AnimMot_FrameList 0x8037E858-0x8037EC7C, and the source-form row of AnimMotCreateWeightList; every function exact and linked (AnimMotCreateWeightList written in the d2 wave).",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x801BC65C",
-          "end": "0x801BC7C0"
+          "end": "0x801BCA74"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802AEDB8",
+          "end": "0x802AEDC0"
+        },
+        {
+          "section": ".bss",
+          "placement": ".bss",
+          "start": "0x8037E858",
+          "end": "0x8037EC7C"
         }
       ]
     },
@@ -18670,6 +18772,25 @@
           "placement": ".text",
           "start": "0x80221314",
           "end": "0x802215B0"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/cu_80225CBC.c",
+      "profile": "engine_c",
+      "evidence": "evidence.tsv provisional unit row 0x80225CBC-0x80225D90 (src/engine/cu_80225CBC.c), its function rows, the data row 0x802B2050-0x802B2054, the file compiler row and the source-form row 0x80225CBC-0x80225D8C; both functions exact (one labeled FAKEMATCH form), linked with the file .rodata.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80225CBC",
+          "end": "0x80225D90"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B2050",
+          "end": "0x802B2054"
         }
       ]
     },
@@ -19072,6 +19193,19 @@
           "placement": ".data3",
           "start": "0x802C2370",
           "end": "0x802C2380"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/stimemul.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x80270D6C-0x80270E04 (src/engine/stimemul.c), its function and name rows and its sound_cxx compiler row; the one function is exact; owns no data.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80270D6C",
+          "end": "0x80270E04"
         }
       ]
     },
@@ -20547,9 +20681,9 @@
       ]
     },
     {
-      "source": "src/engine/cu_80271BD4.cpp",
+      "source": "src/engine/splatfxlevel.cpp",
       "profile": "sound_cxx",
-      "evidence": "evidence.tsv unit row 0x80271BD4-0x80271D34 (fx-level slot, neutral file name src/engine/cu_80271BD4.cpp), its function row and source-form row, the data row of its .rodata floats 0x802C1D80-0x802C1D88, and the sound_cxx compiler rows 0x802714A8-0x8027CF9C; its one function is exact (written in the c18 wave) and linked.",
+      "evidence": "evidence.tsv unit row 0x80271BD4-0x80271D34 (SNDPLATFORM_setfxlevel, src/engine/splatfxlevel.cpp), its function row, the data row of its .rodata floats 0x802C1D80-0x802C1D88, and the sound_cxx compiler rows 0x802714A8-0x8027CF9C; its one function is exact (written in the c18 wave) and linked.",
       "sections": [
         {
           "section": ".text",
@@ -20794,6 +20928,19 @@
       ]
     },
     {
+      "source": "src/engine/soutputmap.cpp",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8026C39C-0x8026C3BC (src/engine/soutputmap.cpp), its function and name rows and the sound_cxx compiler row 0x8026A664-0x8026D200; the one function is exact; owns no data.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8026C39C",
+          "end": "0x8026C3BC"
+        }
+      ]
+    },
+    {
       "source": "src/engine/sover.c",
       "profile": "sound_cxx",
       "evidence": "evidence.tsv unit row 0x8026C3BC-0x8026C3E0 (src/engine/sover.c), its function and name rows, and the sound_cxx compiler row; every function exact, promoted from comparison-only.",
@@ -20893,6 +21040,63 @@
           "placement": ".data5",
           "start": "0x803EBB18",
           "end": "0x803EBB20"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/sstvol.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8026F334-0x8026F5F8 (src/engine/sstvol.c), its function and name rows, the data rows 0x802B79A0-0x802B79C8 of its .rodata (the speaker-slot table SNDSTRMIspeakerchannel and the 0.0 literal), the FAKEMATCH source-form row for SNDSTRM_setvol and the sound_cxx compiler row 0x8026E4C0-0x80270494; every function exact, promoted from comparison-only. No owned .data or .bss.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8026F334",
+          "end": "0x8026F5F8"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B79A0",
+          "end": "0x802B79C8"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/sst3dpos.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8026E4C0-0x8026E774 (src/engine/sst3dpos.c), its function and name rows, the data row 0x802B7938-0x802B7948 of its .rodata literals, the FAKEMATCH source-form row for SNDSTRM_setazimuth and the sound_cxx compiler row 0x8026E4C0-0x80270494; every function exact, promoted from comparison-only. No owned .data or .bss.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8026E4C0",
+          "end": "0x8026E774"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B7938",
+          "end": "0x802B7948"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/sautovol.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit row 0x8026A2DC-0x8026A40C (src/engine/sautovol.c), its function and name rows, the data row 0x802B78E0-0x802B78F0 of its .rodata literals, the source-form row for SNDautovol and the sound_cxx compiler rows (with -mps-float, compiler row 0x80266E88-0x8027D3AC); its one function is exact, promoted from comparison-only (d2 wave). No owned .data or .bss.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8026A2DC",
+          "end": "0x8026A40C"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B78E0",
+          "end": "0x802B78F0"
         }
       ]
     }

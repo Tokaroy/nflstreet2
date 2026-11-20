@@ -83,7 +83,7 @@ extern "C" {
 
 extern int lbl_8030002C;
 extern float lbl_80300028;
-extern const signed char lbl_802B79A0[6][6];
+extern const signed char SNDSTRMIspeakerchannel[6][6];
 
 int SNDSTRM_setvol(int stream, int speaker, float vol);
 
@@ -94,10 +94,10 @@ void SNDSYS_entercritical(void);
 void SNDSYS_leavecritical(void);
 int SNDCTRL_drylevel(int voice, int level);
 int SNDpitchmult(int voice, int mult);
-int fn_80270D6C(int voice, int mult);
+int SNDCTRL_timemult(int handle, int mult);
 int fn_80274F5C(int index);
 void fn_802747D8(int index);
-int fn_80271BD4(int index, int slot);
+int SNDPLATFORM_setfxlevel(int index, int slot);
 int fn_80278070(int voice, int bus, int level);
 int fn_802781A8(int voice);
 int SNDCTRL_highpass(int voice, int value);

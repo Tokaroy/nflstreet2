@@ -381,7 +381,7 @@ int fn_800AF9E4(Entry_800AF82C *p, int index);
 void fn_800AF95C(Entry_800AF82C *p, int index, int a);
 void fn_800AF9C0(Entry_800AF82C *p, int index, int *pValue);
 void PlyrPoseStartBlink(Object_8003DEC4 *pObject);
-int fn_801BC7C0(void *a, void *b, void *c);
+int AnimMotCreateWeightList(void *a, void *b, void *c);
 void PlyrPoseBlendEntries(Object_8003DEC4 *pObject, int a);
 void PlyrPoseBlendRootAngles(Object_8003DEC4 *pObject, void *a, unsigned short b, void *c);
 void PlyrPoseUpdate(Object_8003DEC4 *pObject);
@@ -676,8 +676,8 @@ extern "C" void fn_8009126C(int index)
     }
 }
 
-extern "C" void fn_8013F408(void);
-extern "C" void fn_8013F3FC(void);
+extern "C" void CamShotGetPlayer(void);
+extern "C" void CamShotRequestStop(void);
 
 extern "C" void fn_8009134C(int index)
 {
@@ -688,8 +688,8 @@ extern "C" void fn_8009134C(int index)
         int ref;
 
         fn_8009BD2C(fn_8008FF28(pCharacter, pActor), &ref);
-        fn_8013F408();
-        fn_8013F3FC();
+        CamShotGetPlayer();
+        CamShotRequestStop();
         if (fn_800AD9B4() != 0 && fn_800AD9B4() != 7 && fn_800AD9B4() != 1) {
             fn_800AD9B4();
         }
@@ -5350,7 +5350,7 @@ extern "C" void fn_8009C370(Object_80039F5C *p)
     pObject->mUnknown24 = p->mUnknown768;
     pObject->mUnknown28 = p->mUnknown772;
     pObject->mUnknown32 = p->mUnknown776;
-    PlyrPoseBlendEntries(pObject, fn_801BC7C0(p->mpUnknown796, p->mpUnknown800, p->mpUnknown792));
+    PlyrPoseBlendEntries(pObject, AnimMotCreateWeightList(p->mpUnknown796, p->mpUnknown800, p->mpUnknown792));
     PlyrPoseBlendRootAngles(pObject, p->mpUnknown800, p->mpUnknown796->mUnknown4, p->mpUnknown792);
     fn_800C8A98(p);
     PlyrPoseUpdate(pObject);
@@ -9000,7 +9000,7 @@ extern "C" void fn_800BBE98(void);
 extern "C" void fn_800BAF7C(void)
 {
     PlayerObjSetDrawReady(1);
-    fn_8013F3FC();
+    CamShotRequestStop();
     if (lbl_803EC98C->mpUnknown10[lbl_803EAB95].mUnknown0 == 9999) {
         fn_800BBE98();
     } else {
@@ -15705,7 +15705,7 @@ void PostPlayPhase::Finish(float dt)
             fn_801783D0(0x15, 1);
             SndgSituationSetFlags(0x400);
             fn_80162780(1, 1);
-            fn_8013F3FC();
+            CamShotRequestStop();
             fn_800AD910(2, dt);
             lbl_803EABA4->fn_800C02EC(0x27);
             fn_800CC470();
@@ -17602,7 +17602,7 @@ extern "C" void fn_800BD8F4(void)
 {
     int team = fn_80178320();
 
-    fn_8013F3FC();
+    CamShotRequestStop();
     fn_800B6408();
     PlayAlignTeam(PlayBookGetFormation(team), team, gPlayAlignNormSet);
     fn_8016E008(team);
