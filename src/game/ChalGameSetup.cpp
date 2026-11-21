@@ -42,7 +42,7 @@ int fn_8008406C(DbCursor *pObject, int id, int *pResult);
 int fn_80083FBC(DbCursor *pObject);
 void fn_8001441C(int team, int id);
 void GameInfoSet(int index, int value);
-float fn_80237260(int stream);
+float SyncRandGetFloat(int stream);
 void fn_800A2F3C(int value);
 
 int ChalGameCopyTeam(int sourceTeam)
@@ -95,7 +95,7 @@ void ChalGameScaleTeamRatings(int team)
     Desc_8008044C desc;
     desc.mUnknown4 = 1;
     desc.mUnknown8 = team;
-    fn_8008044C(&cursor, &desc, 0x54415453);
+    PlayerCursorOpen(&cursor, &desc, 0x54415453);
     if (DbCursorFirst((DbCursor *)&cursor)) {
         do {
             for (int i = 0; i < 10; i++) {
@@ -164,7 +164,7 @@ void ChalGameStart(unsigned char id)
         GameInfoSet(2, 0);
         break;
     default:
-        if (!(fn_80237260(1) >= 0.5f)) GameInfoSet(2, 1);
+        if (!(SyncRandGetFloat(1) >= 0.5f)) GameInfoSet(2, 1);
         else GameInfoSet(2, 0);
         break;
     }

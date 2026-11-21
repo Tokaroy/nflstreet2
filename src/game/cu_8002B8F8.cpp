@@ -28,6 +28,8 @@
 
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 #define CLAMP(x, lo, hi) ((x) < (lo) ? (lo) : ((x) > (hi) ? (hi) : (x)))
+/* Compiled-out assert of the release build. */
+#define REPLAY_ASSERT(e) do { } while (0)
 
 /* Camera description set up by fn_8002FDB4 (12 bytes cleared, +4 filled by
    fn_8009BD2C, +8 set to 1) and consumed by fn_8002C300, fn_8002F61C and
@@ -122,7 +124,7 @@ void PlyrPoseSetBlendFlag(int a);
 void DivotSaveState(void);
 void DivotRestoreState(void);
 void EnvObjUpdateFades(void);
-void fn_80047050(void);
+void FieldLinesUpdate(void);
 void PauseBlock(void);
 void PauseUnblock(void);
 int PauseIsOpen(void);
@@ -140,7 +142,7 @@ void SndgMusicResume(void);
 void fn_8009BB50(int a, int b);
 void fn_8009BD2C(Object_80039F5C *p, int *pRef);
 void fn_8009D818(int state);
-int fn_8009D86C(void);
+unsigned int fn_8009D86C(void);
 void fn_8009D964(int index, int value);
 void fn_800A3120(float a);
 float fn_800A32B4(void);
@@ -223,7 +225,13 @@ int fn_8023790C(void);
 extern unsigned short lbl_803192BC[2][7];
 extern unsigned short lbl_803192D8[2][7];
 
-Block_80170E64 *GetHighlightedObject(void);
+/* File-static: nothing on GameCube calls these, and the linker drops them. */
+extern "C" {
+static Block_80170E64 *GetHighlightedObject(void);
+static void PrintPlayerDebugLine(int line, char *pBuf, int);
+static void PrintDebugHelpLine(int line, char *pBuf, int, int *pCount);
+static void SetFocusHeight(unsigned char reset, float height);
+}
 
 void fn_8002B8F8(void);
 void fn_8002B8FC(void);
@@ -428,7 +436,6 @@ extern "C" void fn_8002B92C(void)
     }
 }
 
-#if defined(DECOMP_COMPARE)
 
 
 extern "C" void fn_8002B960(Type_8002B960 *p)
@@ -606,7 +613,7 @@ extern "C" void fn_8002BEF0(Type_803EA368 *p)
         ParticlesProcess(1.0f);
         fn_800A3120(p->mUnknownD88 / 60.0f);
     }
-    fn_80047050();
+    FieldLinesUpdate();
     if (p->mUnknownD94 & 0x200) {
         if (lbl_803EA360 > 0x1D) {
             fn_8002C4B0(p);
@@ -637,7 +644,7 @@ extern "C" void fn_8002C13C(Type_803EA368 *p)
         if (fn_800B81A4() != 0xFF) {
             p->mUnknownD94 |= 0x200;
         }
-        fn_80047050();
+        FieldLinesUpdate();
         if (p->mUnknownD94 & 0x1000200) {
             if (lbl_803EA360 > 0x1D) {
                 fn_8002C4B0(p);
@@ -1131,9 +1138,11 @@ extern "C" unsigned char fn_8002D060(Type_803EA368 *p)
     unsigned char result = 0;
 
     if (p != 0) {
-        result = ((p->mUnknownD94 & 0x800000) != 0) | ((p->mUnknownD94 & 0x400000) != 0) |
-                 ((p->mUnknownD94 & 0x800) != 0) | ((p->mUnknownD94 & 0x80) != 0) |
-                 (p->mUnknownD90 == 4);
+        result = (p->mUnknownD90 == 4);
+        result |= (p->mUnknownD94 >> 7) & 1;
+        result |= (p->mUnknownD94 >> 11) & 1;
+        result |= (p->mUnknownD94 >> 22) & 1;
+        result |= (p->mUnknownD94 >> 23) & 1;
     }
     return result;
 }
@@ -1206,8 +1215,10 @@ extern "C" int fn_8002D1B8(Type_803EA368 *p, int value)
     return 0;
 }
 
-extern "C" int fn_8002D228(Type_803EA368 *p)
+extern "C" int ReplayIsHalted(Type_803EA368 *p)
 {
+    // FAKEMATCH: compiled-out entry assert; its empty do-while keeps the +0xD94 load ahead of +0xD90
+    REPLAY_ASSERT(p != 0);
     return ((p->mUnknownD94 >> 8) & 1) | (((p->mUnknownD94 >> 9) & 1) | (p->mUnknownD90 == 2));
 }
 
@@ -1242,7 +1253,7 @@ extern "C" void fn_8002D2C8(Type_803EA368 *p, unsigned char value) { p->mUnknown
    before the call at 0x8017F8CC; Xbox 0x17C502 pushes three through
    0x623644); the bodies read only the first two. This code is not
    measured. */
-extern "C" void PrintPlayerDebugLine(int line, char *pBuf, int)
+static void PrintPlayerDebugLine(int line, char *pBuf, int)
 {
     int id;
     Object_80039F5C *p;
@@ -1290,7 +1301,7 @@ extern "C" void PrintPlayerDebugLine(int line, char *pBuf, int)
     }
 }
 
-extern "C" void PrintDebugHelpLine(int line, char *pBuf, int, int *pCount)
+static void PrintDebugHelpLine(int line, char *pBuf, int, int *pCount)
 {
     *pCount = 4;
     switch (line) {
@@ -2356,11 +2367,12 @@ extern "C" void fn_8002F74C(GameCamera_t *pCamera)
     fn_80030CFC();
     if (!lbl_803EC634) {
         Point_8017886C clamped;
+        float y;
         clamped.mX = CLAMP(lbl_8030660C.mPos.mX, -fn_80178A08(), fn_80178A08());
-        clamped.mY = CLAMP(lbl_8030660C.mPos.mY, -fn_80178A44(), fn_80178A44());
-        if (clamped.mX != lbl_8030660C.mPos.mX || clamped.mY != lbl_8030660C.mPos.mY) {
+        clamped.mY = y = CLAMP(lbl_8030660C.mPos.mY, -fn_80178A44(), fn_80178A44());
+        if (clamped.mX != lbl_8030660C.mPos.mX || y != lbl_8030660C.mPos.mY) {
             lbl_8030660C.mPos.mX = clamped.mX;
-            lbl_8030660C.mPos.mY = clamped.mY;
+            lbl_8030660C.mPos.mY = y;
             lbl_803EC620 = 0;
             lbl_803EC628 = 0;
             ReplayCursorSetVisible(1);
@@ -2534,9 +2546,9 @@ extern "C" void fn_8002FDB4(Type_8002FDB4 *pDesc)
 
 
 /* Accessors that nothing on GameCube calls; the linker drops them. */
-extern "C" Block_80170E64 *GetHighlightedObject(void) { return lbl_803EC620; }
+static Block_80170E64 *GetHighlightedObject(void) { return lbl_803EC620; }
 
-extern "C" void SetFocusHeight(unsigned char reset, float height)
+static void SetFocusHeight(unsigned char reset, float height)
 {
     if (reset) {
         lbl_803EA380 = 1.2f;
@@ -2894,4 +2906,36 @@ extern "C" Command_8002DC00 *fn_80030D14(int id)
     }
     return 0;
 }
-#endif
+
+/* Replay movie start, discarded by the GameCube link (no caller). Rebuilt from
+   the Xbox build's copy, which plays a named movie at a 4:3 aspect with a
+   finished and an update callback and then points every player at a second
+   pose table. The callees and globals it uses have no identified GameCube
+   counterpart and stay declared only. */
+struct ReplayMoviePlayer {
+    char mPad[0xEEC];
+    const float *mpPose;
+};
+
+extern "C" {
+extern unsigned char gReplayMovieDone;
+extern int *gpReplayMovieScreen;
+extern ReplayMoviePlayer **gppReplayMoviePlayers;
+extern const float gReplayMoviePose[8];
+void ReplayMoviePlay(int a, int b, const char *pName, int screen, float aspect, void (*pDone)(void),
+                     void (*pUpdate)(void));
+void ReplayMovieFinished(void);
+void ReplayMovieUpdate(void);
+
+static void _StrippedReplayMovieStart(int a, int b, const char *pName)
+{
+    int i;
+
+    gReplayMovieDone = 0;
+    ReplayMoviePlay(a, b, pName, *gpReplayMovieScreen, 4.0f / 3.0f, ReplayMovieFinished, ReplayMovieUpdate);
+    for (i = 0; i < 14; i++) {
+        ReplayMoviePlayer *pPlayer = gppReplayMoviePlayers ? gppReplayMoviePlayers[i] : 0;
+        pPlayer->mpPose = gReplayMoviePose;
+    }
+}
+}

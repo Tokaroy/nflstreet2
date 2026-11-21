@@ -268,6 +268,10 @@ static int fn_801F60F0(Stream_801F5DA4 *s)
             }
             _StreamMUTEX_unlock(s->pMutex);
         } else {
+            /* FAKEMATCH: the greedy-state reset value is a local set at the top of this arm
+               (the target holds the 0 in r25 from 0x801F6190 to the store at 0x801F6210). */
+            int greedyState = 0;
+
             c->mSize = fn_801F5D84(size | (tap << 24));
             _StreamMUTEX_lock(s->pMutex);
             cancelled = req->mState == 4;
@@ -281,7 +285,7 @@ static int fn_801F60F0(Stream_801F5DA4 *s)
                 s->mUsed = used + size;
                 s->pHead += size;
                 if (used < s->mGreedyLevel && s->mUsed >= s->mGreedyLevel) {
-                    s->mGreedyState = 0;
+                    s->mGreedyState = greedyState;
                 }
             }
             _StreamMUTEX_unlock(s->pMutex);
@@ -413,16 +417,17 @@ static void fn_801F6540(Stream_801F5DA4 *s, int priority)
     } else {
         avail = s->pBufferEnd - s->pWrite - 32;
         if (avail < s->mBlockSize) {
-            req = s->pCurrent;
             len = s->pWrite - s->pHead;
-            if (req->mType == 1) {
+            if (s->pCurrent->mType == 1) {
                 if (s->pTail - s->pWrap < len + 1) {
-                    goto stall;
+                    s->mState = 2;
+                    return;
                 }
             } else if (s->pTail - s->pWrap - 32 < len + 1) {
-                goto stall;
+                s->mState = 2;
+                return;
             }
-            if ((len & 31) == 0 || req->mType == 1) {
+            if ((len & 31) == 0 || s->pCurrent->mType == 1) {
                 s->pWrap = s->pBuffer;
             } else {
                 s->pWrap = s->pBuffer - (len % 32 - 32);
@@ -470,7 +475,7 @@ static void fn_801F6540(Stream_801F5DA4 *s, int priority)
     }
 }
 
-int fn_801F685C(int numRequests, int numFilters, int numTaps)
+int STREAM_overhead(int numRequests, int numFilters, int numTaps)
 {
     return sizeof(Stream_801F5DA4) + numRequests * sizeof(StreamRequest_801F5EA4) + numFilters * sizeof(StreamFilter_801F6074) +
            numTaps * sizeof(StreamTap_801F5DA4) + 32;
@@ -479,29 +484,23 @@ int fn_801F685C(int numRequests, int numFilters, int numTaps)
 StreamTap_801F5DA4 *fn_801F687C(int numRequests, int numFilters, int numTaps, void *pMem, int memSize)
 {
     Stream_801F5DA4 *s = pMem;
-    int bufferSize = memSize - fn_801F685C(numRequests, numFilters, numTaps);
-    StreamRequest_801F5EA4 *pRequests;
-    StreamFilter_801F6074 *pFilters;
-    StreamTap_801F5DA4 *pTaps;
+    int bufferSize = memSize - STREAM_overhead(numRequests, numFilters, numTaps);
     char *pBuffer;
     int i;
 
-    if (bufferSize < 0x1800 || numRequests < 2 || numRequests > 256 || numFilters < 1 || numFilters > 16 ||
+    if (bufferSize < 0x1800 || numRequests < 2 || numRequests > 256 || (numFilters < 1 || numFilters > 16) ||
         numTaps <= 0 || numTaps > numFilters) {
         return 0;
     }
     s->mMagic = STREAM_MAGIC;
     s->pMutex = _StreamMUTEX_alloc();
-    pRequests = (StreamRequest_801F5EA4 *)(s + 1);
-    pFilters = (StreamFilter_801F6074 *)(pRequests + numRequests);
-    pTaps = (StreamTap_801F5DA4 *)(pFilters + numFilters);
-    pBuffer = (char *)(((unsigned int)(pTaps + numTaps) & ~31) + 32);
-    s->pRequests = pRequests;
+    s->pRequests = (StreamRequest_801F5EA4 *)(s + 1);
     s->mNumRequests = numRequests;
-    s->pFilters = pFilters;
+    s->pFilters = (StreamFilter_801F6074 *)(s->pRequests + numRequests);
     s->mNumFilters = numFilters;
-    s->pTaps = pTaps;
+    s->pTaps = (StreamTap_801F5DA4 *)(s->pFilters + numFilters);
     s->mNumTaps = numTaps;
+    pBuffer = (char *)(((unsigned int)(s->pTaps + numTaps) & ~31) + 32);
     s->pBuffer = pBuffer;
     s->pWrap = pBuffer;
     s->pBufferEnd = (char *)pMem + memSize;
@@ -517,7 +516,7 @@ StreamTap_801F5DA4 *fn_801F687C(int numRequests, int numFilters, int numTaps, vo
     s->pFirst = 0;
     s->pCurrent = 0;
     s->pLast = 0;
-    s->pFree = pRequests;
+    s->pFree = s->pRequests;
     s->mFile.pRes = (ResFile_t *)-1;
     s->mFile.mIndex = -1;
     s->mFileSize = 0;
@@ -533,20 +532,25 @@ StreamTap_801F5DA4 *fn_801F687C(int numRequests, int numFilters, int numTaps, vo
         s->mBlockSize = 0x8000;
     }
     for (i = 0; i < numRequests; i++) {
-        s->pRequests[i].mID = i;
-        s->pRequests[i].mState = 0;
-        s->pRequests[i].pNext = &s->pRequests[i + 1];
+        StreamRequest_801F5EA4 *pReq = &s->pRequests[i];
+        pReq->mID = i;
+        pReq->mState = 0;
+        pReq->pNext = &s->pRequests[i + 1];
     }
     s->pRequests[numRequests - 1].pNext = 0;
     for (i = 0; i < numFilters; i++) {
-        s->pFilters[i].mMask = 0;
-        s->pFilters[i].mTap = 1;
-        s->pFilters[i].mValue = 0;
+        StreamFilter_801F6074 *pFilter = &s->pFilters[i];
+        // FAKEMATCH: value written before tap; this source order gives the target schedule (+0x8 at 0x801F6A64, +0x4 at 0x801F6A6C)
+        pFilter->mMask = 0;
+        pFilter->mValue = 0;
+        pFilter->mTap = 1;
     }
     for (i = 0; i < numTaps; i++) {
-        s->pTaps[i].pStream = s;
-        s->pTaps[i].mBytes = 0;
-        s->pTaps[i].mIndex = i + 1;
+        StreamTap_801F5DA4 *pTap = &s->pTaps[i];
+        // FAKEMATCH: index written before byte count; this source order gives the target schedule (+0x8 at 0x801F6AA0, +0x4 at 0x801F6AA8)
+        pTap->pStream = s;
+        pTap->mIndex = i + 1;
+        pTap->mBytes = 0;
     }
     return s->pTaps;
 }
@@ -789,12 +793,14 @@ void fn_801F7208(StreamTap_801F5DA4 *h)
     unsigned int size = 0;
     int pad;
     int i;
+    StreamRequest_801F5EA4 *req;
 
-    if (fn_801F5DA4(h, &s, &t) != 0 || s->pLast == 0) {
+    if (fn_801F5DA4(h, &s, &t) != 0 || (req = s->pLast) == 0) {
         return;
     }
-    while (s->pLast->mState == 1 || s->pLast->mState == 2) {
-        fn_801F6FA0(h, s->pLast->mID);
+    while (req->mState == 1 || req->mState == 2) {
+        fn_801F6FA0(h, req->mID);
+        req = s->pLast;
     }
     while (s->pFirst != s->pCurrent) {
         fn_801F5FF4(s, s->pFirst);

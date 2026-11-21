@@ -25,6 +25,13 @@ struct Sort_80086D0C {
         mMode = mode;
     }
 
+    void SetEnd()
+    {
+        mTable = -1;
+        mColumn = -1;
+        mMode = 3;
+    }
+
     int mTable;
     int mColumn;
     int mMode;
@@ -40,8 +47,8 @@ int fn_801FA0BC(int handle, DbQueryTable *pTables, DbFilter *pFilter,
                 void *pSort, int *pCursor, QueryResult *pResult);
 int fn_80229AA4(int handle, int table, int *pIds, unsigned short *pCount);
 int fn_8022C628(int handle, int table, int *pIds, unsigned short *pCount);
-int fn_8022EF8C(int a, int tag);
-int fn_8022EFBC(int a, int tag);
+int DbFileTblLoad(int a, int tag);
+int DbFileTblDestroy(int a, int tag);
 int fn_8022F3D4(int handle);
 int fn_8022F4BC(void);
 }
@@ -145,7 +152,7 @@ int fn_80086D0C(int index, int id, int byRow, int *pId, int *pPrice,
     tables[1].Set(-1);
     if (byRow) {
         sort[0].Set(pDescriptor->mTable, pDescriptor->mSortColumn, 0);
-        sort[1].Set(-1, -1, 3);
+        sort[1].SetEnd();
         if (fn_801FA0BC(0x54415453, tables, 0, sort, &cursor, &queryResult) == 0) {
             if (fn_801FA228(cursor, 1, id, columns) == 0) {
                 result = 1;
@@ -303,7 +310,7 @@ void fn_80087600(int index, int id)
 int fn_800876C0(void)
 {
     if (sActive) {
-        fn_8022EFBC(0, 0x4D4E5453);
+        DbFileTblDestroy(0, 0x4D4E5453);
         sActive = 0;
     }
     return 1;
@@ -312,7 +319,7 @@ int fn_800876C0(void)
 int fn_80087704(void)
 {
     int result = 1;
-    if (fn_8022EF8C(0, 0x4D4E5453) == 0) {
+    if (DbFileTblLoad(0, 0x4D4E5453) == 0) {
         sActive = 1;
     } else {
         sActive = 0;

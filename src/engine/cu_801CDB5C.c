@@ -7,6 +7,7 @@
 #include <dolphin/gx/GXTev.h>
 #include <dolphin/gx/GXTexture.h>
 #include <dolphin/gx/GXTransform.h>
+#include <dolphin/gx/GXVert.h>
 #include <dolphin/os/OSCache.h>
 #include "engine/Font.h"
 #include "engine/SysSetLastErrorFunc.h"
@@ -30,8 +31,83 @@ extern GXTlutObj lbl_80383D80;
 extern FontRenderState_801CCA64 lbl_803E7600;
 extern FontQuad_801CCA64 lbl_803E763C[];
 
-int fn_801CD964(int state, Font_801CCA64 *pFont, FontQuad_801CCA64 *pQuads, unsigned int count,
-                FontColor_801CCA64 *pColor, int a);
+/* The four corners of one glyph quad: positions, then texture coordinates. */
+typedef struct FontVerts_801CD79C {
+    float mPos[4][4];
+    float mUV[4][4];
+} FontVerts_801CD79C;
+
+/* FAKEMATCH: invented unused static; its body exists only for its unsigned int-to-float bias in .rodata */
+static float FontLLTexelToUV(unsigned int texel, float size)
+{
+    return texel / size;
+}
+
+static void _FontLLSetupGlyph(Font_801CCA64 *pFont, FontVerts_801CD79C *pVerts, FontQuad_801CCA64 *pQuad)
+{
+    float texWidth;
+    float texHeight;
+    float u;
+    float v;
+    float u0;
+    float u1;
+    float v0;
+    float v1;
+
+    pVerts->mPos[0][0] = pVerts->mPos[3][0] = pQuad->mX;
+    pVerts->mPos[1][0] = pVerts->mPos[2][0] = pQuad->mX + pQuad->mWidth;
+    pVerts->mPos[0][1] = pVerts->mPos[1][1] = pQuad->mY;
+    pVerts->mPos[2][1] = pVerts->mPos[3][1] = pQuad->mY + pQuad->mHeight;
+    u = pQuad->mU;
+    texWidth = (int)pFont->mpTex->mWidth;
+    u0 = u / texWidth;
+    u1 = (pQuad->mU + pQuad->mWidth) / texWidth;
+    v = pQuad->mV;
+    texHeight = (int)pFont->mpTex->mHeight;
+    v0 = v / texHeight;
+    v1 = (pQuad->mV + pQuad->mHeight) / texHeight;
+    pVerts->mUV[0][0] = pVerts->mUV[3][0] = u0;
+    pVerts->mUV[1][0] = pVerts->mUV[2][0] = u1;
+    pVerts->mUV[0][1] = pVerts->mUV[1][1] = v0;
+    pVerts->mUV[2][1] = pVerts->mUV[3][1] = v1;
+}
+
+/* FAKEMATCH: the four vertices go through a file-static inline helper; written inline the function does not match */
+static inline void _FontLLSendQuad(FontVerts_801CD79C *pVerts, GXColor *pColor)
+{
+    GXPosition3f32(pVerts->mPos[0][0], pVerts->mPos[0][1], pVerts->mPos[0][2]);
+    GXColor4u8(pColor->r, pColor->g, pColor->b, pColor->a);
+    GXTexCoord2f32(pVerts->mUV[0][0], pVerts->mUV[0][1]);
+    GXPosition3f32(pVerts->mPos[1][0], pVerts->mPos[1][1], pVerts->mPos[1][2]);
+    GXColor4u8(pColor->r, pColor->g, pColor->b, pColor->a);
+    GXTexCoord2f32(pVerts->mUV[1][0], pVerts->mUV[1][1]);
+    GXPosition3f32(pVerts->mPos[2][0], pVerts->mPos[2][1], pVerts->mPos[2][2]);
+    GXColor4u8(pColor->r, pColor->g, pColor->b, pColor->a);
+    GXTexCoord2f32(pVerts->mUV[2][0], pVerts->mUV[2][1]);
+    GXPosition3f32(pVerts->mPos[3][0], pVerts->mPos[3][1], pVerts->mPos[3][2]);
+    GXColor4u8(pColor->r, pColor->g, pColor->b, pColor->a);
+    GXTexCoord2f32(pVerts->mUV[3][0], pVerts->mUV[3][1]);
+}
+
+static int _FontLLRender(int state, Font_801CCA64 *pFont, FontQuad_801CCA64 *pQuads, unsigned int count,
+                       FontColor_801CCA64 *pColor, int unused)
+{
+    FontVerts_801CD79C verts;
+    GXColor color;
+    unsigned int i;
+
+    color.r = pColor->r * 255.0f;
+    color.g = pColor->g * 255.0f;
+    color.b = pColor->b * 255.0f;
+    color.a = pColor->a * 255.0f;
+    verts.mPos[3][2] = verts.mPos[2][2] = verts.mPos[1][2] = verts.mPos[0][2] = 0.0f;
+    for (i = 0; i < count; i++) {
+        _FontLLSetupGlyph(pFont, &verts, &pQuads[i]);
+        GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+        _FontLLSendQuad(&verts, &color);
+    }
+    return state;
+}
 
 int fn_801CDB5C(Font_801CCA64 *pFont, const char *pText, unsigned int flags, float maxWidth, float *pPos)
 {
@@ -52,10 +128,10 @@ int fn_801CDB5C(Font_801CCA64 *pFont, const char *pText, unsigned int flags, flo
             lbl_803E7600.mFlags |= 0x40;
             GXLoadTlut(&lbl_80383D60, 0);
             GXLoadTexObj(pFont->mpTexObj, 0);
-            state = fn_801CD964(0, pFont, pQuads, count, &lbl_803E7600.mShadowColor, 0);
+            state = _FontLLRender(0, pFont, pQuads, count, &lbl_803E7600.mShadowColor, 0);
             GXLoadTlut(&lbl_80383D80, 0);
             GXLoadTexObj(pFont->mpTexObj, 0);
-            fn_801CD964(state, pFont, pQuads, count, &lbl_803E7600.mColor, 0);
+            _FontLLRender(state, pFont, pQuads, count, &lbl_803E7600.mColor, 0);
         } else {
             GXLoadTexObj(pFont->mpTexObj, 0);
             if (lbl_803E7600.mFlags & 0x10) {
@@ -63,12 +139,12 @@ int fn_801CDB5C(Font_801CCA64 *pFont, const char *pText, unsigned int flags, flo
                 MatTranslate(lbl_803E7600.mShadowOffset);
                 MatStore(mtx[0]);
                 GXLoadPosMtxImm(mtx, 0);
-                state = fn_801CD964(0, pFont, pQuads, count, &lbl_803E7600.mShadowColor, 0);
+                state = _FontLLRender(0, pFont, pQuads, count, &lbl_803E7600.mShadowColor, 0);
                 MatPop();
                 MatStore(mtx[0]);
                 GXLoadPosMtxImm(mtx, 0);
             }
-            fn_801CD964(state, pFont, pQuads, count, &lbl_803E7600.mColor, 0);
+            _FontLLRender(state, pFont, pQuads, count, &lbl_803E7600.mColor, 0);
         }
         MatPop();
         SysSetLastErrorFunc(0);

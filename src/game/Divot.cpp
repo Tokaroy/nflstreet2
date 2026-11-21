@@ -155,7 +155,7 @@ void ObjRemoveFromList(int handle, int item);
 void VptTrashObject(int handle);
 double fabs(double x);
 int ResFindIndexByName(void *pData, char *pName);
-void *fn_80216860(int handle, const char *pName);
+void *XmlFindPath(int handle, const char *pName);
 void *fn_80216BFC(void *pNode, const char *pName);
 void *fn_80216E34(void *pNode);
 int fn_80216F3C(void *pNode, const char *pName, char *pOut, int size, const char *pDefault);
@@ -165,7 +165,7 @@ float fn_802278D0(Divot *pA, Divot *pB);
 void fn_80227930(float *pOut, float *pA, float *pB, float t);
 int VptGetMatrixStack(void);
 void VptFlushObjectTrashSync(void);
-float fn_80237260(int stream);
+float SyncRandGetFloat(int stream);
 
 void DivotRemove(Divot *p);
 int DivotIsAreaFree(Divot *pDivot, float radius);
@@ -387,7 +387,7 @@ void DivotStepPlace(Divot *p)
 {
     p->mActive = 0;
     if (_Divot_iRecordCount < DIVOT_MAX_RECORDS) {
-        if (p->mpOwner == BallGetCurrentHolder() || fn_80237260(1) < 0.75f) {
+        if (p->mpOwner == BallGetCurrentHolder() || SyncRandGetFloat(1) < 0.75f) {
             p->mAngle = (p->mAngle + 0xC00000) & 0xFFFFFF;
             p->mActive = 1;
             p->mAlpha = p->mAlphaMax;
@@ -494,7 +494,7 @@ void DivotLoadVariants(void)
     for (int i = 0; i < DIVOT_NUM_TYPES; i++) {
         counts[i] = 0;
     }
-    for (pSurface = fn_80216860(ResLoad(fn_800A336C(), fn_800A33A4(), 1), "surface"); pSurface;
+    for (pSurface = XmlFindPath(ResLoad(fn_800A336C(), fn_800A33A4(), 1), "surface"); pSurface;
          pSurface = fn_80216E34(pSurface)) {
         int surface = fn_80217070(pSurface, "surfType", DIVOT_SURFACE_NONE);
 
@@ -596,8 +596,8 @@ void DivotScatterRandom(void)
             Vector_80039F5C pos;
             LevelSurface_t *pArea;
 
-            pos.mX = (fn_80237260(1) * 2.0f - 1.0f) * width;
-            pos.mY = (fn_80237260(1) * 2.0f - 1.0f) * length;
+            pos.mX = (SyncRandGetFloat(1) * 2.0f - 1.0f) * width;
+            pos.mY = (SyncRandGetFloat(1) * 2.0f - 1.0f) * length;
             pos.mZ = 0.0f;
             pArea = LevelFindArea(&pos.mX);
             if (pArea) {
@@ -607,7 +607,7 @@ void DivotScatterRandom(void)
                     p->mpOwner = 0;
                     p->mSurface = pArea->mSurface;
                     p->mPos = pos;
-                    p->mAngle = (int)(fn_80237260(1) * 16777216.0f);
+                    p->mAngle = (int)(SyncRandGetFloat(1) * 16777216.0f);
                     DivotPlace(p);
                 }
             }

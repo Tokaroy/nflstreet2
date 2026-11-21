@@ -107,10 +107,11 @@ static MemHeap_801D134C *fn_801D13A4(char *pAddr)
     return 0;
 }
 
-static void fn_801D1474(void)
+static void _BuildHeapAddrTable(void)
 {
     MemHeap_801D134C *pHeap;
     MemRange_801D134C *pRange;
+    MemRange_801D134C *pPrev;
     MemRange_801D134C tmp;
     int i;
 
@@ -126,11 +127,12 @@ static void fn_801D1474(void)
     }
     lbl_803EBCD0 = i;
     for (i = 1; i < lbl_803EBCD0; i++) {
-        pRange = &lbl_80384BC0[i - 1];
-        if (pRange[0].mpStart > pRange[1].mpStart) {
-            tmp = pRange[0];
-            pRange[0] = pRange[1];
-            pRange[1] = tmp;
+        pRange = &lbl_80384BC0[i];
+        pPrev = &lbl_80384BC0[i - 1];
+        if (pPrev->mpStart > pRange->mpStart) {
+            tmp = *pPrev;
+            *pPrev = *pRange;
+            *pRange = tmp;
             if (i > 1) {
                 i -= 2;
             }
@@ -646,7 +648,7 @@ void *fn_801D2478(int ident, int parentIdent, char *pStart, unsigned int size, i
     pHeap->mpSelf = pHeap;
     pHeap->mpNext = lbl_803EBCC8;
     lbl_803EBCC8 = pHeap;
-    fn_801D1474();
+    _BuildHeapAddrTable();
     return pHeap + 1;
 fail:
     return 0;
@@ -691,7 +693,7 @@ int fn_801D2570(int ident)
             ppLink = &pHeap->mpNext;
         }
     }
-    fn_801D1474();
+    _BuildHeapAddrTable();
     return 0;
 }
 

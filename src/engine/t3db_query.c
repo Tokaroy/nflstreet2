@@ -182,8 +182,6 @@ void fn_80205C44(TDbTable_t *pTable, int row)
 }
 
 
-#if defined(DECOMP_COMPARE)
-
 int fn_802071F8(TDbExpr_t *pExpr, unsigned int column, TDbExpr_t **ppOut);
 int fn_802072E8(TDbExpr_t *pA, TDbExpr_t *pB);
 extern unsigned int lbl_803EBE94;
@@ -485,8 +483,13 @@ unsigned int fn_802067D4(TDbIndex_t *pIndex, TDbExpr_t *pExpr, TDbIdxColumnDef_t
         return -1;
     }
     cmp = (pIndex->mFilter != 0 && pExpr != 0) ? fn_802072E8(pExpr, pIndex->mFilter) : 0;
-    cmp = pExpr == 0 ? (pIndex->mFilter == 0 ? 1 : -1)
-                     : (pIndex->mFilter == 0 ? 0 : fn_802072E8(pExpr, pIndex->mFilter));
+    if (pExpr == 0) {
+        cmp = pIndex->mFilter == 0 ? 1 : -1;
+    } else if (pIndex->mFilter == 0) {
+        cmp = 0;
+    } else {
+        cmp = fn_802072E8(pExpr, pIndex->mFilter);
+    }
     if (cmp == 1) {
         score = 1;
         if (pExpr == 0) {
@@ -1703,7 +1706,7 @@ static inline void TDbSetField_8020925C(TDbColumn_t *pColumn, unsigned char *pRo
     }
 }
 
-int fn_8020925C(TDbDatabase_t *pDb, int tableId, TDbQuery_t *pQuery, unsigned long long *pSpec,
+int _TDbQryCreateTbl(TDbDatabase_t *pDb, int tableId, TDbQuery_t *pQuery, unsigned long long *pSpec,
                 TDbResult_8020AD1C *pResult)
 {
     TDbResult_8020AD1C result;
@@ -1773,6 +1776,9 @@ int fn_8020925C(TDbDatabase_t *pDb, int tableId, TDbQuery_t *pQuery, unsigned lo
                             }
                         }
                         if (pResult->mErr == 7) {
+                            /* FAKEMATCH: dead store (flow deletes it); it keeps jump.c from inverting
+                               the test over the break, so the target's bne/b pair at 0x80209494 stays. */
+                            bUnique = 0;
                             break;
                         }
                     } else {
@@ -2547,5 +2553,3 @@ int fn_8020B094(void *pDb, TDbSQLTableRef_801FDC18 *pRefs, TDbExpr_t *pWhere, in
     pResult->mErr = err;
     return err;
 }
-
-#endif

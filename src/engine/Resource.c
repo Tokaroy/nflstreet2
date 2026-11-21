@@ -5,6 +5,9 @@
 #include "engine/dslist.h"
 #include "game/fn_801D2B7C.h"
 
+/* Release-build form of the library assertion check: compiles to an empty statement. */
+#define RES_ASSERT(e) do { } while (0)
+
 typedef struct ResRequest_t {
     ResDoneCallback_t pCallback;
     void *pUser;
@@ -1432,7 +1435,11 @@ ResFile_t *ResOpenRam(ResFile_t *pParent, unsigned int index, int heap, int mode
             pRes->mBaseAddr = ResLoad(pParent, index, heap);
             pRes->pExtra = pParent;
             pRes->mIndex = index;
-            err = _ResInitRamResourceFile(pRes, pName, ResGetSize(pRes->pExtra, pRes->mIndex));
+            {
+                unsigned int size = ResGetSize(pRes->pExtra, pRes->mIndex);
+
+                err = _ResInitRamResourceFile(pRes, pName, size);
+            }
             if (err != 0) {
                 goto done;
             }
@@ -2307,6 +2314,9 @@ int ResIsMemoryBacked(ResFile_t *pRes)
     } else {
         _ResFindByName(pRes->pName, &pFound);
         if (pFound != 0 && pFound == pRes) {
+            /* FAKEMATCH: compiled-out assert on the load type; its empty do-while keeps the
+               state read through pFound (lhz 0x58(r9) at 0x801F1070) instead of pRes. */
+            RES_ASSERT(pFound->mState <= 3);
             result = pFound->mState == 2 || pFound->mState == 3;
         } else {
             err = 0xF0005;

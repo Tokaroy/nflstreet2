@@ -303,7 +303,7 @@ void fn_8003BFCC(Object_8003DEC4 *object, float *center, Point2_t *axis,
   shiftedB.mY = b->mY;
   fn_8022732C(&shiftedA, axis, shift);
   fn_8022732C(&shiftedB, axis, shift);
-  float maximum = -1000000.0f, minimum = 1000000.0f;
+  float minimum = 1000000.0f, maximum = -1000000.0f;
   for (; i < 4; ++i) {
     if (fn_8003C97C(&shiftedA, &shiftedB, (Point2_t *)p->mPoints[i],
                     (Point2_t *)p->mPoints[(i + 1) % 4], &t, &u) &&
@@ -690,7 +690,7 @@ int fn_8003D378(int owner, int mode) {
   lbl_803EA430 = (Object_8003DEC4 **)fn_801D2B7C(lbl_803EA434 * 4, 0, 0);
   result = SysGetLastError();
   if (lbl_803EA430) {
-    fn_8008044C(&object, 0, mode ? 0x54415453 : 0x454D4147);
+    PlayerCursorOpen(&object, 0, mode ? 0x54415453 : 0x454D4147);
     fn_8003D958();
     unsigned int order[14], keys[14];
     Creation_8003D378 init;
@@ -833,7 +833,7 @@ void fn_8003D988(int value, int *out, int mode) {
   if (!mode) {
     desc.mUnknown4 = 1;
     desc.mUnknown8 = value;
-    fn_8008044C(&object, &desc, 0x454D4147);
+    PlayerCursorOpen(&object, &desc, 0x454D4147);
     for (i = 0; i < lbl_803EA436; ++i) {
       PlayerDbSeekOriginalId(&object, out[i], 0);
       out[i] = PlayerDbGetId(&object);

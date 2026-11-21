@@ -21,7 +21,7 @@
 #include "game/Ball.h"
 #include "game/fn_802270D4.h"
 #include "game/fn_801FCE10.h"
-#include "game/fn_80238174.h"
+#include "game/SyncStateRegister.h"
 #include "game/PreSnapPhase.h"
 #include "game/PlaySet.h"
 #include "game/PlayBookGetPlay.h"
@@ -30,12 +30,12 @@
 
 /* Block that +4 of the manager points to (28 bytes). */
 struct PlyrMgrCollideSet_t {
-    void *mpUnknown0;
+    CollideObject_t *mpUnknown0;
     int mUnknown4;
     char mUnknown8[4];
     int mUnknown12;
     char mUnknown16[4];
-    void *mpUnknown20[2];
+    CollideShape_t *mpUnknown20[2];
 };
 
 /* The player manager that _PlyrMgr_pManager points to (12 bytes). */
@@ -230,7 +230,6 @@ void *fn_8015C170(Object_80039F5C *p, Point_8017886C *pPos, void *pRecord, unsig
 void fn_8015C218(void *p);
 }
 
-#if defined(DECOMP_COMPARE)
 extern "C" void PlyrFixWristBones(Object_80039F5C *p)
 {
     if (p->mFlags & 0x04000000) {
@@ -340,7 +339,8 @@ extern "C" int PlyrMgrCompareSnapshot(PlyrMgr_t *pA, PlyrMgr_t *pB)
     Object_80039F5C *b;
 
     if (pB != 0) {
-        result = pA->mCount != pB->mCount;
+        result = 0;
+        result |= pA->mCount != pB->mCount;
         result |= pA->mPerTeam != pB->mPerTeam;
         for (i = 0; i < pA->mCount; i++) {
             a = (Object_80039F5C *)((char *)&pA->mpPlayers[i] + ((char *)pA - (char *)_PlyrMgr_pManager));
@@ -397,7 +397,6 @@ extern "C" int PlyrMgrLoadSnapshot(PlyrMgr_t *pManager, char *pBuffer)
 {
     PlyrSaveView_t *pDst;
     PlyrSaveView_t *pSrc;
-    char *pData;
     short i;
 
     *pManager = *(PlyrMgr_t *)pBuffer;
@@ -430,12 +429,13 @@ extern "C" int PlyrMgrLoadSnapshot(PlyrMgr_t *pManager, char *pBuffer)
         pDst++;
         pSrc++;
     }
-    pData = (char *)pSrc + sizeof(PlyrMgrCollideSet_t);
-    memcpy(pManager->mpUnknown4->mpUnknown0, pData, pManager->mpUnknown4->mUnknown4 * 48);
-    pData += pManager->mpUnknown4->mUnknown4 * 48;
+    // FAKEMATCH: pSrc is reused as the byte cursor through casts (a separate char * cursor takes another register)
+    pSrc = (PlyrSaveView_t *)((char *)pSrc + sizeof(PlyrMgrCollideSet_t));
+    memcpy(pManager->mpUnknown4->mpUnknown0, pSrc, pManager->mpUnknown4->mUnknown4 * 48);
+    pSrc = (PlyrSaveView_t *)((char *)pSrc + pManager->mpUnknown4->mUnknown4 * 48);
     for (i = 0; i <= 1; i++) {
-        memcpy(pManager->mpUnknown4->mpUnknown20[i], pData, pManager->mpUnknown4->mUnknown12 * 48);
-        pData += pManager->mpUnknown4->mUnknown12 * 48;
+        memcpy(pManager->mpUnknown4->mpUnknown20[i], pSrc, pManager->mpUnknown4->mUnknown12 * 48);
+        pSrc = (PlyrSaveView_t *)((char *)pSrc + pManager->mpUnknown4->mUnknown12 * 48);
     }
     return 1;
 }
@@ -656,7 +656,7 @@ extern "C" void PlyrMgrRegister(unsigned int count)
     PlyrMgr_t *pManager;
 
     CollideSetPairCallback(0, 0, PlyrContactCallback);
-    pHandle = fn_80238174(0, (void **)&_PlyrMgr_pManager, sizeof(PlyrMgr_t), 1, 0x706C7972);
+    pHandle = SyncStateRegister(0, (void **)&_PlyrMgr_pManager, sizeof(PlyrMgr_t), 1, 0x706C7972);
     fn_80238234(pHandle, (Callback_80238234)PlyrMgrCreate, (Callback_80238234)PlyrMgrDestroy,
                 (Callback_80238234)PlyrMgrRefreshAll, (Callback1C_80238234)PlyrMgrCompareSnapshot);
     fn_80238248(pHandle, (Callback28_80238248)PlyrMgrSaveSnapshot, (Callback24_80238248)PlyrMgrGetSnapshotSize,
@@ -981,12 +981,16 @@ extern "C" void PlyrRouteShow(int on, int team, int index)
 
             offset = fn_80177FE0();
             if (fn_80178308() == ((p->mId >> 8) & 0xFF)) {
-                pos.mX = (pPlay->mUnknown8.mUnknownF == 1 ? &pEntry->mUnknown18 : &pEntry->mUnknown10)->mX;
-                pos.mY = (pPlay->mUnknown8.mUnknownF == 1 ? &pEntry->mUnknown18 : &pEntry->mUnknown10)->mY;
-                fn_80227638(&pos, &pos, &offset);
+                Point_8017886C *pPos = &pos;
+
+                pPos->mX = (pPlay->mUnknown8.mUnknownF == 1 ? &pEntry->mUnknown18 : &pEntry->mUnknown10)->mX;
+                pPos->mY = (pPlay->mUnknown8.mUnknownF == 1 ? &pEntry->mUnknown18 : &pEntry->mUnknown10)->mY;
+                fn_80227638(pPos, pPos, &offset);
             } else {
-                pos.mX = p->mMotion.mPos.mX;
-                pos.mY = p->mMotion.mPos.mY;
+                Point_8017886C *pPos = &pos;
+
+                pPos->mX = p->mMotion.mPos.mX;
+                pPos->mY = p->mMotion.mPos.mY;
             }
             flip = pPlay->mUnknown8.mUnknownF;
             pRecord = fn_800AEE20(p);
@@ -1009,8 +1013,6 @@ extern "C" void PlyrRouteShow(int on, int team, int index)
         pBlock->mpUnknown984 = 0;
     }
 }
-
-#endif
 
 extern "C" void PlyrRouteShowHighlighted(int a, int team, int index)
 {

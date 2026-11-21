@@ -108,6 +108,7 @@ void ObjDelList(void *pList);
 PartObj_801DE1E0 *ObjNew(unsigned char heap, int a, Template_801DE1E0 *pTemplate);
 int ObjAddToList(void *pList, void *pObj);
 void fn_801DF3E4(unsigned char *pSrc, unsigned char *pDst, unsigned int size, int noSwap);
+unsigned int fn_801E0844(Ramp_801E052C *pRamp, float t, Vec3_801DE1E0 *pColor, unsigned int start);
 
 void fn_801DD730(PartObj_801DE1E0 *pObj, unsigned short count, int step, int steps, float dt);
 static void fn_801DDFB0(PartObj_801DE1E0 *pObj, Particle_801DE1E0 *pParticle, float dt);
@@ -750,6 +751,56 @@ void fn_801DEF18(PartObj_801DE1E0 *pObj)
     lbl_8039ADAC.mpPools[index].mFree++;
 }
 
+/* Frame of a particle's texture: 0 for a single frame, else the particle's start frame plus (for
+   an animated texture) its age in 60ths of a second divided by the object's frame divisor,
+   modulo the frame count. */
+static unsigned int PSysRenderCalcParticleFrame(AnimTex_t *pTex, PartObj_801DE1E0 *pObj,
+                                                Particle_801DE1E0 *pParticle)
+{
+    unsigned int frame = 0;
+
+    if (pTex->mFrameCount > 1) {
+        frame = pParticle->mUnknown3A;
+        if (pTex->mAnimated && pObj->mUnknown048) {
+            frame += (int)(pParticle->mAge * 60.0f) / pObj->mUnknown048;
+        }
+        frame %= pTex->mFrameCount;
+    }
+    return frame;
+}
+
+void PSysRenderCalcParticleColor(Vec4_801DE1E0 *pColor, PartObj_801DE1E0 *pObj, Particle_801DE1E0 *pParticle)
+{
+    float fadeOut;
+
+    if (pObj->mUnknown03D && pObj->mpUnknown08C) {
+        pParticle->mUnknown39 = fn_801E0844(pObj->mpUnknown08C, pParticle->mAgeRatio, (Vec3_801DE1E0 *)pColor,
+                                            pParticle->mUnknown39);
+    } else {
+        pColor->x = pObj->mUnknown07C.x;
+        pColor->y = pObj->mUnknown07C.y;
+        pColor->z = pObj->mUnknown07C.z;
+    }
+    pColor->w = pObj->mUnknown07C.w;
+    fadeOut = 1.0f - pObj->mUnknown0EC;
+    if (pObj->mUnknown042) {
+        if (!(pParticle->mAgeRatio < pObj->mUnknown0EC)) {
+            if (pObj->mUnknown060 == 2) {
+                fn_80227264(pColor, pColor, (1.0f - pParticle->mAgeRatio) / fadeOut);
+            } else {
+                pColor->w *= (1.0f - pParticle->mAgeRatio) / fadeOut;
+            }
+        }
+        if (!(pParticle->mAgeRatio >= pObj->mUnknown0E8)) {
+            if (pObj->mUnknown060 == 2) {
+                fn_80227264(pColor, pColor, pParticle->mAgeRatio / pObj->mUnknown0E8);
+            } else {
+                pColor->w *= pParticle->mAgeRatio / pObj->mUnknown0E8;
+            }
+        }
+    }
+}
+
 float fn_801DF184(PartObj_801DE1E0 *pObj, Particle_801DE1E0 *pParticle)
 {
     if (pObj->mUnknown041) {
@@ -802,6 +853,25 @@ static void fn_801DF338(unsigned char **ppData, Vec4_801DE1E0 *pDst, int noSwap)
     *ppData += 4;
     fn_801DF3E4(*ppData, (unsigned char *)&pDst->w, 4, noSwap);
     *ppData += 4;
+}
+
+void fn_801DF3E4(unsigned char *pSrc, unsigned char *pDst, unsigned int size, int noSwap)
+{
+    unsigned int i = 0;
+    unsigned int j;
+    unsigned int next;
+
+    while (i < size) {
+        if (noSwap) {
+            j = i;
+            next = i + 1;
+        } else {
+            next = i + 1;
+            j = size - next;
+        }
+        pDst[j] = pSrc[i];
+        i = next;
+    }
 }
 
 static void fn_801DF428(unsigned char **ppData, EmitterParms_t *pDst, unsigned int type, int noSwap)

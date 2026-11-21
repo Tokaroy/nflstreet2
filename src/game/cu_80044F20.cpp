@@ -14,7 +14,8 @@ void DCStoreRange(void *p, int size);
 
 static inline void UnpackColor(const unsigned short *pData, int index, PaletteColor *pColor, int format)
 {
-    unsigned int value = pData[index];
+    // FAKEMATCH: the entry is read through a byte offset (index << 1), which the target computes with slwi
+    unsigned int value = *(const unsigned short *)((const char *)pData + (index << 1));
 
     switch (format) {
     case 2:
@@ -60,7 +61,7 @@ static inline void PackColor(unsigned short *pData, int index, const PaletteColo
 
 static inline int BlendChannel(int a, int b, int weightA, int weightB, int total)
 {
-    int value = (a * weightA + b * weightB) / total;
+    int value = (weightA * a + weightB * b) / total;
 
     if (value > 255) {
         value = 255;
@@ -170,7 +171,7 @@ void fn_800450D8(ColorEntry *pEntry, State_80045084 *pState, PlaDynClutPalettes_
     }
 }
 
-void fn_800451D0(ColorEntry *pEntry, State_80045084 *pState)
+void PlaDynClutFillRange(ColorEntry *pEntry, State_80045084 *pState)
 {
     unsigned short *pData = pState->mpData;
     int format = pState->mFormat;
@@ -261,7 +262,7 @@ void fn_80045F64(ColorEntry *pEntry, State_80045084 *pState, PlaDynClutPalettes_
         fn_800450D8(pEntry, pState, pPalettes);
         break;
     case 1:
-        fn_800451D0(pEntry, pState);
+        PlaDynClutFillRange(pEntry, pState);
         break;
     case 2:
         fn_800452F8(pEntry, pState);

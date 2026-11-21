@@ -25,7 +25,7 @@ void fn_8027257C(void)
 
 void fn_80272618(int value)
 {
-    fn_8026A0E8(value + lbl_803A6C24.m1C.m12);
+    SNDVOICEI_free(value + lbl_803A6C24.m1C.m12);
 }
 
 void fn_80272644(AXVPB *vpb)
@@ -102,7 +102,7 @@ int fn_8027271C(int index)
                         lbl_803A8D60.m0[record->m4[j]].m3C = 0;
                     }
                     if (lbl_803A6C24.m1CC[record->m4[j]].m6D != 0) {
-                        fn_8026A0E8(record->m4[j]);
+                        SNDVOICEI_free(record->m4[j]);
                     }
                 }
             }
@@ -121,7 +121,7 @@ void fn_80272990(int channel, int mode)
     SNDDRV_DSPMixerReleaseChannel(vpb);
     state->m18 = -1;
     if (record->m6D != 0) {
-        fn_8026A0E8(channel);
+        SNDVOICEI_free(channel);
     }
     if (mode == 0) {
         if (vpb != 0) {
@@ -285,35 +285,6 @@ void fn_80272FB4(void)
     lbl_803B502C();
 }
 
-int fn_802733A0(void)
-{
-    u32 base;
-
-    lbl_803A6C24.m6 = 32;
-    lbl_803A6C24.m0 = 32000;
-    lbl_803A6C24.m2 = 32000;
-    lbl_803A6C24.m4 = 1;
-    lbl_803A6C24.m5 = 4;
-    lbl_803A6C24.mA = 48;
-    lbl_803A6C24.mC = 2;
-    lbl_803A6C24.mE = 544;
-    lbl_803A6C24.m10 = 36;
-    lbl_803A6C24.m1C.mA = 32000;
-    lbl_803A6C24.m1C.mE = 8;
-    lbl_803A6C24.m1C.m12 = 48;
-    lbl_803A6C24.m1C.m21 = 1;
-    lbl_803A6C24.m1C.m22 = 8;
-    lbl_803A6C24.m1C.m23 = 2;
-    lbl_803A6C24.m1C.m25 = 1;
-    lbl_803A6C24.m1C.m28 = 2;
-    lbl_803A6C24.m1C.m2A[0] = 544;
-    lbl_803A6C24.m1C.m2A[1] = 36;
-    base = ARGetBaseAddress() + 256;
-    lbl_803A6C24.m1C.m38 = base;
-    lbl_803A6C24.m1C.m3C = 0x800000 - base;
-    return 0;
-}
-
 void fn_80273040(int index, Stream_802743A0 *stream, Record_803A6DF0 *record)
 {
     unsigned char *source[6];
@@ -380,8 +351,10 @@ void *fn_80273264(void *arg)
         if (lbl_80300850 & 1) {
             SNDSYSI_100hzserver();
             lbl_80300854 += lbl_803A8D60.m1400;
-            Snd::gVariableTimerTick = (int)(lbl_80300854 < 0.0f ? lbl_80300854 - 0.5f : lbl_80300854 + 0.5f);
-            if (lbl_80300854 > 30.0f) {
+            // FAKEMATCH: negated float tests give the target's branch senses (blt to the subtraction,
+            // cror un/eq/lt around the wrap); the plain x < 0 and x > 30 forms reverse both branches.
+            Snd::gVariableTimerTick = (int)(!(lbl_80300854 < 0.0f) ? lbl_80300854 + 0.5f : lbl_80300854 - 0.5f);
+            if (!(lbl_80300854 <= 30.0f)) {
                 lbl_80300854 -= 30.0f;
             }
             SNDSYSI_variabletimerservice();
@@ -392,6 +365,35 @@ void *fn_80273264(void *arg)
         Snd::gMutexUnlockFn();
         OSSleepThread(&lbl_803A8D60.m1DE0);
     }
+}
+
+int fn_802733A0(void)
+{
+    u32 base;
+
+    lbl_803A6C24.m6 = 32;
+    lbl_803A6C24.m0 = 32000;
+    lbl_803A6C24.m2 = 32000;
+    lbl_803A6C24.m4 = 1;
+    lbl_803A6C24.m5 = 4;
+    lbl_803A6C24.mA = 48;
+    lbl_803A6C24.mC = 2;
+    lbl_803A6C24.mE = 544;
+    lbl_803A6C24.m10 = 36;
+    lbl_803A6C24.m1C.mA = 32000;
+    lbl_803A6C24.m1C.mE = 8;
+    lbl_803A6C24.m1C.m12 = 48;
+    lbl_803A6C24.m1C.m21 = 1;
+    lbl_803A6C24.m1C.m22 = 8;
+    lbl_803A6C24.m1C.m23 = 2;
+    lbl_803A6C24.m1C.m25 = 1;
+    lbl_803A6C24.m1C.m28 = 2;
+    lbl_803A6C24.m1C.m2A[0] = 544;
+    lbl_803A6C24.m1C.m2A[1] = 36;
+    base = ARGetBaseAddress() + 256;
+    lbl_803A6C24.m1C.m38 = base;
+    lbl_803A6C24.m1C.m3C = 0x800000 - base;
+    return 0;
 }
 
 int fn_80273458(void)
@@ -425,6 +427,11 @@ int fn_80273458(void)
     return 0;
 }
 
+static inline float _SndClampF(float x, float lo, float hi)
+{
+    return x < lo ? lo : (x <= hi ? x : hi);
+}
+
 int fn_80273648(int mode)
 {
     float rate;
@@ -435,7 +442,7 @@ int fn_80273648(int mode)
     if (Snd::gVariableTimerPeriod == -1.0f) {
         Snd::gVariableTimerPeriod = 20.0f;
     }
-    rate = Snd::gVariableTimerPeriod < 10.0f ? 10.0f : (Snd::gVariableTimerPeriod <= 100.0f ? Snd::gVariableTimerPeriod : 100.0f);
+    rate = _SndClampF(Snd::gVariableTimerPeriod, 10.0f, 100.0f);
     Snd::gVariableTimerPeriod = rate;
     lbl_803A8D60.m1400 = 10.0f / rate;
     if (lbl_803A6C24.m1C.m21 != 0 && lbl_80300858 == 0) {
@@ -1057,7 +1064,7 @@ int fn_80274F5C(int index)
     } else {
         for (i = 0; i < record->m23; i++) {
             lbl_803B503C(record->m4[i] - lbl_803A6C24.m1C.m12);
-            fn_8026A0E8(record->m4[i]);
+            SNDVOICEI_free(record->m4[i]);
         }
     }
     return 0;

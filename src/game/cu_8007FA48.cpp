@@ -11,8 +11,8 @@ extern int lbl_802D6990[];
 int fn_801F95C8(void);
 int fn_801FA0BC(int, void *, void *, void *, void *, int *, void *);
 int fn_801FA148(int);
-int fn_8022EF8C(int, int);
-int fn_8022EFBC(int, int);
+int DbFileTblLoad(int, int);
+int DbFileTblDestroy(int, int);
 int fn_8022F358(int);
 int fn_8022F3D4(int);
 void fn_80082B18(Record_80082B18 *);
@@ -75,7 +75,7 @@ extern "C" int fn_8007FA48(int table, int column, int *out, unsigned short *coun
     return result;
 }
 
-extern "C" int fn_8007FC70(int source, int value, int reset, int start)
+extern "C" int PlayerRecordCreate(int source, int value, int reset, int start)
 {
     char first[16], last[16], other[16];
     Record_80082B18 record;
@@ -87,8 +87,8 @@ extern "C" int fn_8007FC70(int source, int value, int reset, int start)
     record.mUnknown0C = other;
     unsigned short count = 1;
     fn_8007FA48(0x54415453, 0x59414C50, &record.mUnknown00, &count, start);
-    record.mUnknown14 = value;
     record.mUnknown10 = value;
+    record.mUnknown14 = value;
     fn_80082C64(&record);
     SndgMusicPumpFrame(0);
     fn_80082D30(&record);
@@ -98,10 +98,10 @@ extern "C" int fn_8007FC70(int source, int value, int reset, int start)
     fn_80083070(&record);
     SndgMusicPumpFrame(0);
     if (reset) {
+        // FAKEMATCH: store order; mUnknown18 is cleared last (the first scheduling pass then puts it fourth, as in the target)
         record.mUnknown10C = 0x41;
         record.mUnknown118 = 2;
         record.mUnknown1C = 1;
-        record.mUnknown18 = 0;
         record.mUnknown110 = 0;
         record.mUnknownC8 = 0;
         record.mUnknownC4 = 0;
@@ -130,6 +130,7 @@ extern "C" int fn_8007FC70(int source, int value, int reset, int start)
         record.mUnknown94 = 0;
         record.mUnknown98 = 0;
         record.mUnknown9C = 0;
+        record.mUnknown18 = 0;
     }
     SndgMusicPumpFrame(0);
     fn_8008318C(0x59414C50, &record, source, 0x1AD);
@@ -149,10 +150,12 @@ extern "C" void fn_8007FE40(Object_8008044C *p, void *arg, int selector, int fla
     node.Set(6, 0x59414C5044494754LL, 3, selector);
     DbCursorOpen(reinterpret_cast<DbCursor *>(p), 0x59414C50, 0x44494750, arg, &node, flags);
 }
-extern "C" void fn_8007FEB8(Object_8008044C *p, void *arg, int flags)
+extern "C" void PlayerCursorOpenByPlig(Object_8008044C *p, void *arg, int flags)
 {
     DbFilter node;
-    node.Set(6, 0x59414C5047494C50LL, 3, 1);
+    // FAKEMATCH: the operand value is held in a local, as the selector parameter of the sibling wrappers is
+    int selector = 1;
+    node.Set(6, 0x59414C5047494C50LL, 3, selector);
     DbCursorOpen(reinterpret_cast<DbCursor *>(p), 0x59414C50, 0x44494750, arg, &node, flags);
 }
 extern "C" void fn_8007FF30(Object_8008044C *p, void *arg, int selector, int flags)
@@ -177,7 +180,8 @@ extern "C" void fn_80080084(int value, int handle, int table, DbColumnValue *col
     DbExpression node;
     tables[0].Set(table, 2, &node);
     tables[1].Set(-1);
-    node.Set((static_cast<unsigned long long>(static_cast<unsigned int>(table)) << 32) | 0x44494750, 0x10003, value);
+    unsigned long long column = 0x44494750;
+    node.Set(6, ((unsigned long long)table << 32) | column, 3, value);
     fn_801FA428(handle, tables, 0, columns, &result, 0);
 }
 
@@ -191,7 +195,7 @@ extern "C" void fn_80080138(int selector, int index, int mode)
         from = 0x52475250;
         if (index == -1) {
             destination = 0x54415453;
-            fn_8022EF8C(destination, from);
+            DbFileTblLoad(destination, from);
             created = 1;
         } else destination = fn_8022F3D4(fn_8022F358(index));
         source = 0x54415453;
@@ -232,16 +236,17 @@ extern "C" void fn_80080138(int selector, int index, int mode)
         }
     }
     fn_801FA148(cursor);
-    if (created) fn_8022EFBC(0x54415453, from);
+    if (created) DbFileTblDestroy(0x54415453, from);
 }
 
 extern "C" void fn_8008040C(Object_8008044C *p, Desc_8008044C *desc)
 {
     int tag = fn_801F95C8();
-    fn_8008044C(p, desc, tag);
+    PlayerCursorOpen(p, desc, tag);
 }
-extern "C" void fn_8008044C(Object_8008044C *p, Desc_8008044C *desc, int tag)
+extern "C" void PlayerCursorOpen(Object_8008044C *p, Desc_8008044C *desc, int tag)
 {
+    void *arg = 0;
     Desc_8008044C local;
     if (desc) {
         local.mUnknown0 = desc->mUnknown0;
@@ -249,15 +254,16 @@ extern "C" void fn_8008044C(Object_8008044C *p, Desc_8008044C *desc, int tag)
         local.mUnknown8 = desc->mUnknown8;
         local.mUnknown12 = desc->mUnknown12;
     }
-    void *arg = 0;
     switch (local.mUnknown0) {
+    // FAKEMATCH: the empty case 0 leaves no compare in the target; it only shapes the dispatch tree
+    case 0: break;
     case 1: arg = lbl_802D6950; break;
     case 2: arg = lbl_802D6990; break;
     }
     switch (local.mUnknown4) {
     case 0: fn_8007FE04(p, arg, tag); break;
     case 1: fn_8007FE40(p, arg, local.mUnknown8, tag); break;
-    case 2: fn_8007FEB8(p, arg, tag); break;
+    case 2: PlayerCursorOpenByPlig(p, arg, tag); break;
     case 3: fn_8007FF30(p, arg, local.mUnknown8, tag); break;
     case 4: fn_8007FFA8(p, arg, local.mUnknown8, local.mUnknown12, tag); break;
     }

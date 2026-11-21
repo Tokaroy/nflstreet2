@@ -297,7 +297,7 @@ void fn_8013AD04(Ball_t *pBall, Vector_80039F5C *pVelocity, int mode, float spin
 Object_80039F5C *fn_80124C28(Object_80039F5C *p, float *pOut, int angle, float a, float b, int facing);
 void fn_800ACDE4(Object_80039F5C *p, float *pChance, float *pAngle);
 int fn_80178348(void);
-float fn_80237260(int a);
+float SyncRandGetFloat(int a);
 int fn_800DFA00(Object_80039F5C *p, float *pValue);
 int fn_800B9A90(PostPlayPhase *p);
 }
@@ -460,7 +460,7 @@ void fn_8009134C(unsigned short);
 int AnimFileGetSlotFromFileNum(int objectType, int fileNum);
 void *AnimFileGetPtrFromSlot(unsigned int);
 AnimScript_t *AnimFileGetAnimation(void *, int);
-int AnimSeqHasOpcode(float *, void *, unsigned short);
+int AnimSeqHasOpcode(AnimSeq_t *, AnimScript_t *, unsigned short);
 int AnimChanIsMirrored(AnimChannel_t *);
 void AnimChanSetMirrored(AnimChannel_t *, int);
 void fn_800D7A0C(Object_80039F5C *, int);
@@ -507,7 +507,7 @@ extern "C" int fn_800DD5E4(Object_80039F5C *p);
 extern "C" int fn_800DD648(Object_80039F5C *p);
 extern "C" int fn_800DD69C(Table_80089904 *pTable, unsigned short key, void *pA, void *pB, Object_80039F5C *p, unsigned int mode);
 extern "C" int fn_800DD780(Object_80039F5C *p, int value, unsigned short key);
-extern "C" int fn_800DD830(void *p);
+extern "C" int fn_800DD830(void *p, int value);
 extern "C" int fn_800DD838(Object_80039F5C *p);
 extern "C" void fn_800DD92C(Table_80089904 *pTable, unsigned short a, unsigned char value);
 extern "C" void fn_800DD994(Table_80089904 *pTable, Object_80039F5C *p, unsigned short key, void *pA, void *pB,

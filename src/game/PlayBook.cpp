@@ -14,7 +14,7 @@
 #include "game/DbCursor.h"
 #include "game/PlayBookDb.h"
 #include "game/fn_801FCE10.h"
-#include "game/fn_80238174.h"
+#include "game/SyncStateRegister.h"
 #include "game/fn_800B65A0.h"
 #include "game/fn_80177FE0.h"
 #include "game/PlayBookTeam.h"
@@ -28,8 +28,9 @@
 #include "game/PlayTrack.h"
 #include "game/Item_80097440.h"
 #include "game/fn_80227638.h"
+#include "game/PreSnapPhase.h"
 
-/* Allocated through fn_80238174 under the id 'plbk' (PlayBookAlloc). */
+/* Allocated through SyncStateRegister under the id 'plbk' (PlayBookAlloc). */
 struct PlayBook_t {
     unsigned int mUnknown0;
     PlayBookTeam_t mUnknown4[2];
@@ -357,7 +358,7 @@ void PlayBookLoadAudibles(int team)
 
 void PlayBookAlloc(void)
 {
-    void *pHandle = fn_80238174(0, (void **)&_PlayBook_pData, sizeof(PlayBook_t), 0, 0x706C626B);
+    void *pHandle = SyncStateRegister(0, (void **)&_PlayBook_pData, sizeof(PlayBook_t), 0, 0x706C626B);
 
     fn_80238234(pHandle, 0, 0, 0, PlayBookCompareData);
     fn_802381E0(pHandle);
@@ -775,11 +776,10 @@ int fn_800A8444(int team);
 void PlayBookPickPlay(int team, int kind);
 void PlayBookSelectPlayById(int team, int kind);
 int PlayBookIsAiPlay(int team, int kind, int value);
-void fn_800C02EC(void *p, int event);
-void fn_800C02F8(void *p, int event);
+
 void fn_800B4300(int value);
 void fn_800B43AC(int value);
-extern void *lbl_803EABA4;
+
 
 int PlayCallGetPlaybookId(void)
 {
@@ -901,7 +901,7 @@ int PlayCallOffenseCommand(int id, short *p, int value)
         PlayBookSelectPlayById(team, value & ~0x8000);
         PlayCallApplyPlay(team, value);
         break;
-    case 4: fn_800C02EC(lbl_803EABA4, 39); break;
+    case 4: lbl_803EABA4->fn_800C02EC(39); break;
     case 6: p[19] = 255; break;
     case 7: p[19] = 254; break;
     case 11:
@@ -912,21 +912,21 @@ int PlayCallOffenseCommand(int id, short *p, int value)
     case 2:
         fn_800B4300(0);
         if (fn_800B65A0(fn_80178308()) == 255)
-            fn_800C02F8(lbl_803EABA4, 2);
+            lbl_803EABA4->fn_800C02F8(2);
         break;
     case 3:
         fn_800B4300(1);
-        fn_800C02F8(lbl_803EABA4, 1);
+        lbl_803EABA4->fn_800C02F8(1);
         break;
     case 5:
         fn_800B43AC(1);
         if (fn_800B65A0(fn_80178308()) == 255)
-            fn_800C02F8(lbl_803EABA4, 2);
+            lbl_803EABA4->fn_800C02F8(2);
         break;
     case 12:
         fn_800B43AC(2);
         if (fn_800B65A0(fn_80178308()) == 255)
-            fn_800C02F8(lbl_803EABA4, 2);
+            lbl_803EABA4->fn_800C02F8(2);
         break;
     }
     return result;
@@ -1788,7 +1788,7 @@ void PlayTrackInit(void)
 {
     // FAKEMATCH: never-set flag; keeps the PNIG/STPG query strings in .rodata (owner-accepted 2026-11-14)
     int resume = 0;
-    void *pHandle = fn_80238174(0, (void **)&_PlayTrack_pData, sizeof(PlayTrack_t), 0, 0x7074726B);
+    void *pHandle = SyncStateRegister(0, (void **)&_PlayTrack_pData, sizeof(PlayTrack_t), 0, 0x7074726B);
     memset(fn_8023816C(), 0, sizeof(PlayTrack_t));
     if (resume) {
         int found;

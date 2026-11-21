@@ -70,15 +70,13 @@ struct Block_800920EC {
     unsigned char mUnknownE4F[1];
 };
 
-/* Allocated through fn_80238174 under the id 'anms' (fn_800925F0). */
+/* Allocated through SyncStateRegister under the id 'anms' (fn_800925F0). */
 struct Block_800925F0 {
     CondTable_t *mpUnknown0;
     Entry_80094238 mEntries[6];
     void *mpUnknown7C;
     Block_800920EC mUnknown80;
 };
-
-extern Block_800925F0 *lbl_803EC924;
 
 /* 16-byte records of the two-entry table cleared by fn_8009418C. */
 struct Slot_8009418C {
@@ -87,8 +85,6 @@ struct Slot_8009418C {
     int mUnknown8;
     int mUnknownC;
 };
-
-extern Slot_8009418C lbl_8030C164[2];
 
 /* One of the two 48-byte records at +16 of the block fn_80096954
    allocates. */
@@ -220,7 +216,7 @@ struct Entry_800B5224 {
     unsigned char mUnknown9[3];
 };
 
-/* Allocated through fn_80238174 under the id 'pctl' (fn_800B62D8). */
+/* Allocated through SyncStateRegister under the id 'pctl' (fn_800B62D8). */
 struct Block_800B62D8 {
     Entry_800B5224 *mpEntries;
     unsigned char mCount;

@@ -24,6 +24,7 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x801C1D54	0x801C1F54	auxram.c	5	4	4	4	0	-	-
 0x801C1F54	0x801C1F94	ctype.c	2	2	2	2	0	-	-
 0x801C1F94	0x801C20A0	memory.c	4	4	4	4	0	-	printf.c
+0x801C20F0	0x801C2EB4	sprintf.c	8	8	8	3	5	-	-
 0x801C2EB4	0x801C32CC	string.c	13	11	11	11	0	-	-
 0x801C33E8	0x801C3A44	camera.c	16	14	15	14	0	-	-
 0x801C3A44	0x801C3CE8	camfocus.c	8	8	8	8	0	-	-
@@ -41,9 +42,10 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x801C8F14	0x801C9DD8	fileio.c	28	27	28	27	0	-	-
 0x801C9DD8	0x801CB1BC	llfileio.c	24	23	24	23	0	-	-
 0x801CB1BC	0x801CB5D4	fs_cli.c	8	8	8	8	0	-	-
-0x801CB5D4	0x801CBC1C	filemc.c	11	10	10	0	10	-	-
+0x801CB5D4	0x801CBC1C	filemc.c	11	10	10	10	0	-	-
 0x801CBC1C	0x801CBC50	filehost.c	8	7	7	7	0	-	-
 0x801CCA64	0x801CD79C	Font.c	24	23	23	0	23	-	-
+0x801CD79C	0x801CE138	LLFont.c	9	9	9	2	7	-	-
 0x801CE138	0x801CE1E8	glib.c	2	2	3	2	0	-	-
 0x801CE1F8	0x801CEC90	llglib.c	39	35	36	35	0	-	-
 0x801CEC90	0x801CEE54	llrender.c	8	7	8	7	0	-	-
@@ -56,7 +58,7 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x801CFFD0	0x801D0110	angle.c	2	2	2	2	0	-	-
 0x801D0110	0x801D0370	matrix.c	5	5	5	5	0	-	-
 0x801D0370	0x801D134C	llmatrix.c	39	32	33	32	0	-	-
-0x801D134C	0x801D34C4	Memory.c	35	33	45	0	26	-	-
+0x801D134C	0x801D34C4	Memory.c	35	33	45	1	25	-	-
 0x801D34C4	0x801D36E8	llmemory.c	3	3	3	3	0	-	-
 0x801D36E8	0x801D3BD0	MemExtern.c	10	10	10	1	9	-	-
 0x801D3BD0	0x801D3C68	TibNew.cpp	4	4	8	2	2	-	-
@@ -66,7 +68,7 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x801DB058	0x801DB21C	maddeca.cpp	2	2	2	1	1	-	-
 0x801DB7D4	0x801DB89C	render.c	3	3	3	3	0	-	-
 0x801DCA10	0x801DD474	object.c	24	22	23	22	0	-	-
-0x801DD498	0x801DFE0C	particleLib.c	42	41	51	0	38	-	-
+0x801DD498	0x801DFE0C	particleLib.c	43	42	51	1	38	-	-
 0x801DFE0C	0x801E01FC	psysEmitter.c	4	4	4	4	0	-	-
 0x801E01FC	0x801E052C	psysCollision.c	6	6	8	6	0	-	-
 0x801E052C	0x801E0A1C	colorRamp.c	10	10	10	0	10	-	-
@@ -86,7 +88,7 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x801F524C	0x801F5458	bubble.c	3	3	3	3	0	-	-
 0x801F5458	0x801F5760	quick.c	4	4	4	4	0	-	-
 0x801F5760	0x801F5D84	Speech.cpp	15	14	15	1	12	-	-
-0x801F5D84	0x801F7738	stream.c	33	33	33	0	33	-	-
+0x801F5D84	0x801F7738	stream.c	33	33	33	1	32	-	-
 0x801F7738	0x801F77DC	mutex.c	5	5	5	5	0	-	-
 0x801F77DC	0x801F7D34	system.c	13	13	13	13	0	-	-
 0x801F7DF4	0x801F8878	llsystem.c	24	18	22	0	12	-	-
@@ -98,7 +100,7 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x80201EC8	0x80203444	t3db_index.c	17	17	17	17	0	-	-
 0x80203444	0x80203754	t3db_mem.c	5	5	5	0	5	-	-
 0x80203754	0x80205754	t3db_expr.c	78	78	78	76	2	-	-
-0x80205754	0x8020B564	t3db_query.c	40	38	38	0	36	-	-
+0x80205754	0x8020B564	t3db_query.c	40	38	38	1	35	-	-
 0x8020B564	0x8020CD2C	t3db_table.c	13	13	13	13	0	-	t3dbUtil.c
 0x8020CD2C	0x8020CEC4	t3db_blob.c	2	2	2	2	0	-	-
 0x8020CEC4	0x8020CFA0	t3db_data.c	2	2	2	2	0	-	-
@@ -161,9 +163,10 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x80266640	0x8026696C	mbtowc_r.c	1	1	1	1	0	-	-
 0x8026696C	0x80266A2C	memchr.c	1	1	1	1	0	-	-
 0x80266A2C	0x80266AF8	dummy.c	3	3	3	3	0	-	tors.c
-0x8026AF64	0x8026B2E0	sevent.cpp	5	5	5	0	5	-	-
+0x8026AF64	0x8026B2E0	sevent.cpp	5	5	5	5	0	-	-
 0x8026EE24	0x8026EEB0	sstovrhd.c	2	2	2	2	0	-	-
 0x8026EF0C	0x8026EF38	sstqreqi.c	1	1	1	1	0	-	-
+0x8026FD28	0x802702D8	ssysinit.c	5	5	5	0	5	-	-
 0x802753F0	0x8027555C	sfxrevc.c	3	3	3	3	0	-	-
 0x8027555C	0x802755E0	slinkmix.c	1	1	1	1	0	-	sfreson.c
 0x802755E0	0x802763E0	smixer.c	15	14	16	9	5	-	-

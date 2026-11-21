@@ -66,14 +66,14 @@ void fn_801D64EC(void);
 int ResGetSize(void *, int);
 int fn_801D8618(int, unsigned int, int);
 int fn_801D8658(int, unsigned int, int);
-void fn_8022F698(SaveRequest_t *, SaveStreamOps_t *);
+void DbUserSave(SaveRequest_t *, SaveStreamOps_t *);
 int fn_801D6844(void);
 void fn_801D6B4C(char *, int);
 int fn_801D673C(int);
 void fn_801D868C(int, int, char *, int);
 void UserProfileTouch(signed char);
 int fn_801D6850(void);
-int fn_800039E4(int, int *, int *);
+int MemCardUpdateSaveLoad(int, int *, int *);
 int fn_801D6620(int *);
 void fn_801D6754(int);
 void fn_801D676C(SaveComment *);
@@ -218,7 +218,7 @@ int MemCardFilesComputeChecksum(int type, int index)
         break;
     case 2:
         fn_8022F478(fn_8022F358((signed char)index));
-        fn_8022F698(&request, &gChecksumCRC32StreamType);
+        DbUserSave(&request, &gChecksumCRC32StreamType);
         break;
     case 1:
         fn_8022EB94(&result, &gChecksumCRC32StreamType);
@@ -278,7 +278,7 @@ int MemCardFilesPollOperation(int *arg)
     case 1:
     case 2:
     case 3:
-        _MemCardFiles_iOperation = fn_800039E4(_MemCardFiles_iOperation, &done, arg);
+        _MemCardFiles_iOperation = MemCardUpdateSaveLoad(_MemCardFiles_iOperation, &done, arg);
         break;
     default:
         done = fn_801D6620(arg);

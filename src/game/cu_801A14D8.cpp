@@ -287,15 +287,14 @@ void fn_80234CF0(Part_8003DEC4 *p, int a, void *q);
 void fn_80234DC0(Part_8003DEC4 *p, int a);
 int fn_80236B98(int a, float r, float g, float b);
 void fn_80236C10(int a, Vector_801A1650 *pScale, void *p);
-int fn_80236EC0(int a);
-void fn_8024E908(int type, int fmt, int count);
-void fn_8024EB28(int a);
+int LLFogEnable(int a);
+void GXSetCullMode(int a);
 void GXSetChanMatColor(int chan, Color_8024FB58 color);
 void GXSetNumChans(int n);
 void GXSetChanCtrl(int chan, int enable, int amb, int mat, int lights, int diff, int attn);
-void fn_80252034(int type, int src, int dst, int op);
-void fn_802520E0(int enable, int func, int update);
-void fn_80252114(int a);
+void GXSetBlendMode(int type, int src, int dst, int op);
+void GXSetZMode(int enable, int func, int update);
+void GXSetZCompLoc(int a);
 void GXLoadPosMtxImm(float (*pMatrix)[4], int id);
 void GXSetCurrentMtx(int id);
 void GXLoadTexMtxImm(float (*pMatrix)[4], int id, int type);
@@ -303,6 +302,8 @@ void GXLoadTexMtxImm(float (*pMatrix)[4], int id, int type);
 int fn_801A1C10(Object_8003DEC4 *pPlayer);
 void fn_801A1D80(Object_8003DEC4 *pPlayer, int flag);
 int fn_801A201C(Object_8003DEC4 *pPlayer);
+/* One joint of a pose: three shorts. */
+struct PoseJoint_801A209C { short mX, mY, mZ; };
 void fn_801A209C(Object_8003DEC4 *pPlayer, float *pScale, float (*pMatrix)[4], ParticleTrailSet_t *pTrail,
                  int index, void *pModel, void **ppModels, unsigned int lod);
 void fn_801A32AC(int id, float sx, float sy, float tx, float ty);
@@ -356,65 +357,72 @@ void fn_801A15C4(Viewport_t *pObject)
    result is scaled by the +0x19B0 colour (a decaying pulse over thirty
    frames, or constant while +0x19AC is 1), and replaced by a colour
    between lbl_802F29B0 and lbl_802F29BC when flag 0x20000 is set and
-   +0x19A8 is 12. */
+   +0x19A8 is below 12. */
 int fn_801A1650(Object_8003DEC4 *pPlayer)
 {
-    ParticleTrailSet_t *pData = &pPlayer->mUnknown5188;
     float r = 1.0f;
     float g = r;
     float b = r;
     int flash = 0;
-    LightSource_t *pSource;
     int light;
     float block[4];
     Vector_801A1650 scale;
     Vector_801A1650 color;
 
     if (pPlayer->mUnknown20 & 0x20000) {
-        flash = pData->mUnknown564 == 12.0f;
+        flash = pPlayer->mUnknown5188.mUnknown564 < 12.0f;
     }
-    pSource = (LightSource_t *)pPlayer->mUnknown972;
-    if (pSource) {
-        if (pSource->mUnknownC != pData->mUnknown580 || pSource->mUnknown10 != pData->mUnknown584 ||
-            pSource->mUnknown14 != pData->mUnknown588) {
-            pData->mUnknown590 =
-                (pData->mUnknown580 - pData->mUnknown590) * (pData->mUnknown5A0 * (1.0f / 15.0f)) + pData->mUnknown590;
-            pData->mUnknown594 =
-                (pData->mUnknown584 - pData->mUnknown594) * (pData->mUnknown5A0 * (1.0f / 15.0f)) + pData->mUnknown594;
-            pData->mUnknown598 =
-                (pData->mUnknown588 - pData->mUnknown598) * (pData->mUnknown5A0 * (1.0f / 15.0f)) + pData->mUnknown598;
-            pData->mUnknown580 = pSource->mUnknownC;
-            pData->mUnknown584 = pSource->mUnknown10;
-            pData->mUnknown588 = pSource->mUnknown14;
-            pData->mUnknown5A0 = 0;
+    if (pPlayer->mUnknown972) {
+        if (((LightSource_t *)pPlayer->mUnknown972)->mUnknownC != pPlayer->mUnknown5188.mUnknown580 ||
+            ((LightSource_t *)pPlayer->mUnknown972)->mUnknown10 != pPlayer->mUnknown5188.mUnknown584 ||
+            ((LightSource_t *)pPlayer->mUnknown972)->mUnknown14 != pPlayer->mUnknown5188.mUnknown588) {
+            pPlayer->mUnknown5188.mUnknown590 =
+                (pPlayer->mUnknown5188.mUnknown580 - pPlayer->mUnknown5188.mUnknown590) *
+                    (pPlayer->mUnknown5188.mUnknown5A0 * (1.0f / 15.0f)) +
+                pPlayer->mUnknown5188.mUnknown590;
+            pPlayer->mUnknown5188.mUnknown594 =
+                (pPlayer->mUnknown5188.mUnknown584 - pPlayer->mUnknown5188.mUnknown594) *
+                    (pPlayer->mUnknown5188.mUnknown5A0 * (1.0f / 15.0f)) +
+                pPlayer->mUnknown5188.mUnknown594;
+            pPlayer->mUnknown5188.mUnknown598 =
+                (pPlayer->mUnknown5188.mUnknown588 - pPlayer->mUnknown5188.mUnknown598) *
+                    (pPlayer->mUnknown5188.mUnknown5A0 * (1.0f / 15.0f)) +
+                pPlayer->mUnknown5188.mUnknown598;
+            pPlayer->mUnknown5188.mUnknown580 = ((LightSource_t *)pPlayer->mUnknown972)->mUnknownC;
+            pPlayer->mUnknown5188.mUnknown584 = ((LightSource_t *)pPlayer->mUnknown972)->mUnknown10;
+            pPlayer->mUnknown5188.mUnknown588 = ((LightSource_t *)pPlayer->mUnknown972)->mUnknown14;
+            pPlayer->mUnknown5188.mUnknown5A0 = 0;
         }
-        if (pData->mUnknown5A0 < 15) {
-            float t = pData->mUnknown5A0++;
+        if (pPlayer->mUnknown5188.mUnknown5A0 < 15) {
+            float t = pPlayer->mUnknown5188.mUnknown5A0++;
 
-            b = (pData->mUnknown588 - pData->mUnknown598) * (1.0f / 15.0f) * t + pData->mUnknown598;
-            r = (pData->mUnknown580 - pData->mUnknown590) * (1.0f / 15.0f) * t + pData->mUnknown590;
-            g = (pData->mUnknown584 - pData->mUnknown594) * (1.0f / 15.0f) * t + pData->mUnknown594;
+            r = (pPlayer->mUnknown5188.mUnknown580 - pPlayer->mUnknown5188.mUnknown590) * (1.0f / 15.0f) * t +
+                pPlayer->mUnknown5188.mUnknown590;
+            g = (pPlayer->mUnknown5188.mUnknown584 - pPlayer->mUnknown5188.mUnknown594) * (1.0f / 15.0f) * t +
+                pPlayer->mUnknown5188.mUnknown594;
+            b = (pPlayer->mUnknown5188.mUnknown588 - pPlayer->mUnknown5188.mUnknown598) * (1.0f / 15.0f) * t +
+                pPlayer->mUnknown5188.mUnknown598;
         } else {
-            r = pData->mUnknown580;
-            g = pData->mUnknown584;
-            b = pData->mUnknown588;
+            r = pPlayer->mUnknown5188.mUnknown580;
+            g = pPlayer->mUnknown5188.mUnknown584;
+            b = pPlayer->mUnknown5188.mUnknown588;
         }
     }
-    if (pData->mUnknown5A4) {
-        if (pData->mUnknown5A8 < 30) {
-            float s = 2.0f - (float)pData->mUnknown5A8++ * (1.0f / 30.0f);
+    if (pPlayer->mUnknown5188.mUnknown5A4) {
+        if (pPlayer->mUnknown5188.mUnknown5A8 < 30) {
+            float s = 2.0f - (float)pPlayer->mUnknown5188.mUnknown5A8++ * (1.0f / 30.0f);
 
-            r *= pData->mUnknown56C * s;
-            g *= pData->mUnknown570 * s;
-            b *= pData->mUnknown574 * s;
+            r *= pPlayer->mUnknown5188.mUnknown56C * s;
+            g *= pPlayer->mUnknown5188.mUnknown570 * s;
+            b *= pPlayer->mUnknown5188.mUnknown574 * s;
         } else {
-            pData->mUnknown5A8 = 0;
-            pData->mUnknown5A4 = 0;
+            pPlayer->mUnknown5188.mUnknown5A4 = 0;
+            pPlayer->mUnknown5188.mUnknown5A8 = 0;
         }
-    } else if (pData->mUnknown568 == 1) {
-        r *= pData->mUnknown56C;
-        g *= pData->mUnknown570;
-        b *= pData->mUnknown574;
+    } else if (pPlayer->mUnknown5188.mUnknown568 == 1) {
+        r *= pPlayer->mUnknown5188.mUnknown56C;
+        g *= pPlayer->mUnknown5188.mUnknown570;
+        b *= pPlayer->mUnknown5188.mUnknown574;
     }
     if (flash) {
         fn_80227930(&color, lbl_802F29B0, lbl_802F29BC, StyleTrackerGetMeterFraction(pPlayer->mUnknown4968));
@@ -454,7 +462,7 @@ void fn_801A1978(Object_8003DEC4 *pPlayer, unsigned int flags)
     GXSetChanCtrl(0, 1, 0, 0, light, 2, 2);
     GXSetChanCtrl(2, 0, 0, 0, light, 0, 2);
     GXSetAlphaCompare(GX_ALWAYS, 0, GX_AOP_AND, GX_ALWAYS, 0);
-    fn_8024EB28(1);
+    GXSetCullMode(1);
     TMRenderSetBlendMode(1);
     fn_80234BF4(0, &pPlayer->mUnknown1164[0], 0);
     light = fn_801A1C10(pPlayer);
@@ -484,7 +492,7 @@ void fn_801A1978(Object_8003DEC4 *pPlayer, unsigned int flags)
     fn_80234BF4(0, &pPlayer->mUnknown1164[8], 0);
     TMRenderSetBlendMode(1);
     TMRenderSetZRange(0.0f, 1.0f);
-    fn_8024EB28(0);
+    GXSetCullMode(0);
 }
 
 int fn_801A1C10(Object_8003DEC4 *pPlayer)
@@ -507,7 +515,7 @@ int fn_801A1C10(Object_8003DEC4 *pPlayer)
         TMRenderBindMaterialList(pPlayer->mUnknown4044);
         TMRenderBindClusterObj(&pPlayer->mUnknown4064[1]);
         TMRenderSetBlendMode(1);
-        fn_8024EB28(0);
+        GXSetCullMode(0);
         fn_801A3300(pPlayer, a, b);
         fn_801A32AC(30, 1.0f, 1.0f, b[0], b[1]);
         GXSetTexCoordGen2(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_TEXMTX0, GX_FALSE, GX_PTIDENTITY);
@@ -536,7 +544,13 @@ void fn_801A1D80(Object_8003DEC4 *pPlayer, int flag)
 }
 
 /* Draws the recorded trail poses of the player with fading alpha. */
-void fn_801A1DEC(Object_8003DEC4 *pPlayer, Slot_801A3284 *pSlot, unsigned int count)
+/* Release-build assert: the check is passed to an empty inline function and compiles to nothing. */
+static inline void _FxAssert(int)
+{
+}
+#define FX_ASSERT(e) _FxAssert(e)
+
+void PlyrRenderDrawAfterimages(Object_8003DEC4 *pPlayer, Slot_801A3284 *pSlot, unsigned int count)
 {
     Color_8024FB58 color = {255};
     unsigned int i = 0;
@@ -547,7 +561,10 @@ void fn_801A1DEC(Object_8003DEC4 *pPlayer, Slot_801A3284 *pSlot, unsigned int co
     color.g = 255;
     color.b = 255;
     color.a = 255;
-    fn_80227930(&v, lbl_802F29B0, lbl_802F29BC, StyleTrackerGetMeterFraction(pPlayer->mUnknown4968));
+    float fraction = StyleTrackerGetMeterFraction(pPlayer->mUnknown4968);
+    // FAKEMATCH: compiled-out range assert on the meter fraction; its 1.0f enters the pool before 0.0f
+    FX_ASSERT(fraction <= 1.0f && fraction >= 0.0f);
+    fn_80227930(&v, lbl_802F29B0, lbl_802F29BC, fraction);
     light = fn_80236B98(1, v.x, v.y, v.z);
     GXSetChanMatColor(0, color);
     GXSetNumChans(1);
@@ -555,7 +572,7 @@ void fn_801A1DEC(Object_8003DEC4 *pPlayer, Slot_801A3284 *pSlot, unsigned int co
     GXSetChanCtrl(2, 0, 0, 0, light, 0, 2);
     TMRenderSetBlendMode(2);
     GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_ALWAYS, 0);
-    fn_8024EB28(1);
+    GXSetCullMode(1);
     index = pPlayer->mUnknown5188.mUnknown554;
     for (i = 0; i < pPlayer->mUnknown5188.mUnknown558; i++) {
         color.a = (pPlayer->mUnknown5188.mUnknown558 - i) * 51 + 25;
@@ -577,7 +594,7 @@ void fn_801A1DEC(Object_8003DEC4 *pPlayer, Slot_801A3284 *pSlot, unsigned int co
     ParticleTrailUpdateAfterimage(pPlayer, gFrameTimeScale);
     TMRenderSetBlendMode(1);
     TMRenderSetZRange(0.0f, 1.0f);
-    fn_8024EB28(0);
+    GXSetCullMode(0);
 }
 
 int fn_801A201C(Object_8003DEC4 *pPlayer)
@@ -634,10 +651,10 @@ void fn_801A209C(Object_8003DEC4 *pPlayer, float *pScale, float (*pMatrix)[4], P
     fn_802337D4(pPlayer->mUnknown1164[4].mpUnknown12, &pPlayer->mUnknown4064[1], pPose, 0xE0000000);
     if (CheatFlagsIsSet(0x20) && !GameModeTypeGet()) {
         for (i = 1; i < pPlayer->mUnknown1164[4].mpUnknown12->mpUnknown12->mUnknown4; i++) {
-            if (pPlayer->mUnknown1164[4].mpUnknown12->mpUnknown12->mpUnknown0[i][0] == 13) {
+            if (pPlayer->mUnknown1164[4].mpUnknown12->mpUnknown12->mpUnknown0->mUnknown0[i][0] == 13) {
                 for (j = 0; j < 12; j++) {
                     if (j != 3 && j != 7 && j != 11) {
-                        pPlayer->mUnknown4064[1].mpUnknown0[i][j] *= scale;
+                        pPlayer->mUnknown4064[1].mpUnknown0[i].mUnknown0[j] *= scale;
                     }
                 }
             }
@@ -649,15 +666,15 @@ void fn_801A209C(Object_8003DEC4 *pPlayer, float *pScale, float (*pMatrix)[4], P
             if (pPlayer->mUnknown1164[7].mpUnknown12->mpUnknown12->mUnknown4 == 1) {
                 for (j = 0; j < 12; j++) {
                     if (j != 3 && j != 7 && j != 11) {
-                        pPlayer->mUnknown4064[3].mpUnknown0[0][j] *= scale;
+                        pPlayer->mUnknown4064[3].mpUnknown0[0].mUnknown0[j] *= scale;
                     }
                 }
             } else {
                 for (i = 1; i < pPlayer->mUnknown1164[7].mpUnknown12->mpUnknown12->mUnknown4; i++) {
-                    if (pPlayer->mUnknown1164[7].mpUnknown12->mpUnknown12->mpUnknown0[i][0] == 13) {
+                    if (pPlayer->mUnknown1164[7].mpUnknown12->mpUnknown12->mpUnknown0->mUnknown0[i][0] == 13) {
                         for (j = 0; j < 12; j++) {
                             if (j != 3 && j != 7 && j != 11) {
-                                pPlayer->mUnknown4064[3].mpUnknown0[i][j] *= scale;
+                                pPlayer->mUnknown4064[3].mpUnknown0[i].mUnknown0[j] *= scale;
                             }
                         }
                     }
@@ -671,15 +688,15 @@ void fn_801A209C(Object_8003DEC4 *pPlayer, float *pScale, float (*pMatrix)[4], P
             if (pPlayer->mUnknown1164[9].mpUnknown12->mpUnknown12->mUnknown4 == 1) {
                 for (j = 0; j < 12; j++) {
                     if (j != 3 && j != 7 && j != 11) {
-                        pPlayer->mUnknown4064[4].mpUnknown0[0][j] *= scale;
+                        pPlayer->mUnknown4064[4].mpUnknown0[0].mUnknown0[j] *= scale;
                     }
                 }
             } else {
                 for (i = 1; i < pPlayer->mUnknown1164[9].mpUnknown12->mpUnknown12->mUnknown4; i++) {
-                    if (pPlayer->mUnknown1164[9].mpUnknown12->mpUnknown12->mpUnknown0[i][0] == 13) {
+                    if (pPlayer->mUnknown1164[9].mpUnknown12->mpUnknown12->mpUnknown0->mUnknown0[i][0] == 13) {
                         for (j = 0; j < 12; j++) {
                             if (j != 3 && j != 7 && j != 11) {
-                                pPlayer->mUnknown4064[4].mpUnknown0[i][j] *= scale;
+                                pPlayer->mUnknown4064[4].mpUnknown0[i].mUnknown0[j] *= scale;
                             }
                         }
                     }
@@ -736,15 +753,15 @@ void fn_801A209C(Object_8003DEC4 *pPlayer, float *pScale, float (*pMatrix)[4], P
             if (pPlayer->mUnknown1164[6].mpUnknown12->mpUnknown12->mUnknown4 == 1) {
                 for (j = 0; j < 12; j++) {
                     if (j != 3 && j != 7 && j != 11) {
-                        pPlayer->mUnknown4064[2].mpUnknown0[0][j] *= scale;
+                        pPlayer->mUnknown4064[2].mpUnknown0[0].mUnknown0[j] *= scale;
                     }
                 }
             } else {
                 for (i = 0; i < pPlayer->mUnknown1164[6].mpUnknown12->mpUnknown12->mUnknown4; i++) {
-                    if (pPlayer->mUnknown1164[6].mpUnknown12->mpUnknown12->mpUnknown0[i][0] == 0) {
+                    if (pPlayer->mUnknown1164[6].mpUnknown12->mpUnknown12->mpUnknown0->mUnknown0[i][0] == 0) {
                         for (j = 0; j < 12; j++) {
                             if (j != 3 && j != 7 && j != 11) {
-                                pPlayer->mUnknown4064[2].mpUnknown0[i][j] *= scale;
+                                pPlayer->mUnknown4064[2].mpUnknown0[i].mUnknown0[j] *= scale;
                             }
                         }
                     }
@@ -760,32 +777,33 @@ void fn_801A209C(Object_8003DEC4 *pPlayer, float *pScale, float (*pMatrix)[4], P
         for (k = 0; k <= 1; k++) {
             if (pPlayer->mUnknown116[k].mUnknown0 == 1 && lod == 0) {
                 float (*pBones)[4][4] = pPlayer->mUnknown44.mUnknown52;
-                int bone = 0x11;
+                int bone;
 
                 if (k == 0) {
                     bone = 0x17;
+                } else {
+                    bone = 0x11;
                 }
                 apHands[k] = pPlayer->mUnknown116[k].mUnknown12.mUnknown48;
                 MatPush();
                 MatCat(pBones[bone]);
-                short *pJoint = pPose + bone * 3 + 3;
-                apHands[k][0] = pJoint[0];
-                apHands[k][1] = pJoint[1];
-                apHands[k][2] = pJoint[2];
+                apHands[k][0] = ((PoseJoint_801A209C *)pPose)[bone + 1].mX;
+                apHands[k][1] = ((PoseJoint_801A209C *)pPose)[bone + 1].mY;
+                apHands[k][2] = ((PoseJoint_801A209C *)pPose)[bone + 1].mZ;
                 fn_802337D4(ppModels[k], &pPlayer->mUnknown4136[k], apHands[k], 0);
                 if (CheatFlagsIsSet(0x20) && !GameModeTypeGet()) {
                     if (pPlayer->mUnknown1164[11].mpUnknown12->mpUnknown12->mUnknown4 == 1) {
                         for (j = 0; j < 12; j++) {
                             if (j != 3 && j != 7 && j != 11) {
-                                pPlayer->mUnknown4064[5].mpUnknown0[0][j] *= scale;
+                                pPlayer->mUnknown4064[5].mpUnknown0[0].mUnknown0[j] *= scale;
                             }
                         }
                     } else {
                         for (i = 1; i < pPlayer->mUnknown1164[11].mpUnknown12->mpUnknown12->mUnknown4; i++) {
-                            if (pPlayer->mUnknown1164[11].mpUnknown12->mpUnknown12->mpUnknown0[i][0] == 13) {
+                            if (pPlayer->mUnknown1164[11].mpUnknown12->mpUnknown12->mpUnknown0->mUnknown0[i][0] == 13) {
                                 for (j = 0; j < 12; j++) {
                                     if (j != 3 && j != 7 && j != 11) {
-                                        pPlayer->mUnknown4064[5].mpUnknown0[i][j] *= scale;
+                                        pPlayer->mUnknown4064[5].mpUnknown0[i].mUnknown0[j] *= scale;
                                     }
                                 }
                             }
@@ -975,6 +993,8 @@ void fn_801A2EC8(Object_8003DEC4 *pPlayer, Slot_801A3284 *pSlot)
             key = 13;
         }
         if (pPlayer->mUnknown116[i].mUnknown0 == 1 && pSlot->mUnknown8 == 0) {
+            // FAKEMATCH: compiled-out assert on the hand model; its second use of i * 4 lets loop.c keep a separate index
+            FX_ASSERT(pSlot->mpUnknown36[i] != 0);
             fn_80234A94(&pPlayer->mUnknown1164[part], pSlot->mpUnknown36[i]);
             fn_80234CA4(&pPlayer->mUnknown1164[part], &pPlayer->mUnknown4136[i]);
             fn_80233CBC(&pPlayer->mUnknown1164[part].mUnknown20, key, 0);
@@ -1266,7 +1286,7 @@ void fn_801A3C40(Object_8003DEC4 *pPlayer)
             pSlot->mpUnknown12 = fn_8015E2FC(0, pPlayer->mUnknown1016, 1);
             pSlot->mpUnknown20 = fn_8015E2FC(3, pPlayer->mUnknown4970, pSlot->mUnknown8);
             fn_801A2EC8(pPlayer, pSlot);
-            fn_801A1DEC(pPlayer, pSlot, count);
+            PlyrRenderDrawAfterimages(pPlayer, pSlot, count);
         }
     } else {
         fn_800C2150(pPlayer, &pPlayer->mUnknown280, 0);
@@ -1304,11 +1324,11 @@ void fn_801A3FFC(void)
 
     TMRenderReset();
     i = 0;
-    old = fn_80236EC0(1);
-    fn_8024EB28(0);
-    fn_80252034(1, 4, 5, 5);
-    fn_80252114(0);
-    fn_802520E0(1, 3, 0);
+    old = LLFogEnable(1);
+    GXSetCullMode(0);
+    GXSetBlendMode(1, 4, 5, 5);
+    GXSetZCompLoc(0);
+    GXSetZMode(1, 3, 0);
     TMRenderSetZRange(0.01f, 0.01f);
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
@@ -1339,7 +1359,7 @@ void fn_801A3FFC(void)
             unsigned char a;
             int j;
 
-            fn_8024E908(0xA0, 0, 4);
+            GXBegin(GX_TRIANGLEFAN, GX_VTXFMT0, 4);
             r = pShadow->mColor[0] * 255.0f;
             g = pShadow->mColor[1] * 255.0f;
             b = pShadow->mColor[2] * 255.0f;
@@ -1352,8 +1372,8 @@ void fn_801A3FFC(void)
         }
     }
     TMRenderSetZRange(0.0f, 1.0f);
-    fn_802520E0(1, 3, 1);
-    fn_80236EC0(old);
+    GXSetZMode(1, 3, 1);
+    LLFogEnable(old);
 }
 
 /* Draws the clipped shadow polygons of all players. */
@@ -1365,11 +1385,11 @@ void fn_801A42D4(void)
 
     TMRenderReset();
     i = 0;
-    old = fn_80236EC0(1);
-    fn_8024EB28(0);
-    fn_80252034(1, 4, 5, 5);
-    fn_80252114(0);
-    fn_802520E0(1, 3, 0);
+    old = LLFogEnable(1);
+    GXSetCullMode(0);
+    GXSetBlendMode(1, 4, 5, 5);
+    GXSetZCompLoc(0);
+    GXSetZMode(1, 3, 0);
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
@@ -1403,7 +1423,7 @@ void fn_801A42D4(void)
             unsigned char a;
             int j;
 
-            fn_8024E908(0xA0, 0, pClip->mCount);
+            GXBegin(GX_TRIANGLEFAN, GX_VTXFMT0, pClip->mCount);
             r = pShadow->mColor[0] * 255.0f;
             g = pShadow->mColor[1] * 255.0f;
             b = pShadow->mColor[2] * 255.0f;
@@ -1416,8 +1436,8 @@ void fn_801A42D4(void)
         }
     }
     TMRenderSetZRange(0.0f, 1.0f);
-    fn_802520E0(1, 3, 1);
-    fn_80236EC0(old);
+    GXSetZMode(1, 3, 1);
+    LLFogEnable(old);
 }
 
 void fn_801A45CC(void)
@@ -1467,6 +1487,73 @@ void fn_801A46E0(Object_8003DEC4 *pPlayer, int id, void (*pCallback)(Object_8003
     lbl_803EB814 = pPlayer;
     pPlayer->mUnknown992 = id;
     fn_8015F82C(id, pPlayer, fn_801A34A4);
+}
+
+static void _PlyrHeadSetModelNow(Object_8003DEC4 *pPlayer, int id)
+{
+    short values[53];
+
+    memset(values, 0, sizeof(values));
+    pPlayer->mUnknown992 = id;
+    if (id == 0xFFFF) {
+        int a;
+        int b;
+        int i;
+
+        PlyrModelAttachLod(fn_8015E2FC(6, 0, 0), fn_8015E2FC(5, 0, 0));
+        PlyrModelAttachLod(fn_8015E2FC(6, 0, 1), fn_8015E2FC(5, 0, 1));
+        for (i = 0; i < 53; i++) {
+            values[i] = pPlayer->mUnknown4976.mValues[i] * 4096.0f;
+        }
+        values[pPlayer->mUnknown4972 + 1] = 0x1000;
+        if (PlayerLookHidesHead(pPlayer->mUnknown4971)) {
+            values[6] = 0x1000;
+        }
+        a = pPlayer->mUnknown1024[0].mUnknown16.mUnknown28;
+        b = pPlayer->mUnknown1024[1].mUnknown16.mUnknown28;
+        TMModelClone(&pPlayer->mUnknown1024[0].mUnknown16, fn_8015E2FC(6, pPlayer->mUnknown4970, 0));
+        TMModelClone(&pPlayer->mUnknown1024[1].mUnknown16, fn_8015E2FC(6, pPlayer->mUnknown4970, 1));
+        pPlayer->mUnknown1024[0].mUnknown16.mUnknown28 = a;
+        pPlayer->mUnknown1024[1].mUnknown16.mUnknown28 = b;
+        fn_80233760(&pPlayer->mUnknown1024[0], values, 53);
+        fn_80233760(&pPlayer->mUnknown1024[1], values, 53);
+        a = pPlayer->mUnknown1024[0].mUnknown16.mUnknown28;
+        b = pPlayer->mUnknown1024[1].mUnknown16.mUnknown28;
+        TMModelClone(&pPlayer->mUnknown1024[0].mUnknown16, fn_8015E2FC(5, 0, 0));
+        TMModelClone(&pPlayer->mUnknown1024[1].mUnknown16, fn_8015E2FC(5, 0, 1));
+        pPlayer->mUnknown1024[0].mUnknown16.mUnknown28 = a;
+        pPlayer->mUnknown1024[1].mUnknown16.mUnknown28 = b;
+        TMModelRemapMaterials(&pPlayer->mUnknown1024[0].mUnknown16, lbl_803EB81C);
+        TMModelRemapMaterials(&pPlayer->mUnknown1024[1].mUnknown16, lbl_803EB81C);
+        fn_801A4690(0);
+        fn_801A46BC();
+    } else {
+        PlyrModelAttachLod(fn_8015E2FC(4, 0, 0), fn_8015E2FC(5, 0, 0));
+        PlyrModelAttachLod(fn_8015E2FC(4, 0, 1), fn_8015E2FC(5, 0, 1));
+        int a = pPlayer->mUnknown1024[0].mUnknown16.mUnknown28;
+        int b = pPlayer->mUnknown1024[1].mUnknown16.mUnknown28;
+        TMModelClone(&pPlayer->mUnknown1024[0].mUnknown16, fn_8015E2FC(4, pPlayer->mUnknown4970, 0));
+        TMModelClone(&pPlayer->mUnknown1024[1].mUnknown16, fn_8015E2FC(4, pPlayer->mUnknown4970, 1));
+        pPlayer->mUnknown1024[0].mUnknown16.mUnknown28 = a;
+        pPlayer->mUnknown1024[1].mUnknown16.mUnknown28 = b;
+        values[1] = 0x1000;
+        values[pPlayer->mUnknown4972 + 2] = 0x1000;
+        if (PlayerLookHidesHead(pPlayer->mUnknown4971)) {
+            values[7] = 0x1000;
+        }
+        fn_80233760(&pPlayer->mUnknown1024[0], values, 37);
+        fn_80233760(&pPlayer->mUnknown1024[1], values, 37);
+        fn_8015E908(pPlayer->mUnknown1016);
+        TMModelClone(&pPlayer->mUnknown1024[0].mUnknown16, fn_8015E2FC(5, 0, 0));
+        TMModelClone(&pPlayer->mUnknown1024[1].mUnknown16, fn_8015E2FC(5, 0, 1));
+        pPlayer->mUnknown1024[0].mUnknown16.mUnknown28 = a;
+        pPlayer->mUnknown1024[1].mUnknown16.mUnknown28 = b;
+        TMModelRemapMaterials(&pPlayer->mUnknown1024[0].mUnknown16, lbl_803EB81C);
+        TMModelRemapMaterials(&pPlayer->mUnknown1024[1].mUnknown16, lbl_803EB81C);
+        fn_801A4690(0);
+        fn_8015F3FC(0);
+        fn_801A46BC();
+    }
 }
 
 void fn_801A472C(void)

@@ -151,8 +151,8 @@ void fn_8022DC7C(int a);
 void fn_8022DCB0(int a);
 void fn_8022DCE4(int a);
 void fn_8022DD18(int a);
-int fn_8022EF8C(int a, int tag);
-int fn_8022EFBC(int a, int tag);
+int DbFileTblLoad(int a, int tag);
+int DbFileTblDestroy(int a, int tag);
 int fn_8022F384(int a);
 int fn_8022F4BC(void);
 
@@ -685,12 +685,12 @@ void MsgTeamPickCreateHoldingTeams(void)
 {
     int i;
 
-    fn_8022EF8C(0, 0x43544E52);
+    DbFileTblLoad(0, 0x43544E52);
     for (i = 0; i < 7; i++) {
         _MsgTeamPick_aiHoldingTeam[i] = fn_8008454C(6, -1, 0);
     }
     _MsgTeamPick_iHoldingTeam = 0;
-    fn_8022EFBC(0, 0x43544E52);
+    DbFileTblDestroy(0, 0x43544E52);
 }
 
 int MsgTeamPickCreatePlayer(TeamPickPlayer_t *pEntry, int pos, float scale, int team)
@@ -1238,7 +1238,7 @@ int MsgTeamPickInit(int *pController, int *pCount)
     if (fn_801485D4()) {
         fn_80148AF8(fn_80148A58());
     }
-    fn_8008044C(&_MsgTeamPick_PlayerCursor, 0, 0x54415453);
+    PlayerCursorOpen(&_MsgTeamPick_PlayerCursor, 0, 0x54415453);
     fn_80083E40(&_MsgTeamPick_TeamCursor, 0, 0x54415453);
 
     if (MsgGameGetSetupState() == 1) {

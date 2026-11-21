@@ -237,7 +237,7 @@ int fn_802294F4(void);
 int fn_80229554(void);
 void fn_8022A490(int a);
 int fn_8022A508(int a, int b, int c, int d, int e);
-int fn_8022C8F0(unsigned int low, unsigned int high);
+int DbUtilRandomRange(unsigned int low, unsigned int high);
 void fn_8022DC7C(int a);
 void fn_8022DCB0(int a);
 void fn_8022DCE4(int a);
@@ -1606,7 +1606,7 @@ void fn_80011D9C(DbCursor *pObject, int side)
 {
     do {
         unsigned int i = 0;
-        unsigned int count = fn_8022C8F0(0, lbl_803EB978[side]);
+        unsigned int count = DbUtilRandomRange(0, lbl_803EB978[side]);
         while (i < count) {
             fn_80011CEC(pObject);
             if (!fn_80011FA0(side, fn_80083FBC(pObject))) {
@@ -1797,7 +1797,7 @@ void fn_80012634(int side)
         void *pList = UIGLibraryGetGlobal(1);
         desc.mUnknown4 = 1;
         desc.mUnknown8 = lbl_803EB97C[side];
-        fn_8008044C(&list, &desc, 0x54415453);
+        PlayerCursorOpen(&list, &desc, 0x54415453);
         if (DbCursorFirst((DbCursor *)&list)) {
             do {
                 UIGLibraryUnLoadItem(pList, 10, PlayerDbGetPortraitId(&list));
@@ -1815,7 +1815,7 @@ void fn_80012710(int side)
 
     desc.mUnknown4 = 1;
     desc.mUnknown8 = lbl_803EB97C[side];
-    fn_8008044C(&list, &desc, 0x54415453);
+    PlayerCursorOpen(&list, &desc, 0x54415453);
     if (DbCursorFirst((DbCursor *)&list)) {
         do {
             UIGLibraryLoadItem(pList, 10, PlayerDbGetPortraitId(&list));
@@ -1844,7 +1844,7 @@ void fn_80012834(unsigned char side)
     desc.mUnknown0 = 1;
     desc.mUnknown4 = 1;
     desc.mUnknown8 = lbl_803EB97C[side];
-    fn_8008044C(pObject, &desc, FELoopIsMainFEActive() ? 0x54415453 : 0x454D4147);
+    PlayerCursorOpen(pObject, &desc, FELoopIsMainFEActive() ? 0x54415453 : 0x454D4147);
     lbl_803EB9A0[side] = -1;
 }
 
@@ -2089,23 +2089,27 @@ Entry_8036AE60 *fn_800131F4(int team, int id, int *pIndex)
     return pSlot;
 }
 
-void fn_80013254(int team, int *pIndex)
+void MsgTeamSelectAutoPickOne(int team, int *pIndex)
 {
     int ids[22];
     int keys[16];
     int id = 0;
-    int key = 0;
+    int key;
     Entry_8036AE60 *pSlot;
     unsigned int picked;
     unsigned int keyed;
 
+    // FAKEMATCH: dead keyed = 0 ahead of the loop (the loop resets it); key = 0 then reuses its zero register
+    keyed = 0;
+    key = 0;
     do {
         Entry_8036AE60 *pOpen = 0;
-        int count = 0;
+        int count;
         int i;
 
         picked = 0;
         keyed = 0;
+        count = 0;
         for (i = 0; i < lbl_803ECE50[team]; i++) {
             pSlot = &lbl_8036AE60[team].mEntries[i];
             if (pSlot->mSlot >= 0) {
@@ -2169,7 +2173,7 @@ void fn_80013438(int team)
     ids[count] = 0x7FFF;
     AutoDepthBuild(lbl_803EB9C4[team], ids, 0);
     for (i = picked; i < lbl_803EB974; i++) {
-        fn_80013254(team, &index);
+        MsgTeamSelectAutoPickOne(team, &index);
         if (lbl_8036AE60[team].mEntries[index].mSlot < 0) {
             fn_800133B0(team, open, index);
             lbl_8036AE60[team].mEntries[open].mSlot = open;
@@ -2187,7 +2191,7 @@ void fn_80013438(int team)
 }
 
 /* An array argument points at a header of p[0] + 1 words; its data follows the header. */
-int fn_80013614(unsigned int id, MenuArg_t *pArgs, int count, int *pResult)
+int MsgTeamSelectHandleMessage(unsigned int id, MenuArg_t *pArgs, int count, int *pResult)
 {
     switch (id) {
     case 0x80000001:
@@ -2262,15 +2266,11 @@ int fn_80013614(unsigned int id, MenuArg_t *pArgs, int count, int *pResult)
 
             fn_80012D50(pArgs[0].i, pArgs[1].i, pArgs[2].i, pRow + row);
         } else {
-            int *pPosition = pArgs[4].pi;
-            int *pStats = pArgs[7].pi;
-            int position = pPosition[0] + 1;
-            int stats = pStats[0] + 1;
-
             fn_80012310(pArgs[0].i, pArgs[1].i, pArgs[2].pi, pArgs[3].pParams->mpText, pArgs[3].pParams->mLength,
-                        pPosition + position, pArgs[5].pParams->mpText, pArgs[5].pParams->mLength,
-                        pArgs[6].pi, pStats + stats, pArgs[8].pParams->mpText,
-                        pArgs[8].pParams->mLength, pArgs[9].pParams->mpText, pArgs[9].pParams->mLength);
+                        (int *)(pArgs[4].i + (*pArgs[4].pi + 1) * 4), pArgs[5].pParams->mpText,
+                        pArgs[5].pParams->mLength, pArgs[6].pi, (int *)(pArgs[7].i + (*pArgs[7].pi + 1) * 4),
+                        pArgs[8].pParams->mpText, pArgs[8].pParams->mLength, pArgs[9].pParams->mpText,
+                        pArgs[9].pParams->mLength);
         }
         break;
     case 0x80000011:
@@ -2531,7 +2531,7 @@ int fn_80014260(unsigned int id, MenuArg_t *pArgs, int count, int *pResult)
     int result;
 
     if (lbl_803EB971 == 0) {
-        result = fn_80013614(id, pArgs, count, pResult);
+        result = MsgTeamSelectHandleMessage(id, pArgs, count, pResult);
     } else {
         result = fn_80013FB8(id, pArgs, count, pResult);
     }
