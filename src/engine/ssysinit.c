@@ -98,6 +98,8 @@ int SNDSYSI_init(void *memory, int size, int unused)
 int SNDSYS_restore(void)
 {
     int result;
+    // FAKEMATCH: share the zero for platform restore and the initialized flag to match register allocation.
+    int zero = 0;
 
     if (!Snd::System::IsInited()) {
         return -14;
@@ -121,13 +123,13 @@ int SNDSYS_restore(void)
     if (lbl_803A6C24.m1C0 != 0) {
         lbl_803A6C24.m1C0(-1);
     }
-    SNDPLATFORM_restore(0);
+    SNDPLATFORM_restore(zero);
     SNDSYS_entercritical();
     SNDMEMI_free(lbl_803A6C24.m1CC);
     SNDMEMI_free(lbl_803A6C24.m1D0);
     SNDSYS_leavecritical();
     result = SNDMEMI_restore();
-    lbl_803A6C24.m168 = 0;
+    lbl_803A6C24.m168 = zero;
     SNDI_mutexfree();
     return result;
 }

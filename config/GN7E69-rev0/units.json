@@ -1069,10 +1069,6 @@
       "address": "0x8002A86C",
       "evidence": "evidence.tsv function/name rows for 0x8002A86C (target extent, inferred name); the documented holdout of src/game/MemCardFiles.cpp keeps its original bytes until its draft in comparisons.json is linked."
     },
-    "StatcollBlockInit": {
-      "address": "0x80143F40",
-      "evidence": "evidence.tsv function and name rows for 0x80143F40 (documented holdout of src/game/Statcoll.cpp: draft registered in comparisons.json, original bytes linked)."
-    },
     "BigObjDefaultUpdate": {
       "address": "0x800400CC",
       "evidence": "evidence.tsv function and name rows for 0x800400CC (exact in comparisons.json; precedes the holdout 0x800400D4 of src/game/BigObj.cpp, so its original bytes stay linked)."
@@ -1317,14 +1313,6 @@
       "address": "0x80275F80",
       "evidence": "evidence.tsv function and name rows for 0x80275F80 (MIX_playinit, smixer.c, registered in comparisons.json, original bytes linked); referenced by the linked src/engine/slinkmix.c, which installs it in the mixer hooks."
     },
-    "sndpps": {
-      "address": "0x803B5060",
-      "evidence": "evidence.tsv data and name rows for 0x803B5060 (sndpps, the 900-byte .bss of the comparison-only src/engine/spktplay.c; storage not claimed); read by name from the linked src/engine/spktctoh.c."
-    },
-    "SNDPKTPLAY_framesoutstanding": {
-      "address": "0x802791D0",
-      "evidence": "evidence.tsv function/name rows for 0x802791D0; registered in the comparison-only src/engine/spktplay.c, which keeps its original bytes until the whole file can be linked; called by name from src/engine/sststat.c and src/engine/stretch.c."
-    },
     "SFILTER_add": {
       "address": "0x80279D90",
       "evidence": "evidence.tsv function/name rows for 0x80279D90; registered in the comparison-only src/engine/sfilter.c, which keeps its original bytes until the whole file can be linked; called by name from src/engine/smixer.c, src/engine/smixfilt.c, src/engine/smixhip.c and src/engine/smixptch.c."
@@ -1332,14 +1320,6 @@
     "SFILTER_remove": {
       "address": "0x80279DF8",
       "evidence": "evidence.tsv function/name rows for 0x80279DF8; registered in the comparison-only src/engine/sfilter.c, which keeps its original bytes until the whole file can be linked; called by name from src/engine/smixhip.c."
-    },
-    "SNDPKTPLAYI_freeframes": {
-      "address": "0x8027952C",
-      "evidence": "evidence.tsv function/name rows for 0x8027952C (SNDPKTPLAYI_freeframes in src/engine/spktplay.c, comparison only until linked); the linked src/engine/supmutpf.c calls it by name."
-    },
-    "SNDPKTPLAY_overhead": {
-      "address": "0x80278AC8",
-      "evidence": "evidence.tsv function/name rows for 0x80278AC8 (SNDPKTPLAY_overhead in src/engine/spktplay.c, comparison only until linked); the linked src/engine/sstovrhd.c calls it by name (integration of c16c and c16g)."
     },
     "gInGameGroup": {
       "address": "0x803068B4",
@@ -1377,17 +1357,9 @@
       "address": "0x802796DC",
       "evidence": "evidence.tsv function and name rows for 0x802796DC (SNDI_validrendermode, srender.c, registered in comparisons.json, original bytes linked); called by SNDPKTPLAY_start (spktplay.c comparison, c19 wave)."
     },
-    "SNDPKTPLAYI_get": {
-      "address": "0x802792F0",
-      "evidence": "evidence.tsv function and name rows for 0x802792F0 (SNDPKTPLAYI_get, spktplay.c, registered in comparisons.json, original bytes linked); called by the linked src/engine/suppf.c and src/engine/supmutpf.c (c18 wave)."
-    },
     "SNDI_aztospkrvol": {
       "address": "0x80277A60",
       "evidence": "evidence.tsv function and name rows for 0x80277A60 (SNDI_aztospkrvol, satospkr.c, registered in comparisons.json, original bytes linked); called by name from the src/engine/snddrv.c comparison bodies (c18 wave)."
-    },
-    "SNDPKTPLAYI_flushcallbackdata": {
-      "address": "0x80279598",
-      "evidence": "evidence.tsv function and name rows for 0x80279598 (SNDPKTPLAYI_flushcallbackdata, spktplay.c, registered in comparisons.json, original bytes linked); called by name from the src/engine/snddrv.c comparison bodies (c18 wave)."
     },
     "_Q24Path11IPathToReal.realimp": {
       "address": "0x803EBB60",
@@ -1505,58 +1477,6 @@
       "address": "0x801B6D9C",
       "evidence": "evidence.tsv function and name rows for 0x801B6D9C (PATH library function defined by the comparison source src/engine/pathnode.c, not yet linked; called from src/engine/pathaction.c)."
     },
-    "Vec3CrossProduct": {
-      "address": "0x802277DC",
-      "evidence": "evidence.tsv function and name rows for 0x802277DC (Vec3CrossProduct, registered in comparisons.json, original bytes linked); called by name from src/engine/matrix.c, src/engine/physconstraint.cpp, src/engine/physshape.cpp, src/engine/psysEmitter.c, src/engine/rigidbody.cpp, src/game/BallPlace.cpp, src/game/LevelMesh.cpp, src/game/ParticleSys.cpp, src/game/PlyrCollide.cpp (n1e naming wave)."
-    },
-    "Vec2Distance": {
-      "address": "0x8022781C",
-      "evidence": "evidence.tsv function and name rows for 0x8022781C (Vec2Distance, registered in comparisons.json, original bytes linked); called by name from src/game/BigObj.cpp, src/game/FieldLines.cpp, src/game/Handoff.cpp, src/game/LooseBall.cpp, src/game/OptionRun.cpp, src/game/PlayerActionStates.cpp, src/game/PlyrMgr.cpp, src/game/PlyrObjs.cpp, src/game/PlyrStates.cpp, src/game/Possession.cpp, src/game/Pursue.cpp, src/game/RouteRun.cpp, src/game/Replay.cpp, src/game/cu_8008E978.cpp, src/game/PlyrTackle.cpp, src/game/cu_800EFC68.cpp, src/game/PlayArtRender.cpp (n1e naming wave)."
-    },
-    "Vec3Distance": {
-      "address": "0x8022785C",
-      "evidence": "evidence.tsv function and name rows for 0x8022785C (Vec3Distance, registered in comparisons.json, original bytes linked); called by name from src/game/BigObj.cpp, src/game/LooseBall.cpp, src/game/PlyrMgr.cpp, src/game/SndgPathfinder.cpp, src/game/SpchIGMissedCatch.cpp, src/game/Replay.cpp, src/game/cu_800EFC68.cpp (n1e naming wave)."
-    },
-    "Vec2DistanceSqr": {
-      "address": "0x80227890",
-      "evidence": "evidence.tsv function and name rows for 0x80227890 (Vec2DistanceSqr, registered in comparisons.json, original bytes linked); called by name from src/game/CarrierRun.cpp, src/game/Divot.cpp, src/game/cu_8008E978.cpp, src/game/cu_800EFC68.cpp (n1e naming wave)."
-    },
-    "Vec3DistanceSqr": {
-      "address": "0x802278D0",
-      "evidence": "evidence.tsv function and name rows for 0x802278D0 (Vec3DistanceSqr, registered in comparisons.json, original bytes linked); called by name from src/game/BallCollide.cpp, src/game/Divot.cpp, src/game/Possession.cpp (n1e naming wave)."
-    },
-    "Vec2Lerp": {
-      "address": "0x80227904",
-      "evidence": "evidence.tsv function and name rows for 0x80227904 (Vec2Lerp, registered in comparisons.json, original bytes linked); called by name from src/game/PlyrObjs.cpp, src/game/cu_800EFC68.cpp (n1e naming wave)."
-    },
-    "Vec3Lerp": {
-      "address": "0x80227930",
-      "evidence": "evidence.tsv function and name rows for 0x80227930 (Vec3Lerp, registered in comparisons.json, original bytes linked); called by name from src/engine/psysEmitter.c, src/game/AnimBlend.cpp, src/game/ArrowDraw.cpp, src/game/BallCollide.cpp, src/game/BallModel.cpp, src/game/BigObj.cpp, src/game/BigObjAnim.cpp, src/game/CollideContacts.cpp, src/game/Divot.cpp, src/game/PlyrMgr.cpp, src/game/PlyrObjs.cpp, src/game/PlyrPose.cpp, src/game/camball.cpp, src/game/camreplay.cpp, src/game/Replay.cpp, src/game/cu_800EFC68.cpp, src/game/camplay.cpp, src/game/PlyrRender.cpp (n1e naming wave)."
-    },
-    "Vec3Mat33Mul": {
-      "address": "0x80227C2C",
-      "evidence": "evidence.tsv function and name rows for 0x80227C2C (Vec3Mat33Mul, registered in comparisons.json, original bytes linked); called by name from src/engine/lllight.c, src/engine/physconstraint.cpp, src/engine/physshape.cpp, src/engine/psysEmitter.c, src/engine/rigidbody.cpp, src/game/Ball.cpp, src/game/CollideBounce.cpp, src/game/DynObjRender.cpp, src/game/GlowTrail.cpp, src/game/LightTracker.cpp, src/game/ParticleRender.cpp, src/game/PlyrObjs.cpp, src/game/camcurve.cpp, src/game/cu_8008E978.cpp (n1e naming wave)."
-    },
-    "Vec3Mat34Mul": {
-      "address": "0x80227CC0",
-      "evidence": "evidence.tsv function and name rows for 0x80227CC0 (Vec3Mat34Mul, registered in comparisons.json, original bytes linked); called by name from src/engine/camfocus.c, src/engine/physaabb.cpp, src/engine/physconstraint.cpp, src/engine/physshape.cpp, src/game/BallRest.cpp, src/game/ParticleRender.cpp, src/game/PlyrMgr.cpp, src/game/PlyrObjs.cpp, src/game/Weather.cpp, src/game/cammain.cpp, src/game/cu_8008E978.cpp, src/game/camplay.cpp (n1e naming wave)."
-    },
-    "Vec3ClosestPointOnSegment": {
-      "address": "0x80227970",
-      "evidence": "evidence.tsv function and name rows for 0x80227970 (Vec3ClosestPointOnSegment, registered in comparisons.json, original bytes linked); called by name from src/game/BallCollide.cpp, src/game/RouteRun.cpp, src/game/cu_8008E978.cpp, src/game/cu_800EFC68.cpp (n1e naming wave)."
-    },
-    "Vec3DistanceSqrToSegment": {
-      "address": "0x80227B04",
-      "evidence": "evidence.tsv function and name rows for 0x80227B04 (Vec3DistanceSqrToSegment, registered in comparisons.json, original bytes linked); called by name from src/game/PlayerActionStates.cpp, src/game/cu_8008E978.cpp (n1e naming wave)."
-    },
-    "Vec3Mat44Mul": {
-      "address": "0x80227D6C",
-      "evidence": "evidence.tsv function and name rows for 0x80227D6C (Vec3Mat44Mul, registered in comparisons.json, original bytes linked); called by name from src/game/GlowTrail.cpp (n1e naming wave)."
-    },
-    "Vec4Mat44Mul": {
-      "address": "0x80227E40",
-      "evidence": "evidence.tsv function and name rows for 0x80227E40 (Vec4Mat44Mul, registered in comparisons.json, original bytes linked); called by name from src/game/PlyrNameTag.cpp, src/game/PlyrStars.cpp (n1e naming wave)."
-    },
     "SNDPLATFORM_outputcaps": {
       "address": "0x802733A0",
       "evidence": "evidence.tsv function and name rows for 0x802733A0 (SNDPLATFORM_outputcaps, a registered holdout of src/engine/snddrv.c, original bytes linked); called by name from src/engine/ssysinit.c (n1e naming wave)."
@@ -1584,10 +1504,6 @@
     "FontDrawText": {
       "address": "0x801CD3E4",
       "evidence": "evidence.tsv function and name rows for 0x801CD3E4 (FontDrawText, a registered holdout of src/engine/Font.c, original bytes linked); called by name from src/engine/cu_801CDB5C.c (n1e naming wave)."
-    },
-    "Vec3CosAngle": {
-      "address": "0x8022772C",
-      "evidence": "evidence.tsv function and name rows for 0x8022772C (Vec3CosAngle, registered in comparisons.json, original bytes linked); called by name from src/engine/cu_801C3EFC.c, src/engine/cu_8022772C.c (n1e naming wave)."
     },
     "MemCAsyncOpen": {
       "address": "0x801D4A3C",
@@ -18703,12 +18619,12 @@
     {
       "source": "src/game/Statcoll.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv: src/game/Statcoll.cpp unit, data, compiler and source-form rows",
+      "evidence": "evidence.tsv unit row 0x80143F40-0x801442FC and its data, compiler and source-form rows; all eight functions and both data words linked from the native object.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
-          "start": "0x80143F8C",
+          "start": "0x80143F40",
           "end": "0x801442FC"
         },
         {
@@ -21298,13 +21214,19 @@
     {
       "source": "src/engine/llvector.c",
       "profile": "engine_c_fastmath",
-      "evidence": "evidence.tsv linker row 0x802270A4-0x8022772C for the unchanged native contribution from src/engine/llvector.c; existing function/type/compiler evidence and larger-file ownership remain in force. This is a linked native range, not a claim that its original source file is complete or closed.",
+      "evidence": "evidence.tsv whole-file unit row 0x802270A4-0x80227F14 and linker row 0x802270A4-0x80227F14, the .rodata rows at 0x802B2078-0x802B20C0, and the function, name and source-form rows.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x802270A4",
-          "end": "0x8022772C"
+          "end": "0x80227F14"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B2078",
+          "end": "0x802B20C0"
         }
       ]
     },
@@ -22799,19 +22721,13 @@
     },
     {
       "source": "src/engine/ssysinit.c",
-      "profile": "sound_cxx_holdouts",
-      "evidence": "evidence.tsv unit row 0x8026FD28-0x802702D8 (src/engine/ssysinit.c, NASCAR 2005 ssysinit.c), its function and name rows, the data rows of its .data 0x80300030-0x80300038 and its .rodata literal pool 0x802B7A68-0x802B7A74, and the sound_cxx compiler row 0x8026E4C0-0x80270494; linked with holdouts (owner ruling of 2026-11-20, config README Holdouts): every function exact except the holdout SNDSYS_restore 0x802700E0-0x802701D8, which keeps the original bytes and stays a registered partial; the whole .rodata and .data are linked.",
+      "profile": "sound_cxx",
+      "evidence": "The evidence.tsv unit row 0x8026FD28-0x802702D8 and its function, name and data rows support the complete range. The SNDSYS_restore source-form row describes the exact shutdown sequence. All five functions and both owned data sections are linked with the sound_cxx profile.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x8026FD28",
-          "end": "0x802700E0"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x802701D8",
           "end": "0x802702D8"
         },
         {
@@ -22826,16 +22742,7 @@
           "start": "0x80300030",
           "end": "0x80300038"
         }
-      ],
-      "holdouts": {
-        "functions": [
-          {
-            "function": "SNDSYS_restore",
-            "evidence": "evidence.tsv source-form 0x802700E0-0x802701D8"
-          }
-        ],
-        "evidence": "merge notes of #1368 (x2 fix round) holdouts table: src/engine/ssysinit.c holds out SNDSYS_restore; its HOLDOUT: row lists the forms tried and the RTL-dump finding."
-      }
+      ]
     },
     {
       "source": "src/engine/ssysserv.c",
@@ -23132,6 +23039,46 @@
           "end": "0x802C209C"
         }
       ]
+    },
+    {
+      "source": "src/engine/spktplay.c",
+      "profile": "sound_cxx_holdouts",
+      "evidence": "evidence.tsv unit row 0x80278A68-0x80279648 (src/engine/spktplay.c), its function and name rows, the data rows 0x802C20A0-0x802C20B0 and 0x803B5060-0x803B53E4, and the sound_cxx compiler row 0x80276DE4-0x8027CF9C. Thirteen functions and both data sections link. Only SNDPKTPLAY_start keeps original code and stays a comparison.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80278A68",
+          "end": "0x80278BF0"
+        },
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80279048",
+          "end": "0x80279648"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C20A0",
+          "end": "0x802C20B0"
+        },
+        {
+          "section": ".bss",
+          "placement": ".bss",
+          "start": "0x803B5060",
+          "end": "0x803B53E4"
+        }
+      ],
+      "holdouts": {
+        "functions": [
+          {
+            "function": "SNDPKTPLAY_start",
+            "evidence": "evidence.tsv source-form 0x80278BF0-0x80279048"
+          }
+        ],
+        "evidence": "evidence.tsv source-form 0x80278BF0-0x80279048 records the measured remaining register differences and forms tried."
+      }
     },
     {
       "source": "src/engine/spktctoh.c",
