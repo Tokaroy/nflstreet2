@@ -4486,7 +4486,7 @@
     {
       "source": "src/engine/dbmanager.c",
       "profile": "engine_c_fastmath_holdouts",
-      "evidence": "evidence.tsv provisional unit row 0x802328A8-0x802336C4 (src/engine/dbmanager.c), its function and name rows and the compiler and source-form rows of the range it was split from (src/engine/cu_8022F428.c); linked with holdouts (owner ruling of 2026-11-20): every function exact except the holdout, whose range keeps the original bytes. The file compiles no data sections of its own (its strings and tables are external labels).",
+      "evidence": "evidence.tsv provisional unit row 0x802328A8-0x802336C4 (src/engine/dbmanager.c), its function and name rows and the compiler and source-form rows of the range it was split from (src/engine/cu_8022F428.c); linked with holdouts (owner ruling of 2026-11-20): every function exact except the holdout, whose range keeps the original bytes. The SQL strings (.rodata 0x802B6E10-0x802B7120) and handler and mode tables (.data 0x802FB38C-0x802FB3F8) link from this file.",
       "sections": [
         {
           "section": ".text",
@@ -8167,19 +8167,13 @@
     },
     {
       "source": "src/game/BallPhysics.cpp",
-      "profile": "game_cpp_holdouts",
-      "evidence": "evidence.tsv unit row 0x801394B0-0x8013B874 (src/game/BallPhysics.cpp), its exact function extents and data rows; linked with holdouts (owner ruling of 2026-11-20), each holdout keeping its original bytes.",
+      "profile": "game_cpp",
+      "evidence": "evidence.tsv unit row 0x801394B0-0x8013B874, its exact function extents, its data rows, and the BallResetPhysics overwritten zero store source-form row. The complete unit matches with the existing game_cpp profile.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x801394B0",
-          "end": "0x8013ABE0"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x8013AC28",
           "end": "0x8013B874"
         },
         {
@@ -8195,16 +8189,66 @@
           "end": "0x803EB1C4"
         }
       ],
-      "holdouts": {
-        "functions": [
-          {
-            "function": "BallResetPhysics",
-            "evidence": "evidence.tsv source-form 0x8013ABE0-0x8013AC28"
-          }
-        ],
-        "evidence": "merge notes of the pull request that links the file (x1 wave tracking table)"
-      },
       "link_roots": {
+        "symbols": [
+          "BallIsOverField",
+          "BallIsOnGround",
+          "BallIsUnsupported",
+          "BallApplyGravity",
+          "BallApplySideSpin",
+          "BallGetBounceForce",
+          "BallVecAddScaled",
+          "BallVecJitter",
+          "BallApplyGroundFriction",
+          "BallSpinToQuat",
+          "BallUpdateRotation",
+          "BallClampToWorld",
+          "BallFlipPosition",
+          "BallFlipRotation",
+          "BallStepFree",
+          "BallGetRestitution",
+          "BallGetFriction",
+          "BallStartSpin",
+          "BallRecordBounce",
+          "BallSyncModel",
+          "BallApplyContactForce",
+          "BallStepDefault",
+          "BallStepGroundContact",
+          "BallFollowHolder",
+          "BallStepMotion",
+          "BallRestAtAngles",
+          "BallClearPassFlag",
+          "BallSolveFallToHeight",
+          "BallPredictLanding",
+          "BallGetHeightAtTime",
+          "BallResetPhysics",
+          "BallLaunchToTarget",
+          "BallLaunchWithVelocity",
+          "BallIsContactRaised",
+          "BallGetSpinMode",
+          "BallSetSpinMode",
+          "BallPlayerHandsFree",
+          "BallCanPlayerTouch",
+          "BallStateHeldEnter",
+          "BallStatePassEnter",
+          "BallStatePassExit",
+          "BallStateLooseExit",
+          "BallStateStepTimed",
+          "BallStateStopVelocity",
+          "BallStatePassMove",
+          "BallStateDeadEnter",
+          "BallStateHeldExit",
+          "BallStatePassHitGround",
+          "BallStateLooseHitGround",
+          "BallStatePitchHitGround",
+          "BallStateHandoffTouch",
+          "BallStateLooseTouch",
+          "BallStatePassTouch",
+          "BallStatePitchTouch",
+          "BallStatePlacedMove",
+          "BallStatePlacedUpdate",
+          "BallStatePlacedTouch"
+        ],
         "discarded": [
           "BallGetWindDrift",
           "BallApplyWindForce",
@@ -8213,7 +8257,7 @@
           "BallAddClampedE0",
           "BallIsSettled"
         ],
-        "evidence": "evidence.tsv linker rows of the file-static functions of src/game/BallPhysics.cpp that the target linker discarded (comparisons.json discarded); only their pools remain"
+        "evidence": "The unit's exact target function rows identify all 57 entry points retained by the target. The six named file-static functions have no target extents. Their static literals survive at native offsets as recorded in evidence.tsv linker rows 0x8029FFF8-0x802A009C."
       }
     },
     {
@@ -23040,6 +23084,25 @@
       ]
     },
     {
+      "source": "src/engine/smixlowp.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit, function and name rows for MIX_setlowpass at 0x80276938-0x80276A84 and .rodata row 0x802C1EB0-0x802C1EC8; the existing sound_cxx profile reproduces the whole function and literal pool.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80276938",
+          "end": "0x80276A84"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C1EB0",
+          "end": "0x802C1EC8"
+        }
+      ]
+    },
+    {
       "source": "src/engine/smixptch.c",
       "profile": "sound_cxx",
       "evidence": "evidence.tsv unit row 0x80276A84-0x80276B40 (src/engine/smixptch.c), its function and name row; no owned data, and the sound_cxx compiler rows 0x802714A8-0x8027CF9C; every function exact, split from the former comparison files src/engine/cu_802753F0.cpp / cu_80276DE4.cpp and promoted.",
@@ -23139,6 +23202,25 @@
           "placement": ".text",
           "start": "0x80278128",
           "end": "0x802781A8"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/sgetpvol.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit, function and name rows at 0x802781A8, data row 0x802C2030-0x802C203C, and the sound_cxx compiler rows 0x802714A8-0x8027CF9C. One exact function and its literal pool.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x802781A8",
+          "end": "0x8027823C"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C2030",
+          "end": "0x802C203C"
         }
       ]
     },
@@ -23979,6 +24061,25 @@
           "placement": ".text",
           "start": "0x80278000",
           "end": "0x80278070"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/sfxlevel.c",
+      "profile": "sound_cxx",
+      "evidence": "evidence.tsv unit, function and name rows at 0x80278070, the .rodata row 0x802C2020-0x802C2030, and the sound_cxx compiler rows for 0x802714A8-0x8027CF9C. The complete native code and constants are linked.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80278070",
+          "end": "0x80278128"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802C2020",
+          "end": "0x802C2030"
         }
       ]
     },
