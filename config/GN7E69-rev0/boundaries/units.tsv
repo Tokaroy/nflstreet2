@@ -3,6 +3,7 @@
 # sibling references/NASCAR 2005/DOL-GN4E-USA/symbols/compile_units.tsv sha256 9da005d2c9fa45e5e30e3a395d806cb882a2c71ceb2f88fa9367ccb0e34fde00
 # Proposed units; a proposal, not an established extent (evidence: one unit-anchor row per run).
 start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anchors	claim	other_files
+0x80081440	0x800817CC	src/game/PlayerGearRatings.cpp	5	0	-	0	0	provisional	-
 0x801AD57C	0x801ADDB4	FSasync.c	13	13	13	13	0	-	-
 0x801ADDB4	0x801AE3E4	sndvd.c	12	10	11	0	10	-	spchdata.c
 0x801AE3E4	0x801AF60C	spchevnt.c	46	46	46	26	20	-	-
@@ -154,6 +155,9 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x8025FABC	0x8025FAF8	libgcc2.c	1	1	1	1	0	-	-
 0x8025FAF8	0x8025FBD4	libgcc2.c	4	4	4	0	4	-	eabi.asm
 0x8025FBD4	0x8025FDE8	e_sqrt.c	1	1	1	1	0	-	-
+0x8025FDE8	0x80260034	ef_acos.c	1	1	1	1	0	-	-
+0x80260034	0x80260260	ef_asin.c	1	1	1	1	0	-	-
+0x80260260	0x80260428	ef_fmod.c	1	1	1	1	0	-	-
 0x80260B1C	0x80260C14	ef_sqrt.c	1	1	1	1	0	-	-
 0x80260C14	0x80260E24	sf_atan.c	1	1	1	1	0	-	-
 0x80260E24	0x80260EE8	sf_ceil.c	1	1	1	1	0	-	-
@@ -165,7 +169,10 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x8026120C	0x80261328	sf_scalbn.c	1	1	1	1	0	-	-
 0x80261328	0x80261414	kf_cos.c	1	1	1	1	0	-	-
 0x80261414	0x802614C0	kf_sin.c	1	1	1	1	0	-	-
+0x802614C0	0x802616D4	kf_tan.c	1	1	1	1	0	-	-
+0x802616D4	0x80261A24	ef_rem_pio2.c	1	1	1	1	0	-	-
 0x80261A24	0x80261A58	sf_copysign.c	1	1	1	1	0	-	-
+0x80261A58	0x802622DC	kf_rem_pio2.c	1	1	1	1	0	-	-
 0x802622DC	0x80262310	vprintf.c	1	1	1	1	0	-	-
 0x80262310	0x802623A8	src/engine/atexit.c	1	0	-	0	0	provisional	-
 0x802623A8	0x80262440	bsearch.c	1	1	1	1	0	-	sn_malloc.c

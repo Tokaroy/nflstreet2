@@ -129,6 +129,19 @@
       ],
       "evidence": "evidence.tsv compiler rows 0x80227F14-0x802288F8 and 0x802288F8-0x80228E44 (engine_c): ProDG 3.9.3 cc1 -O2 (default -G 8) reproduces every instruction and data byte of both units; -O1, -O3, -Os and -G0 change them. Same flags as the uistudio profile; a separate profile because uistudio's scope evidence and source root are the UI Studio library, and these units include SDK headers that need include/libc."
     },
+    "engine_libm": {
+      "flags": [
+        "-O2",
+        "-msafe-sda",
+        "-G",
+        "1024"
+      ],
+      "include_dirs": [
+        "include/libc"
+      ],
+      "language": "c++",
+      "evidence": "evidence.tsv compiler row 0x80261A58-0x802622DC (kf_rem_pio2.c): ProDG 3.9.3 cc1plus folds the scalar constants into the native .sdata pool without retained duplicates, while -msafe-sda and the larger small-data threshold give the target r13 addressing of the pool and both tables. Default -G8 leaves absolute table loads and disabling -msafe-sda leaves absolute literal loads. The comparable MVP 2005 profile also matches this function; extra options are not distinguished here."
+    },
     "engine_c_fastmath": {
       "flags": [
         "-O2",
@@ -327,7 +340,7 @@
       "include_dirs": [
         "include/libc"
       ],
-      "evidence": "evidence.tsv compiler row 0x80260C14-0x80260E24: engine_c with builtins disabled for src/engine/sf_atan.c. The target calls the linked fabsf at 0x80260CD0 and retains the sign and magnitude across that call."
+      "evidence": "engine_c with builtins disabled, whole file, for src/engine/sf_atan.c (evidence.tsv compiler row 0x80260C14-0x80260E24) and src/engine/ef_asin.c (compiler row 0x80260034-0x80260260). Both targets call the linked fabsf instead of expanding it inline (0x80260CD0 in atanf)."
     },
     "engine_c_fastmath_nobuiltin": {
       "flags": [
@@ -339,6 +352,33 @@
         "include/libc"
       ],
       "evidence": "evidence.tsv compiler row 0x80236F78-0x80238258 (engine_c_fastmath_nobuiltin): engine_c_fastmath plus -fno-builtin for the synchronised-state files syncrand.c, synctime.c and syncstate.c, which call memset and memcpy with constant sizes as ordinary prototyped calls and compare floats without the IEEE cror of plain -O2."
+    },
+    "engine_libm_c": {
+      "flags": [
+        "-O2",
+        "-msafe-sda",
+        "-G",
+        "1024",
+        "-fno-builtin"
+      ],
+      "include_dirs": [
+        "include/libc"
+      ],
+      "evidence": "evidence.tsv compiler rows 0x802614C0-0x802616D4 and 0x802616D4-0x80261A24: ProDG 3.9.3 cc1 with -msafe-sda places the observed conversion biases and operands in small data; -G 1024 permits the reducer's indexed small-data tables and also matches the tangent kernel with its explicit table placement. The C front end retains both files' read-only scalar definitions. -fno-builtin preserves each target fabsf call."
+    },
+    "sound_cxx_data_sections": {
+      "flags": [
+        "-O2",
+        "-G0",
+        "-fno-strength-reduce",
+        "-mps-float",
+        "-fdata-sections"
+      ],
+      "include_dirs": [
+        "include/libc"
+      ],
+      "language": "c++",
+      "evidence": "evidence.tsv compiler row 0x80271B74-0x80271BD4. The existing sound_cxx flags reproduce the destructor. ProDG 3.9.3 -fdata-sections emits the codec tables as individual native sections, preserving the target order on both sides of the interleaved vtable when linking the unchanged compiler object."
     }
   },
   "externals": {
@@ -1025,14 +1065,6 @@
     "StatcollBlockInit": {
       "address": "0x80143F40",
       "evidence": "evidence.tsv function and name rows for 0x80143F40 (documented holdout of src/game/Statcoll.cpp: draft registered in comparisons.json, original bytes linked)."
-    },
-    "PlayerGearSumBonuses": {
-      "address": "0x800814BC",
-      "evidence": "evidence.tsv function and name rows for 0x800814BC (documented holdout of src/game/PlayerGearRatings.cpp: draft registered in comparisons.json, original bytes linked)."
-    },
-    "PlayerGearGetScaledBonuses": {
-      "address": "0x80081440",
-      "evidence": "evidence.tsv function and name rows for 0x80081440 (exact in comparisons.json; precedes the holdout 0x800814BC of src/game/PlayerGearRatings.cpp, so its original bytes stay linked)."
     },
     "BigObjDefaultUpdate": {
       "address": "0x800400CC",
@@ -10453,6 +10485,32 @@
       ]
     },
     {
+      "source": "src/game/MsgStoryGauntlet.cpp",
+      "profile": "game_cpp",
+      "evidence": "evidence.tsv unit row 0x8001D0F4-0x8001D2D8 (src/game/MsgStoryGauntlet.cpp), its function, data and source-form rows",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8001D0F4",
+          "end": "0x8001D1BC"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".text",
+          "start": "0x8001D1BC",
+          "end": "0x8001D2D8",
+          "follows": ".text"
+        },
+        {
+          "section": ".data",
+          "placement": ".data4",
+          "start": "0x802F4504",
+          "end": "0x802F4598"
+        }
+      ]
+    },
+    {
       "source": "src/game/MsgMemCardDispatch.cpp",
       "profile": "game_cpp",
       "evidence": "evidence.tsv unit row 0x8001D2D8-0x8001D314 (src/game/MsgMemCardDispatch.cpp) and its source-form rows.",
@@ -17127,6 +17185,31 @@
       ]
     },
     {
+      "source": "src/engine/ef_rem_pio2.c",
+      "profile": "engine_libm_c",
+      "evidence": "evidence.tsv provisional whole-file row 0x802616D4-0x80261A24, exact function, compiler, data and name rows for both native small-data sections and the shared angle-reduction ABI.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x802616D4",
+          "end": "0x80261A24"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EC4E0",
+          "end": "0x803EC518"
+        },
+        {
+          "section": ".sdata2",
+          "placement": ".data6",
+          "start": "0x803EDFCC",
+          "end": "0x803EE38C"
+        }
+      ]
+    },
+    {
       "source": "src/engine/copysignf.c",
       "profile": "engine_c",
       "evidence": "evidence.tsv provisional whole-file row 0x80261A24-0x80261A58, exact function extent, inferred name/ABI/type fields and unchanged compiler profile; no static data. Adjacent survey bytes stay original.",
@@ -17136,6 +17219,31 @@
           "placement": ".text",
           "start": "0x80261A24",
           "end": "0x80261A58"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/ef_acos.c",
+      "profile": "engine_c",
+      "evidence": "evidence.tsv provisional ef_acos.c unit, exact acosf and both scalar pool extents, external sqrtf ABI, type, field and source-form rows.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x8025FDE8",
+          "end": "0x80260034"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EC324",
+          "end": "0x803EC36C"
+        },
+        {
+          "section": ".sdata2",
+          "placement": ".data6",
+          "start": "0x803EDDD8",
+          "end": "0x803EDE10"
         }
       ]
     },
@@ -17231,6 +17339,50 @@
           "placement": ".text",
           "start": "0x80260FC4",
           "end": "0x80260FE8"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/ef_asin.c",
+      "profile": "engine_c_nobuiltin",
+      "evidence": "evidence.tsv provisional whole-file ef_asin.c unit at 0x80260034, exact .text, function/field/name rows, and exact .sdata and .sdata2 pools.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80260034",
+          "end": "0x80260260"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EC36C",
+          "end": "0x803EC3AC"
+        },
+        {
+          "section": ".sdata2",
+          "placement": ".data6",
+          "start": "0x803EDE10",
+          "end": "0x803EDE4C"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/ef_fmod.c",
+      "profile": "engine_c",
+      "evidence": "evidence.tsv provisional unit row 0x80260260-0x80260428, exact function and constant extents, names, ABI, compiler and source form.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80260260",
+          "end": "0x80260428"
+        },
+        {
+          "section": ".sdata2",
+          "placement": ".data6",
+          "start": "0x803EDE4C",
+          "end": "0x803EDE58"
         }
       ]
     },
@@ -18636,13 +18788,19 @@
     {
       "source": "src/game/PlayerGearRatings.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv unit row 0x80081440-0x800817CC (src/game/PlayerGearRatings.cpp), and its source-form rows. Linked from source: .text 0x800816C4-0x800817CC; 0x80081440-0x800816C4 and the .data table 0x802D6A28-0x802D6AD8 are a draft comparison behind DECOMP_COMPARE (config/GN7E69-rev0/comparisons.json) whose original bytes remain linked.",
+      "evidence": "evidence.tsv unit row 0x80081440-0x800817CC, function and name rows for the five gear-rating functions, and the bonus-column data row 0x802D6A28-0x802D6AD8. The source-form row for PlayerGearSumBonuses records the filter setup.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
-          "start": "0x800816C4",
+          "start": "0x80081440",
           "end": "0x800817CC"
+        },
+        {
+          "section": ".data",
+          "placement": ".data4",
+          "start": "0x802D6A28",
+          "end": "0x802D6AD8"
         }
       ]
     },
@@ -19853,6 +20011,31 @@
           "placement": ".data5",
           "start": "0x803EC4A4",
           "end": "0x803EC4C0"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/kf_tan.c",
+      "profile": "engine_libm_c",
+      "evidence": "evidence.tsv unit/function/name/data/type/field/compiler/source-form rows for kf_tan.c; complete 532-byte tangent kernel and both native scalar and coefficient pools.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x802614C0",
+          "end": "0x802616D4"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EC4C0",
+          "end": "0x803EC4E0"
+        },
+        {
+          "section": ".sdata2",
+          "placement": ".data6",
+          "start": "0x803EDF8C",
+          "end": "0x803EDFCC"
         }
       ]
     },
@@ -25337,6 +25520,109 @@
       ]
     },
     {
+      "source": "src/engine/mpegl3base.cpp",
+      "profile": "sound_cxx_data_sections",
+      "evidence": "evidence.tsv provisional unit row 0x80271B74-0x80271BD4, the destructor and its native vtable, MPEG Layer III table rows 0x802B9270-0x802C1D80, and the relocated quarter-power pointer at 0x80300048.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80271B74",
+          "end": "0x80271BD4"
+        },
+        {
+          "section": ".rodata._15CMpegLayer3Base.slen",
+          "placement": ".data3",
+          "start": "0x802B9270",
+          "end": "0x802B9290"
+        },
+        {
+          "section": ".rodata._9CMpegBase.sNumSfbBlock",
+          "placement": ".data3",
+          "start": "0x802B9290",
+          "end": "0x802B92D8"
+        },
+        {
+          "section": ".rodata._15CMpegLayer3Base.sTwoToNegativeQuarterPower",
+          "placement": ".data3",
+          "start": "0x802B92D8",
+          "end": "0x802B96D8"
+        },
+        {
+          "section": ".rodata._15CMpegLayer3Base.sToPowerOf4over3",
+          "placement": ".data3",
+          "start": "0x802B96D8",
+          "end": "0x802C1714"
+        },
+        {
+          "section": ".rodata._15CMpegLayer3Base.sfBandIndex",
+          "placement": ".data3",
+          "start": "0x802C1714",
+          "end": "0x802C187C"
+        },
+        {
+          "section": ".rodata._15CMpegLayer3Base.sAntiAliasCoefficients",
+          "placement": ".data3",
+          "start": "0x802C187C",
+          "end": "0x802C18BC"
+        },
+        {
+          "section": ".rodata._15CMpegLayer3Base.sStereoFactors",
+          "placement": ".data3",
+          "start": "0x802C18BC",
+          "end": "0x802C18D4"
+        },
+        {
+          "section": ".rodata._3Snd.reorderMap",
+          "placement": ".data3",
+          "start": "0x802C18D4",
+          "end": "0x802C1910"
+        },
+        {
+          "section": ".rodata._15CMpegLayer3Base.sImdctFactors",
+          "placement": ".data3",
+          "start": "0x802C1910",
+          "end": "0x802C19A4"
+        },
+        {
+          "section": ".gnu.linkonce.d._vt.15CMpegLayer3Base",
+          "placement": ".data3",
+          "start": "0x802C19A8",
+          "end": "0x802C19E8"
+        },
+        {
+          "section": ".rodata._3Snd.pretab",
+          "placement": ".data3",
+          "start": "0x802C19E8",
+          "end": "0x802C1A00"
+        },
+        {
+          "section": ".rodata._3Snd.TAN12",
+          "placement": ".data3",
+          "start": "0x802C1A00",
+          "end": "0x802C1A40"
+        },
+        {
+          "section": ".rodata._3Snd.io",
+          "placement": ".data3",
+          "start": "0x802C1A40",
+          "end": "0x802C1B40"
+        },
+        {
+          "section": ".rodata._3Snd.win",
+          "placement": ".data3",
+          "start": "0x802C1B40",
+          "end": "0x802C1D80"
+        },
+        {
+          "section": ".data._15CMpegLayer3Base.spTwoToNegativeQuarterPower2",
+          "placement": ".data4",
+          "start": "0x80300048",
+          "end": "0x8030004C"
+        }
+      ]
+    },
+    {
       "source": "src/engine/pathevent.c",
       "profile": "path_cxx_holdouts",
       "evidence": "evidence.tsv unit row 0x801B5E5C-0x801B6780 (src/engine/pathevent.c), its function, name, data and source-form rows; linked with holdouts (owner ruling of 2026-11-20): every function exact except the holdout fn_801B64C0, whose range keeps the original bytes. .rodata 0x802AECBC-0x802AECFC is the file's \"%s  %s\" string and the PATHI_copyevent message, defined by the file; the PATH globals it uses stay original-owned.",
@@ -25659,6 +25945,31 @@
         ],
         "evidence": "merge notes of the pull request that links the file (t1 holdout table)"
       }
+    },
+    {
+      "source": "src/engine/kf_rem_pio2.c",
+      "profile": "engine_libm",
+      "evidence": "evidence.tsv unit row 0x80261A58-0x802622DC, exact function and native .sdata/.sdata2 extents, ABI, source provenance and compiler rows.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80261A58",
+          "end": "0x802622DC"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EC518",
+          "end": "0x803EC540"
+        },
+        {
+          "section": ".sdata2",
+          "placement": ".data6",
+          "start": "0x803EE38C",
+          "end": "0x803EE3C4"
+        }
+      ]
     }
   ]
 }

@@ -2624,6 +2624,9 @@ address	size	sibling_name	how	sibling_file	unit
 0x8025FB34	52	eh_context_initialize	size	libgcc2.c	libgcc2.c
 0x8025FB68	108	eh_context_static	size	libgcc2.c	libgcc2.c
 0x8025FBD4	532	sqrt	name	e_sqrt.c	e_sqrt.c
+0x8025FDE8	588	acosf	name	ef_acos.c	ef_acos.c
+0x80260034	556	asinf	name	ef_asin.c	ef_asin.c
+0x80260260	456	fmodf	name	ef_fmod.c	ef_fmod.c
 0x80260B1C	248	sqrtf	name	ef_sqrt.c	ef_sqrt.c
 0x80260C14	528	atanf	name	sf_atan.c	sf_atan.c
 0x80260E24	196	ceilf	name	sf_ceil.c	sf_ceil.c
@@ -2635,7 +2638,10 @@ address	size	sibling_name	how	sibling_file	unit
 0x8026120C	284	scalbnf	name	sf_scalbn.c	sf_scalbn.c
 0x80261328	236	__kernel_cosf	name	kf_cos.c	kf_cos.c
 0x80261414	172	__kernel_sinf	name	kf_sin.c	kf_sin.c
+0x802614C0	532	__kernel_tanf	name	kf_tan.c	kf_tan.c
+0x802616D4	848	__ieee754_rem_pio2f	name	ef_rem_pio2.c	ef_rem_pio2.c
 0x80261A24	52	copysignf	name	sf_copysign.c	sf_copysign.c
+0x80261A58	2180	__kernel_rem_pio2f	name	kf_rem_pio2.c	kf_rem_pio2.c
 0x802622DC	52	vprintf	name	vprintf.c	vprintf.c
 0x802623A8	152	bsearch	name	bsearch.c	bsearch.c
 0x8026247C	92	strround	name	vfprintf.c	vfprintf.c
