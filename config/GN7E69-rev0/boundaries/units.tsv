@@ -10,7 +10,7 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x801AF60C	0x801AF75C	spchinit.c	4	3	3	2	1	-	-
 0x801AF75C	0x801B1A3C	spchpick.c	56	56	67	0	47	-	-
 0x801B1A3C	0x801B1CFC	spchrand.c	5	5	5	0	5	-	-
-0x801B1CFC	0x801B23A0	spchrule.c	16	16	17	1	15	-	spchsamp.c,sptick.c,sputil.c,author.cpp
+0x801B1CFC	0x801B23A0	spchrule.c	16	16	17	7	9	-	spchsamp.c,sptick.c,sputil.c,author.cpp
 0x801B23A0	0x801B2AD4	spchbank.c	17	17	18	12	5	-	-
 0x801B5E5C	0x801B6780	src/engine/pathevent.c	10	0	-	0	0	provisional	-
 0x801B8C18	0x801B9CAC	smemhigh.cpp	40	40	42	38	2	-	sdata.c
@@ -47,7 +47,7 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x801CB5D4	0x801CBC1C	filemc.c	11	10	10	10	0	-	-
 0x801CBC1C	0x801CBC50	filehost.c	8	7	7	7	0	-	-
 0x801CCA64	0x801CD79C	Font.c	24	23	23	23	0	-	-
-0x801CD79C	0x801CE138	LLFont.c	9	9	9	2	7	-	-
+0x801CD79C	0x801CE138	LLFont.c	9	9	9	9	0	-	-
 0x801CE138	0x801CE1E8	glib.c	2	2	3	2	0	-	-
 0x801CE1F8	0x801CEC90	llglib.c	39	35	36	35	0	-	-
 0x801CEC90	0x801CEE54	llrender.c	8	7	8	7	0	-	-
@@ -73,7 +73,7 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x801DD498	0x801DFE0C	particleLib.c	43	42	51	1	38	-	-
 0x801DFE0C	0x801E01FC	psysEmitter.c	4	4	4	4	0	-	-
 0x801E01FC	0x801E052C	psysCollision.c	6	6	8	6	0	-	-
-0x801E052C	0x801E0A1C	colorRamp.c	10	10	10	0	10	-	-
+0x801E052C	0x801E0A1C	colorRamp.c	10	10	10	10	0	-	-
 0x801E11D0	0x801E1A20	periph.c	18	18	18	18	0	-	-
 0x801E1A20	0x801E1D44	llperiph.c	10	10	11	10	0	-	-
 0x801E1D44	0x801E274C	PJoyDrvr.c	6	6	6	6	0	-	-
@@ -82,7 +82,7 @@ start	end	sibling_file	functions	paired	sibling_functions	name_anchors	size_anch
 0x801F1538	0x801F17E0	terfhash.c	3	3	3	3	0	-	-
 0x801F17E0	0x801F2310	reswrite.c	15	15	15	0	15	-	-
 0x801F284C	0x801F2E54	resquickload.c	11	11	11	11	0	-	-
-0x801F2E54	0x801F3308	rescache.c	6	6	6	0	6	-	-
+0x801F2E54	0x801F3308	rescache.c	6	6	6	6	0	-	-
 0x801F3308	0x801F34C0	resloosefile.c	4	4	4	4	0	-	-
 0x801F3524	0x801F5034	sound.cpp	54	44	59	33	11	-	-
 0x801F5034	0x801F5100	llsound.c	3	2	2	2	0	-	-

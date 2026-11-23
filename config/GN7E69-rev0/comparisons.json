@@ -3033,7 +3033,7 @@
     {
       "source": "src/game/FormationLineupEdit.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv open unit row, exact per-function boundaries and data slice 0x802943DC-0x80294568. First three functions and native rodata prefix are linked; comparison preserves the remaining eight whole functions and measures only the evidenced unlinked literal slice. No excluded mismatches or completed-original-file claim.",
+      "evidence": "evidence.tsv provisional unit row 0x800857D0-0x80085D7C and HOLDOUT source-form row 0x8008593C-0x80085A34. Compile the whole file with its base game_cpp profile for the one documented holdout. Its original code remains in the executable; both exact code runs and the full literal pool link through units.json.",
       "sections": [
         {
           "section": ".text",
@@ -3053,41 +3053,6 @@
           "symbol": "FormationLineupSwapAllUser",
           "start": "0x8008593C",
           "end": "0x80085A34"
-        },
-        {
-          "symbol": "FormationLineupApplyUser",
-          "start": "0x80085A34",
-          "end": "0x80085A7C"
-        },
-        {
-          "symbol": "FormationLineupClearAll",
-          "start": "0x80085A7C",
-          "end": "0x80085AA0"
-        },
-        {
-          "symbol": "FormationLineupRemapTeams",
-          "start": "0x80085AA0",
-          "end": "0x80085BE4"
-        },
-        {
-          "symbol": "FormationLineupCommitTeam",
-          "start": "0x80085BE4",
-          "end": "0x80085C3C"
-        },
-        {
-          "symbol": "FormationLineupRevertTeam",
-          "start": "0x80085C3C",
-          "end": "0x80085C94"
-        },
-        {
-          "symbol": "FormationLineupFillTeam",
-          "start": "0x80085C94",
-          "end": "0x80085D54"
-        },
-        {
-          "symbol": "FormationLineupReset",
-          "start": "0x80085D54",
-          "end": "0x80085D7C"
         }
       ]
     },
@@ -9755,9 +9720,9 @@
       ]
     },
     {
-      "source": "src/game/cu_8008977C.cpp",
+      "source": "src/game/FEPlyrPoseTransitions.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv bounded cu_8008977C group, existing exact function extents, readonly/data/SDA/storage rows, shared record layout, used-call contracts and source forms. All six bodies are retained; two larger functions remain partial.",
+      "evidence": "evidence.tsv provisional unit row 0x8008977C-0x8008A274, its layout and data rows and HOLDOUT source-form row 0x80089E70-0x8008A20C. The callback is the sole comparison; its original bytes stay in the build while the other five functions and the complete data link.",
       "sections": [
         {
           "section": ".text",
@@ -9792,34 +9757,9 @@
       ],
       "functions": [
         {
-          "symbol": "fn_8008977C",
-          "start": "0x8008977C",
-          "end": "0x80089904"
-        },
-        {
-          "symbol": "fn_80089904",
-          "start": "0x80089904",
-          "end": "0x80089A84"
-        },
-        {
-          "symbol": "fn_80089A84",
-          "start": "0x80089A84",
-          "end": "0x80089E70"
-        },
-        {
-          "symbol": "fn_80089E70",
+          "symbol": "FEPlyrPoseTransitionCallback",
           "start": "0x80089E70",
           "end": "0x8008A20C"
-        },
-        {
-          "symbol": "fn_8008A20C",
-          "start": "0x8008A20C",
-          "end": "0x8008A248"
-        },
-        {
-          "symbol": "fn_8008A248",
-          "start": "0x8008A248",
-          "end": "0x8008A274"
         }
       ]
     },
@@ -11454,9 +11394,9 @@
       ]
     },
     {
-      "source": "src/game/cu_800E2FE4.cpp",
+      "source": "src/game/PlyrAlignApproach.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv player-state and bounded literal rows for cu_800E2FE4; original assembly linked.",
+      "evidence": "evidence.tsv provisional unit row 0x800E2FE4-0x800E3A34, its exact literal extent and HOLDOUT source-form row 0x800E2FE4-0x800E36DC. The approach-command routine is the sole comparison. Its code stays original while the lane routine and full native literal pool link from source.",
       "sections": [
         {
           "section": ".text",
@@ -11473,14 +11413,9 @@
       ],
       "functions": [
         {
-          "symbol": "fn_800E2FE4",
+          "symbol": "PlyrAlignMoveToTarget",
           "start": "0x800E2FE4",
           "end": "0x800E36DC"
-        },
-        {
-          "symbol": "fn_800E36DC",
-          "start": "0x800E36DC",
-          "end": "0x800E3A34"
         }
       ]
     },
@@ -20495,118 +20430,6 @@
       ]
     },
     {
-      "source": "src/engine/modelobj.c",
-      "profile": "engine_c",
-      "evidence": "evidence.tsv provisional unit row 0x802355E4-0x80235DD8 (src/engine/modelobj.c, split from the former cu_802355E4 chunk in s1), its function, name and source-form rows and the data row for its .rodata 0x802B71A8-0x802B71B0. Complete reconstructed functions are measured; original bytes remain linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x802355E4",
-          "end": "0x80235DD8"
-        },
-        {
-          "section": ".rodata",
-          "placement": ".data3",
-          "start": "0x802B7198",
-          "end": "0x802B71B0"
-        },
-        {
-          "section": ".sdata",
-          "placement": ".data5",
-          "start": "0x803EC0F8",
-          "end": "0x803EC0FC"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "ModelObjReset",
-          "start": "0x802355E4",
-          "end": "0x80235630"
-        },
-        {
-          "symbol": "ModelObjSetModel",
-          "start": "0x80235630",
-          "end": "0x8023570C"
-        },
-        {
-          "symbol": "ModelObjSetShader",
-          "start": "0x8023570C",
-          "end": "0x80235740"
-        },
-        {
-          "symbol": "ModelObjStoreMatrix",
-          "start": "0x80235740",
-          "end": "0x80235764"
-        },
-        {
-          "symbol": "ModelObjDraw",
-          "start": "0x80235764",
-          "end": "0x80235788"
-        },
-        {
-          "symbol": "ModelObjSetTextures",
-          "start": "0x80235B6C",
-          "end": "0x80235C24"
-        },
-        {
-          "symbol": "ModelObjSetTexturesDefault",
-          "start": "0x80235C24",
-          "end": "0x80235C48"
-        },
-        {
-          "symbol": "ModelObjSetParamNop",
-          "start": "0x80235C48",
-          "end": "0x80235C4C"
-        },
-        {
-          "symbol": "ModelObjSetFixedDepth",
-          "start": "0x80235C4C",
-          "end": "0x80235C90"
-        },
-        {
-          "symbol": "ModelObjSetAmbientColor",
-          "start": "0x80235C90",
-          "end": "0x80235D0C"
-        },
-        {
-          "symbol": "ModelObjSetFlagsNop",
-          "start": "0x80235D0C",
-          "end": "0x80235D10"
-        },
-        {
-          "symbol": "ModelObjSetModeNop",
-          "start": "0x80235D74",
-          "end": "0x80235D78"
-        },
-        {
-          "symbol": "ModelObjSetEyePos",
-          "start": "0x80235D78",
-          "end": "0x80235D9C"
-        },
-        {
-          "symbol": "ModelObjIsModelRes",
-          "start": "0x80235D9C",
-          "end": "0x80235DB8"
-        },
-        {
-          "symbol": "ModelObjRelocateModelRes",
-          "start": "0x80235DB8",
-          "end": "0x80235DD8"
-        },
-        {
-          "symbol": "ModelObjSetDepthOffset",
-          "start": "0x80235D10",
-          "end": "0x80235D74"
-        },
-        {
-          "symbol": "ModelObjRender",
-          "start": "0x80235788",
-          "end": "0x80235B6C"
-        }
-      ]
-    },
-    {
       "source": "src/engine/lllight.c",
       "profile": "engine_c",
       "evidence": "evidence.tsv provisional unit row 0x80235DD8-0x80236DD8 (src/engine/lllight.c, split from the former cu_802355E4 chunk in s1), its function, name and source-form rows and the data row for its .rodata 0x802B71B0-0x802B721C. Complete reconstructed functions are measured; original bytes remain linked.",
@@ -20757,31 +20580,6 @@
           "symbol": "LLLightLoadDirectional",
           "start": "0x80236C10",
           "end": "0x80236DD8"
-        }
-      ]
-    },
-    {
-      "source": "src/engine/crc32.c",
-      "profile": "engine_c",
-      "evidence": "evidence.tsv provisional unit row 0x80238258-0x802382CC (src/engine/crc32.c, split from the former cu_802355E4 chunk in s1), its function, name and source-form rows. Complete reconstructed functions are measured; original bytes remain linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x80238258",
-          "end": "0x802382CC"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "fn_80238258",
-          "start": "0x80238258",
-          "end": "0x80238278"
-        },
-        {
-          "symbol": "fn_80238278",
-          "start": "0x80238278",
-          "end": "0x802382CC"
         }
       ]
     },
@@ -25550,9 +25348,9 @@
       ]
     },
     {
-      "source": "src/game/cu_8018EF6C.cpp",
+      "source": "src/game/StoryTeamList.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv candidate unit cu_8018EF6C 0x8018EF6C-0x8018F1F0 and its exact function row. fn_8018EF6C is a partial body (same size, callee-saved register assignment differs); its query strings 0x802AB254-0x802AB364 are byte-identical. Original bytes remain linked.",
+      "evidence": "evidence.tsv provisional comparison slice 0x8018EF6C-0x8018F1F0 and the SstlRebuildForTeam function, name and source-form rows. The ordinary index-fill loop improves the pinned-profile comparison from 90.31677% to 91.72050%, with 39 differing aligned instruction words out of 161. All 272 query bytes at 0x802AB254-0x802AB364 remain byte-identical. The neighboring slices probably share an original file; the original executable bytes stay linked.",
       "sections": [
         {
           "section": ".text",
@@ -25569,7 +25367,7 @@
       ],
       "functions": [
         {
-          "symbol": "fn_8018EF6C",
+          "symbol": "SstlRebuildForTeam",
           "start": "0x8018EF6C",
           "end": "0x8018F1F0"
         }
@@ -27560,7 +27358,7 @@
     {
       "source": "src/engine/colorRamp.c",
       "profile": "engine_c",
-      "evidence": "E3 lane draft of colorRamp.c over 0x801E052C-0x801E0A1C (NASCAR 2005 symbol-table size/order match; see the colorRamp.c name rows); evidence.tsv function rows and the compiler row for this range, plus exact data rows 0x802B1140-0x802B1148. Draft comparisons only; original assembly remains linked.",
+      "evidence": "evidence.tsv whole-file unit, function, compiler and literal rows. ColorRampEval is a measured holdout at 0x801E0844-0x801E0984. The remaining nine functions and all 12 readonly bytes link in the original build.",
       "sections": [
         {
           "section": ".text",
@@ -27577,52 +27375,52 @@
       ],
       "functions": [
         {
-          "symbol": "fn_801E052C",
+          "symbol": "_colorRampInsertIndex",
           "start": "0x801E052C",
           "end": "0x801E05B0"
         },
         {
-          "symbol": "fn_801E05B0",
+          "symbol": "_colorRampAppend",
           "start": "0x801E05B0",
           "end": "0x801E05F8"
         },
         {
-          "symbol": "fn_801E05F8",
+          "symbol": "_colorRampInterp",
           "start": "0x801E05F8",
           "end": "0x801E06B0"
         },
         {
-          "symbol": "fn_801E06B0",
+          "symbol": "_colorRampCopyNode",
           "start": "0x801E06B0",
           "end": "0x801E06DC"
         },
         {
-          "symbol": "fn_801E06DC",
+          "symbol": "ColorRampInit",
           "start": "0x801E06DC",
           "end": "0x801E071C"
         },
         {
-          "symbol": "fn_801E071C",
+          "symbol": "ColorRampInitParms",
           "start": "0x801E071C",
           "end": "0x801E079C"
         },
         {
-          "symbol": "fn_801E079C",
+          "symbol": "ColorRampInsertColor",
           "start": "0x801E079C",
           "end": "0x801E0844"
         },
         {
-          "symbol": "fn_801E0844",
+          "symbol": "ColorRampEval",
           "start": "0x801E0844",
           "end": "0x801E0984"
         },
         {
-          "symbol": "fn_801E0984",
+          "symbol": "ColorRampSetInterp",
           "start": "0x801E0984",
           "end": "0x801E098C"
         },
         {
-          "symbol": "fn_801E098C",
+          "symbol": "ColorRampCopy",
           "start": "0x801E098C",
           "end": "0x801E0A1C"
         }
@@ -28866,43 +28664,35 @@
     {
       "source": "src/engine/rescache.c",
       "profile": "engine_c",
-      "evidence": "evidence.tsv provisional unit row 0x801F2E54-0x801F3308 (src/engine/rescache.c), its compiler row, exact function rows and NASCAR 2005 candidate name rows. Draft comparisons only; original assembly remains linked; data is referenced through neutral external labels.",
+      "evidence": "evidence.tsv provisional unit row 0x801F2E54-0x801F3308, owned data rows and ResCacheOpen and ResCacheWrite HOLDOUT: source-form rows; exact functions and both initialized data sections link from the same source file.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x801F2E54",
           "end": "0x801F3308"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B19A4",
+          "end": "0x802B19AC"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EBDE0",
+          "end": "0x803EBDE8"
         }
       ],
       "functions": [
         {
-          "symbol": "fn_801F2E54",
-          "start": "0x801F2E54",
-          "end": "0x801F2ED8"
-        },
-        {
-          "symbol": "fn_801F2ED8",
-          "start": "0x801F2ED8",
-          "end": "0x801F2EE0"
-        },
-        {
-          "symbol": "fn_801F2EE0",
+          "symbol": "ResCacheOpen",
           "start": "0x801F2EE0",
           "end": "0x801F30CC"
         },
         {
-          "symbol": "fn_801F30CC",
-          "start": "0x801F30CC",
-          "end": "0x801F3104"
-        },
-        {
-          "symbol": "fn_801F3104",
-          "start": "0x801F3104",
-          "end": "0x801F318C"
-        },
-        {
-          "symbol": "fn_801F318C",
+          "symbol": "ResCacheWrite",
           "start": "0x801F318C",
           "end": "0x801F3308"
         }
@@ -29774,162 +29564,9 @@
       ]
     },
     {
-      "source": "src/engine/Font.c",
+      "source": "src/engine/LLFont.c",
       "profile": "engine_c",
-      "evidence": "evidence.tsv provisional unit row 0x801CCA64-0x801CD79C (src/engine/Font.c), its compiler and type rows, exact function rows and the exact data row for its .rodata 0x802AF490-0x802AF4B0. Draft comparisons only; the font state 0x80383CF0, its mutex 0x80383CD0, the render state 0x803E7600, the initialized flag 0x803EBC58, the list/heap/file/error helpers and the LLFont routines stay external; original assembly remains linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x801CCA64",
-          "end": "0x801CD79C"
-        },
-        {
-          "section": ".rodata",
-          "placement": ".data3",
-          "start": "0x802AF490",
-          "end": "0x802AF4B0"
-        },
-        {
-          "section": ".sdata",
-          "placement": ".data5",
-          "start": "0x803EBC58",
-          "end": "0x803EBC5C"
-        },
-        {
-          "section": ".bss",
-          "placement": ".bss",
-          "start": "0x80383CD0",
-          "end": "0x80383D18"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "_FontGetFontListPtr",
-          "start": "0x801CCA64",
-          "end": "0x801CCAB8"
-        },
-        {
-          "symbol": "_FontSearchFontNum",
-          "start": "0x801CCAB8",
-          "end": "0x801CCADC"
-        },
-        {
-          "symbol": "_FontLookupGlyph",
-          "start": "0x801CCADC",
-          "end": "0x801CCB5C"
-        },
-        {
-          "symbol": "_FontGetKernAmount",
-          "start": "0x801CCB5C",
-          "end": "0x801CCBD0"
-        },
-        {
-          "symbol": "FontProcessFontFile",
-          "start": "0x801CCBD0",
-          "end": "0x801CCC24"
-        },
-        {
-          "symbol": "FontInit",
-          "start": "0x801CCC24",
-          "end": "0x801CCD0C"
-        },
-        {
-          "symbol": "FontShutdown",
-          "start": "0x801CCD0C",
-          "end": "0x801CCDA4"
-        },
-        {
-          "symbol": "FontOpenFileDevice",
-          "start": "0x801CCDA4",
-          "end": "0x801CCE10"
-        },
-        {
-          "symbol": "FontCloseFile",
-          "start": "0x801CCE10",
-          "end": "0x801CCE60"
-        },
-        {
-          "symbol": "FontAddFont",
-          "start": "0x801CCE60",
-          "end": "0x801CCF74"
-        },
-        {
-          "symbol": "FontAddFontFromBuffer",
-          "start": "0x801CCF74",
-          "end": "0x801CD07C"
-        },
-        {
-          "symbol": "FontRemoveFont",
-          "start": "0x801CD07C",
-          "end": "0x801CD130"
-        },
-        {
-          "symbol": "FontCreateFont",
-          "start": "0x801CD130",
-          "end": "0x801CD20C"
-        },
-        {
-          "symbol": "FontUploadTextures",
-          "start": "0x801CD20C",
-          "end": "0x801CD244"
-        },
-        {
-          "symbol": "FontDestroyFont",
-          "start": "0x801CD244",
-          "end": "0x801CD2A4"
-        },
-        {
-          "symbol": "FontResetRenderState",
-          "start": "0x801CD2A4",
-          "end": "0x801CD308"
-        },
-        {
-          "symbol": "FontSetRenderColor",
-          "start": "0x801CD308",
-          "end": "0x801CD398"
-        },
-        {
-          "symbol": "FontSetRenderFlags",
-          "start": "0x801CD398",
-          "end": "0x801CD3B0"
-        },
-        {
-          "symbol": "FontClearRenderFlags",
-          "start": "0x801CD3B0",
-          "end": "0x801CD3C8"
-        },
-        {
-          "symbol": "FontSetShadowOffset",
-          "start": "0x801CD3C8",
-          "end": "0x801CD3E4"
-        },
-        {
-          "symbol": "FontDrawText",
-          "start": "0x801CD3E4",
-          "end": "0x801CD63C"
-        },
-        {
-          "symbol": "FontGetTextWidth",
-          "start": "0x801CD63C",
-          "end": "0x801CD750"
-        },
-        {
-          "symbol": "FontGetCharWidth",
-          "start": "0x801CD750",
-          "end": "0x801CD790"
-        },
-        {
-          "symbol": "FontGetDescent",
-          "start": "0x801CD790",
-          "end": "0x801CD79C"
-        }
-      ]
-    },
-    {
-      "source": "src/engine/cu_801CDB5C.c",
-      "profile": "engine_c",
-      "evidence": "evidence.tsv provisional unit row 0x801CD79C-0x801CE138 (src/engine/cu_801CDB5C.c), its compiler and type rows, exact function rows, the exact data row for its .rodata 0x802AF4B0-0x802AF4D4 and linker row 0x802AF4B0-0x802AF4B8 (discarded FontLLTexelToUV). Draft comparisons only; the render state 0x803E7600, the quad buffer 0x803E763C, the TLUT tables 0x80383D20/0x80383D40 and objects 0x80383D60/0x80383D80, and the matrix/GX/heap helpers stay external; original assembly remains linked.",
+      "evidence": "evidence.tsv unit row 0x801CD79C-0x801CE138 and its function, name, compiler and data rows. FontLLUploadPalettes remains a measured holdout at 0x801CDE98-0x801CDFE4. The other eight functions and both data sections are linked.",
       "sections": [
         {
           "section": ".text",
@@ -29941,7 +29578,13 @@
           "section": ".rodata",
           "placement": ".data3",
           "start": "0x802AF4B0",
-          "end": "0x802AF4D4"
+          "end": "0x802AF4D8"
+        },
+        {
+          "section": ".bss",
+          "placement": ".bss",
+          "start": "0x80383D20",
+          "end": "0x80383DA0"
         }
       ],
       "functions": [
@@ -29956,43 +29599,43 @@
           "end": "0x801CDB5C"
         },
         {
-          "symbol": "fn_801CDB5C",
+          "symbol": "FontLLRenderText",
           "start": "0x801CDB5C",
           "end": "0x801CDD18"
         },
         {
-          "symbol": "fn_801CDD18",
+          "symbol": "FontLLRenderBegin",
           "start": "0x801CDD18",
           "end": "0x801CDE98"
         },
         {
-          "symbol": "fn_801CDE98",
+          "symbol": "FontLLUploadPalettes",
           "start": "0x801CDE98",
           "end": "0x801CDFE4"
         },
         {
-          "symbol": "fn_801CDFE4",
+          "symbol": "FontLLReleasePalettes",
           "start": "0x801CDFE4",
           "end": "0x801CDFE8"
         },
         {
-          "symbol": "fn_801CDFE8",
+          "symbol": "FontLLUploadTextures",
           "start": "0x801CDFE8",
           "end": "0x801CE108"
         },
         {
-          "symbol": "fn_801CE108",
+          "symbol": "FontLLReleaseTextures",
           "start": "0x801CE108",
           "end": "0x801CE134"
         },
         {
-          "symbol": "fn_801CE134",
+          "symbol": "FontLLCreateFont",
           "start": "0x801CE134",
           "end": "0x801CE138"
         }
       ],
       "discarded": [
-        "FontLLTexelToUV"
+        "_FontLLTexelToUV"
       ]
     },
     {
@@ -30112,29 +29755,9 @@
       ]
     },
     {
-      "source": "src/engine/lltextur.c",
-      "profile": "engine_c",
-      "evidence": "evidence.tsv unit row 0x8020E7EC-0x8020EA18 (src/engine/lltextur.c), its compiler row, the source-form rows and the exact function rows. Documented holdout at the start of .text: LLTexPadToPow2 0x8020E7EC-0x8020E9D0 is compiled with DECOMP_COMPARE for comparison only and keeps its original bytes; LLTexCopyFlush after it is linked through units.json.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x8020E7EC",
-          "end": "0x8020EA18"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "LLTexPadToPow2",
-          "start": "0x8020E7EC",
-          "end": "0x8020E9D0"
-        }
-      ]
-    },
-    {
       "source": "src/engine/xmlread.c",
       "profile": "engine_c",
-      "evidence": "evidence.tsv unit row 0x8021625C-0x802176E8 (src/engine/xmlread.c), its compiler row, the source-form row 0x8020840C-0x802176E8 and the exact function rows, plus the exact data row for .rodata 0x802B1D10-0x802B1D40. 12 bodies, partials: 0x802166F0, 0x80216BFC. Comparison only; original assembly stays linked.",
+      "evidence": "evidence.tsv unit row 0x8021625C-0x802176E8 and native data rows. Ten functions and both data sections link through units.json. The two non-exact functions retain original bytes, with the HOLDOUT records at 0x802166F0 and 0x80216BFC.",
       "sections": [
         {
           "section": ".text",
@@ -30305,157 +29928,35 @@
       ]
     },
     {
-      "source": "src/engine/pathinit.c",
+      "source": "src/engine/pathserv.c",
       "profile": "path_cxx",
-      "evidence": "evidence.tsv unit row 0x801B2AD4-0x801B343C (src/engine/pathinit.c): one of the eleven PATH library files cut from the former survey source src/engine/cu_801B2AD4.cpp at the eleven unreferenced \"%s  %s\" strings that start each PATH file's .rodata (0x802AEA18-0x802AED94) and GoldenEye: Rogue Agent's PATH file order. Partial source; original bytes remain linked. The allocator-configuration object (.bss 0x8037E814) and its .ctors word 0x80289B40 belong here: the static-initialization pair 0x801B33DC-0x801B343C ends the file.",
+      "evidence": "evidence.tsv unit row 0x801B343C-0x801B3AD0, complete native data row and HOLDOUT 0x801B3568-0x801B3724. Only the integer-return sort remains a comparison.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
-          "start": "0x801B2AD4",
-          "end": "0x801B343C"
-        },
-        {
-          "section": ".bss",
-          "placement": ".bss",
-          "start": "0x8037E814",
-          "end": "0x8037E820"
-        },
-        {
-          "section": ".ctors",
-          "placement": ".data2",
-          "start": "0x80289B40",
-          "end": "0x80289B44"
+          "start": "0x801B343C",
+          "end": "0x801B3AD0"
         },
         {
           "section": ".rodata",
           "placement": ".data3",
-          "start": "0x802AEA18",
-          "end": "0x802AEA58"
+          "start": "0x802AEA58",
+          "end": "0x802AEA60"
         }
       ],
       "functions": [
         {
-          "symbol": "fn_801B2AD4",
-          "start": "0x801B2AD4",
-          "end": "0x801B2B58"
-        },
-        {
-          "symbol": "fn_801B2B58",
-          "start": "0x801B2B58",
-          "end": "0x801B2C18"
-        },
-        {
-          "symbol": "PATH_setallocator",
-          "start": "0x801B2C18",
-          "end": "0x801B2C40"
-        },
-        {
-          "symbol": "fn_801B2C40",
-          "start": "0x801B2C40",
-          "end": "0x801B2C94"
-        },
-        {
-          "symbol": "fn_801B2C94",
-          "start": "0x801B2C94",
-          "end": "0x801B2CDC"
-        },
-        {
-          "symbol": "PATH_addmapfile",
-          "start": "0x801B2CDC",
-          "end": "0x801B2F18"
-        },
-        {
-          "symbol": "fn_801B2F18",
-          "start": "0x801B2F18",
-          "end": "0x801B2F28"
-        },
-        {
-          "symbol": "PATH_destroy",
-          "start": "0x801B2F28",
-          "end": "0x801B3084"
-        },
-        {
-          "symbol": "PATH_setvariable",
-          "start": "0x801B3084",
-          "end": "0x801B3234"
-        },
-        {
-          "symbol": "PATHI_findnodedata",
-          "start": "0x801B3234",
-          "end": "0x801B3268"
-        },
-        {
-          "symbol": "PATHI_bytesperms",
-          "start": "0x801B3268",
-          "end": "0x801B33DC"
-        },
-        {
-          "symbol": "__static_initialization_and_destruction_0",
-          "start": "0x801B33DC",
-          "end": "0x801B3410"
-        },
-        {
-          "symbol": "_GLOBAL_.I.fn_801B2AD4",
-          "start": "0x801B3410",
-          "end": "0x801B343C"
-        }
-      ]
-    },
-    {
-      "source": "src/engine/pathserv.c",
-      "profile": "path_cxx",
-      "evidence": "evidence.tsv unit row 0x801B343C-0x801B3AD0 (src/engine/pathserv.c): one of the eleven PATH library files cut from the former survey source src/engine/cu_801B2AD4.cpp at the eleven unreferenced \"%s  %s\" strings that start each PATH file's .rodata (0x802AEA18-0x802AED94) and GoldenEye: Rogue Agent's PATH file order. Partial source; original bytes remain linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x801B343C",
-          "end": "0x801B3AD0"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "fn_801B343C",
-          "start": "0x801B343C",
-          "end": "0x801B3480"
-        },
-        {
-          "symbol": "fn_801B3480",
-          "start": "0x801B3480",
-          "end": "0x801B34DC"
-        },
-        {
-          "symbol": "fn_801B34DC",
-          "start": "0x801B34DC",
-          "end": "0x801B3568"
-        },
-        {
-          "symbol": "fn_801B3568",
+          "symbol": "PATHI_sortprojects",
           "start": "0x801B3568",
           "end": "0x801B3724"
-        },
-        {
-          "symbol": "fn_801B39B8",
-          "start": "0x801B39B8",
-          "end": "0x801B3A88"
-        },
-        {
-          "symbol": "fn_801B3A88",
-          "start": "0x801B3A88",
-          "end": "0x801B3AAC"
-        },
-        {
-          "symbol": "fn_801B3AAC",
-          "start": "0x801B3AAC",
-          "end": "0x801B3AD0"
         }
       ]
     },
     {
       "source": "src/engine/pathtrack.c",
       "profile": "path_cxx",
-      "evidence": "evidence.tsv unit row 0x801B3AD0-0x801B45D0 (src/engine/pathtrack.c): one of the eleven PATH library files cut from the former survey source src/engine/cu_801B2AD4.cpp at the eleven unreferenced \"%s  %s\" strings that start each PATH file's .rodata (0x802AEA18-0x802AED94) and GoldenEye: Rogue Agent's PATH file order. Partial source; original bytes remain linked.",
+      "evidence": "evidence.tsv unit row 0x801B3AD0-0x801B45D0 and two HOLDOUT source-form rows. Twenty-six exact bodies, including the base constructor, and the complete native read-only section link through units.json.",
       "sections": [
         {
           "section": ".text",
@@ -30472,144 +29973,14 @@
       ],
       "functions": [
         {
-          "symbol": "fn_801B3AD0",
-          "start": "0x801B3AD0",
-          "end": "0x801B3B7C"
-        },
-        {
-          "symbol": "PATH_createstreamimp",
-          "start": "0x801B3B7C",
-          "end": "0x801B3D28"
-        },
-        {
-          "symbol": "fn_801B3D28",
-          "start": "0x801B3D28",
-          "end": "0x801B3DD8"
-        },
-        {
-          "symbol": "PATH_createbankobject",
-          "start": "0x801B3DD8",
-          "end": "0x801B3F6C"
-        },
-        {
-          "symbol": "fn_801B3F6C",
-          "start": "0x801B3F6C",
-          "end": "0x801B3FE0"
-        },
-        {
           "symbol": "PATHI_inittrack",
           "start": "0x801B3FE0",
           "end": "0x801B4174"
         },
         {
-          "symbol": "fn_801B4174",
-          "start": "0x801B4174",
-          "end": "0x801B421C"
-        },
-        {
-          "symbol": "fn_801B421C",
-          "start": "0x801B421C",
-          "end": "0x801B42C0"
-        },
-        {
-          "symbol": "fn_801B42C0",
-          "start": "0x801B42C0",
-          "end": "0x801B4334"
-        },
-        {
-          "symbol": "fn_801B4334",
-          "start": "0x801B4334",
-          "end": "0x801B43CC"
-        },
-        {
-          "symbol": "fn_801B43CC",
+          "symbol": "PATHI_dispatchtrackstate",
           "start": "0x801B43CC",
           "end": "0x801B44BC"
-        },
-        {
-          "symbol": "__14Class_801B44BC",
-          "start": "0x801B44BC",
-          "end": "0x801B4514"
-        },
-        {
-          "symbol": "_._14Class_801B44BC",
-          "start": "0x801B4514",
-          "end": "0x801B4548"
-        },
-        {
-          "symbol": "fn_801B4548__14Class_801B44BC",
-          "start": "0x801B4548",
-          "end": "0x801B4564"
-        },
-        {
-          "symbol": "fn_801B4564__14Class_801B44BC",
-          "start": "0x801B4564",
-          "end": "0x801B456C"
-        },
-        {
-          "symbol": "fn_801B456C__14Class_801B44BCi",
-          "start": "0x801B456C",
-          "end": "0x801B4574"
-        },
-        {
-          "symbol": "fn_801B4574__14Class_801B44BC",
-          "start": "0x801B4574",
-          "end": "0x801B457C"
-        },
-        {
-          "symbol": "fn_801B457C__14Class_801B44BCiPc",
-          "start": "0x801B457C",
-          "end": "0x801B4584"
-        },
-        {
-          "symbol": "fn_801B4584__14Class_801B44BCi",
-          "start": "0x801B4584",
-          "end": "0x801B458C"
-        },
-        {
-          "symbol": "fn_801B458C__14Class_801B44BCii",
-          "start": "0x801B458C",
-          "end": "0x801B4594"
-        },
-        {
-          "symbol": "fn_801B4594__14Class_801B44BCi",
-          "start": "0x801B4594",
-          "end": "0x801B459C"
-        },
-        {
-          "symbol": "fn_801B459C__14Class_801B44BCP13Data_801B4548",
-          "start": "0x801B459C",
-          "end": "0x801B45A4"
-        },
-        {
-          "symbol": "fn_801B45A4__14Class_801B44BC",
-          "start": "0x801B45A4",
-          "end": "0x801B45AC"
-        },
-        {
-          "symbol": "fn_801B45AC__14Class_801B44BC",
-          "start": "0x801B45AC",
-          "end": "0x801B45B4"
-        },
-        {
-          "symbol": "fn_801B45B4__14Class_801B44BCi",
-          "start": "0x801B45B4",
-          "end": "0x801B45BC"
-        },
-        {
-          "symbol": "fn_801B45BC__14Class_801B44BC",
-          "start": "0x801B45BC",
-          "end": "0x801B45C4"
-        },
-        {
-          "symbol": "fn_801B45C4__14Class_801B44BC",
-          "start": "0x801B45C4",
-          "end": "0x801B45CC"
-        },
-        {
-          "symbol": "fn_801B45CC__14Class_801B44BCP17PathName_801B3FE0",
-          "start": "0x801B45CC",
-          "end": "0x801B45D0"
         }
       ]
     },
@@ -30676,52 +30047,6 @@
           "symbol": "PATHI_setdrylevelfadevolume",
           "start": "0x801B4F50",
           "end": "0x801B51AC"
-        }
-      ]
-    },
-    {
-      "source": "src/engine/pathbank.c",
-      "profile": "path_cxx",
-      "evidence": "evidence.tsv unit row 0x801B51AC-0x801B59B0 (src/engine/pathbank.c): one of the eleven PATH library files cut from the former survey source src/engine/cu_801B2AD4.cpp at the eleven unreferenced \"%s  %s\" strings that start each PATH file's .rodata (0x802AEA18-0x802AED94) and GoldenEye: Rogue Agent's PATH file order. Partial source; original bytes remain linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x801B51AC",
-          "end": "0x801B59B0"
-        },
-        {
-          "section": ".rodata",
-          "placement": ".data3",
-          "start": "0x802AEC08",
-          "end": "0x802AECAC"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "PATHI_loadbank",
-          "start": "0x801B51AC",
-          "end": "0x801B54BC"
-        },
-        {
-          "symbol": "PATHI_subbankready",
-          "start": "0x801B54BC",
-          "end": "0x801B5634"
-        },
-        {
-          "symbol": "PATHI_loadbankdata",
-          "start": "0x801B5634",
-          "end": "0x801B57C0"
-        },
-        {
-          "symbol": "fn_801B57C0",
-          "start": "0x801B57C0",
-          "end": "0x801B58F0"
-        },
-        {
-          "symbol": "fn_801B58F0",
-          "start": "0x801B58F0",
-          "end": "0x801B59B0"
         }
       ]
     },
@@ -30882,7 +30207,7 @@
     {
       "source": "src/game/camreplay.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv function row 0x8013CC7C-0x8013CD58, data row 0x802A00F8-0x802A0108 and the fn_8013CC7C source-form row; the remaining placements are the accepted unit 0x8013CD58-0x8013E514 and its data rows. Draft comparison only; the original bytes of 0x8013CC7C and its pool remain linked.",
+      "evidence": "evidence.tsv source-form 0x8013CC7C-0x8013CD58, whole native literal section 0x802A00F8-0x802A01C0, and provisional unit row 0x8013CC7C-0x8013E514. The 220-byte original code range stays in the executable.",
       "sections": [
         {
           "section": ".text",
@@ -30932,7 +30257,7 @@
     {
       "source": "src/game/PlyrMgr.cpp",
       "profile": "game_cpp",
-      "evidence": "Registered whole-function extents and allocated data sections are measured independently under comparisons.json; evidence.tsv records target boundaries, grouping confidence and source-form provenance. The source is linked with holdouts (units.json); the two non-exact functions stay registered here as its partials.",
+      "evidence": "Registered whole-function extents and allocated data sections are measured independently under comparisons.json; evidence.tsv records target boundaries, grouping confidence and source-form provenance. The source is linked with holdouts (units.json); the two non-exact functions stay registered here as its partials. PlyrRouteShow now links from exact source through units.json.",
       "sections": [
         {
           "section": ".text",
@@ -31149,11 +30474,6 @@
           "symbol": "PlyrFindNearest",
           "start": "0x8003A130",
           "end": "0x8003A1EC"
-        },
-        {
-          "symbol": "PlyrRouteShow",
-          "start": "0x8003A1EC",
-          "end": "0x8003A394"
         }
       ]
     },
@@ -31226,19 +30546,19 @@
     {
       "source": "src/game/CarrierRun.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv unit row 0x8012CE60-0x80130494 (src/game/CarrierRun.cpp) and the source-form rows from 0x8012CE60. Documented holdout at the start of .text: 0x8012CE60-0x8012DDCC is compiled with DECOMP_COMPARE for comparison only and keeps its original bytes with its pool 0x8029F9A0-0x8029FA20 (0x8012D8A8 is near-miss; the six functions before it are exact); the rest of the file is linked through units.json",
+      "evidence": "evidence.tsv source-form 0x8012D8A8-0x8012DDCC documents the original-byte function holdout.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
-          "start": "0x8012CE60",
+          "start": "0x8012D8A8",
           "end": "0x8012DDCC"
         },
         {
           "section": ".rodata",
           "placement": ".data3",
           "start": "0x8029F9A0",
-          "end": "0x8029FA20"
+          "end": "0x8029FB20"
         },
         {
           "section": ".data",
@@ -31255,36 +30575,6 @@
       ],
       "functions": [
         {
-          "symbol": "CarrierRunHasDefenderAhead",
-          "start": "0x8012CE60",
-          "end": "0x8012CEF4"
-        },
-        {
-          "symbol": "CarrierRunCountRetreat",
-          "start": "0x8012CEF4",
-          "end": "0x8012CFA0"
-        },
-        {
-          "symbol": "CarrierRunAddSideCosts",
-          "start": "0x8012CFA0",
-          "end": "0x8012D1E4"
-        },
-        {
-          "symbol": "CarrierRunCanUseSideline",
-          "start": "0x8012D1E4",
-          "end": "0x8012D258"
-        },
-        {
-          "symbol": "CarrierRunSteerToSideline",
-          "start": "0x8012D258",
-          "end": "0x8012D4FC"
-        },
-        {
-          "symbol": "CarrierRunPickHeading",
-          "start": "0x8012D4FC",
-          "end": "0x8012D8A8"
-        },
-        {
           "symbol": "CarrierRunAvoidPlayer",
           "start": "0x8012D8A8",
           "end": "0x8012DDCC"
@@ -31294,7 +30584,7 @@
     {
       "source": "src/game/Handoff.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv unit row 0x800EC76C-0x800EF224 (src/game/Handoff.cpp) and the source-form rows from 0x800EC76C. Documented holdout at the start of .text: 0x800EC76C-0x800ECC64 is compiled with DECOMP_COMPARE for comparison only and keeps its original bytes (0x800EC870 is near-miss; 0x800EC76C, 0x800EC840 and 0x800EC9E4 are exact, and 0x800EC9E4 shares the 8-byte pool 0x8029DE70-0x8029DE78 with 0x800EC870); the rest of the file is linked through units.json",
+      "evidence": "evidence.tsv unit row 0x800EC76C-0x800EF224 for src/game/Handoff.cpp and the TurnToPlayPickDirection source-form row 0x800EC870-0x800EC9E4. Its code keeps the original bytes. The other routines and the whole literal pool link through units.json.",
       "sections": [
         {
           "section": ".text",
@@ -31317,24 +30607,9 @@
       ],
       "functions": [
         {
-          "symbol": "TurnToPlayPickVariant",
-          "start": "0x800EC76C",
-          "end": "0x800EC840"
-        },
-        {
-          "symbol": "TurnToPlayPickAnim",
-          "start": "0x800EC840",
-          "end": "0x800EC870"
-        },
-        {
           "symbol": "TurnToPlayPickDirection",
           "start": "0x800EC870",
           "end": "0x800EC9E4"
-        },
-        {
-          "symbol": "TurnToPlayStartAnim",
-          "start": "0x800EC9E4",
-          "end": "0x800ECC64"
         }
       ]
     },
@@ -32625,7 +31900,7 @@
     {
       "source": "src/game/InGameGroup.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv unit row 0x800325E8-0x80032EE8 (src/game/InGameGroup.cpp), its function and data rows, and the source-form row 0x80032790-0x80032E70: nine of the ten functions exact; the static initializer 0x80032790 is the documented partial (owner ruling of 2026-11-14 on #1349 question 2), so original bytes stay linked.",
+      "evidence": "evidence.tsv provisional unit row 0x800325E8-0x80032EE8, data rows and HOLDOUT source-form row 0x80032790-0x80032E70. Only the static initializer remains a comparison; the two code runs, native data and ctor/dtor entries link.",
       "sections": [
         {
           "section": ".text",
@@ -32672,207 +31947,35 @@
       ],
       "functions": [
         {
-          "symbol": "GSGetGroupName__11InGameGroup",
-          "start": "0x800325E8",
-          "end": "0x800325F4"
-        },
-        {
-          "symbol": "GSGetStageList__11InGameGroup",
-          "start": "0x800325F4",
-          "end": "0x80032600"
-        },
-        {
-          "symbol": "GSGetTransitionList__11InGameGroup",
-          "start": "0x80032600",
-          "end": "0x8003260C"
-        },
-        {
-          "symbol": "GSGetStageModuleList__11InGameGroupi",
-          "start": "0x8003260C",
-          "end": "0x80032658"
-        },
-        {
-          "symbol": "GSProcess__11InGameGroup",
-          "start": "0x80032658",
-          "end": "0x80032728"
-        },
-        {
-          "symbol": "GSTransition__11InGameGroupii",
-          "start": "0x80032728",
-          "end": "0x80032790"
-        },
-        {
           "symbol": "__static_initialization_and_destruction_0",
           "start": "0x80032790",
           "end": "0x80032E70"
-        },
-        {
-          "symbol": "_._11InGameGroup",
-          "start": "0x80032E70",
-          "end": "0x80032E90"
-        },
-        {
-          "symbol": "_GLOBAL_.I._InGameGroup_aStages",
-          "start": "0x80032E90",
-          "end": "0x80032EBC"
-        },
-        {
-          "symbol": "_GLOBAL_.D._InGameGroup_aStages",
-          "start": "0x80032EBC",
-          "end": "0x80032EE8"
         }
       ]
     },
     {
-      "source": "src/engine/smixer.c",
+      "source": "src/engine/stpparse.c",
       "profile": "sound_cxx",
-      "evidence": "evidence.tsv provisional unit row 0x802755E0-0x80276798 (src/engine/smixer.c), the sound_cxx compiler rows and the function and name rows of every registered function. Draft comparisons only; original assembly remains linked.",
+      "evidence": "evidence.tsv provisional unit row 0x80270E04-0x802714A8, function and name rows of SNDI_parsetimbre, snddefaultenvelope data row 0x8030003C-0x80300044 and the sound_cxx compiler row.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
-          "start": "0x802755E0",
-          "end": "0x80276798"
+          "start": "0x80270E04",
+          "end": "0x802714A8"
         },
         {
-          "section": ".rodata",
-          "placement": ".data3",
-          "start": "0x802C1E1C",
-          "end": "0x802C1EAC"
-        },
-        {
-          "section": ".bss",
-          "placement": ".bss",
-          "start": "0x803B4E34",
-          "end": "0x803B5044"
+          "section": ".data",
+          "placement": ".data4",
+          "start": "0x8030003C",
+          "end": "0x80300044"
         }
       ],
       "functions": [
         {
-          "symbol": "MIXI_interpolateto0",
-          "start": "0x802755E0",
-          "end": "0x80275780"
-        },
-        {
-          "symbol": "MIXI_interpolatemix",
-          "start": "0x80275780",
-          "end": "0x80275948"
-        },
-        {
-          "symbol": "SNDMIX_setmasterlowpass",
-          "start": "0x80275948",
-          "end": "0x8027594C"
-        },
-        {
-          "symbol": "SNDMIXI_volramp",
-          "start": "0x8027594C",
-          "end": "0x80275B7C"
-        },
-        {
-          "symbol": "SNDI_New",
-          "start": "0x80275B7C",
-          "end": "0x80275B9C"
-        },
-        {
-          "symbol": "SNDI_Delete",
-          "start": "0x80275B9C",
-          "end": "0x80275BBC"
-        },
-        {
-          "symbol": "MIX_create",
-          "start": "0x80275BBC",
-          "end": "0x80275E7C"
-        },
-        {
-          "symbol": "MIX_destroy",
-          "start": "0x80275E7C",
-          "end": "0x80275F54"
-        },
-        {
-          "symbol": "MIX_reset",
-          "start": "0x80275F54",
-          "end": "0x80275F80"
-        },
-        {
-          "symbol": "MIX_playinit",
-          "start": "0x80275F80",
-          "end": "0x80276194"
-        },
-        {
-          "symbol": "MIX_play",
-          "start": "0x80276194",
-          "end": "0x80276238"
-        },
-        {
-          "symbol": "MIXI_stop",
-          "start": "0x80276238",
-          "end": "0x80276278"
-        },
-        {
-          "symbol": "MIX_stop",
-          "start": "0x80276278",
-          "end": "0x80276378"
-        },
-        {
-          "symbol": "SNDMIX_setdrygain",
-          "start": "0x80276378",
-          "end": "0x802763AC"
-        },
-        {
-          "symbol": "SNDMIX_setwetgain",
-          "start": "0x802763AC",
-          "end": "0x802763E0"
-        },
-        {
-          "symbol": "MIX_audioslice",
-          "start": "0x802763E0",
-          "end": "0x80276798"
-        }
-      ]
-    },
-    {
-      "source": "src/engine/satospkr.c",
-      "profile": "sound_cxx",
-      "evidence": "evidence.tsv provisional unit row 0x802775EC-0x80277CF0 (src/engine/satospkr.c), the sound_cxx compiler rows and the function and name rows of every registered function. Draft comparisons only; original assembly remains linked.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x802775EC",
-          "end": "0x80277CF0"
-        },
-        {
-          "section": ".rodata",
-          "placement": ".data3",
-          "start": "0x802C1F10",
-          "end": "0x802C1F64"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "SNDI_equalpower",
-          "start": "0x802775EC",
-          "end": "0x80277658"
-        },
-        {
-          "symbol": "SNDI_precalcaztospkrvol",
-          "start": "0x80277658",
-          "end": "0x80277A60"
-        },
-        {
-          "symbol": "SNDI_aztospkrvol",
-          "start": "0x80277A60",
-          "end": "0x80277AFC"
-        },
-        {
-          "symbol": "SNDI_freespkrtable",
-          "start": "0x80277AFC",
-          "end": "0x80277B3C"
-        },
-        {
-          "symbol": "SNDI_spkrconfig",
-          "start": "0x80277B3C",
-          "end": "0x80277CF0"
+          "symbol": "SNDI_parsetimbre",
+          "start": "0x80270E04",
+          "end": "0x802714A8"
         }
       ]
     },
@@ -32911,7 +32014,7 @@
     {
       "source": "src/engine/sfilter.c",
       "profile": "sound_cxx",
-      "evidence": "evidence.tsv provisional unit row 0x80279D90-0x80279E74 (src/engine/sfilter.c), the compiler, external and source-form rows 0x80276DE4-0x8027CF9C, and the function and name rows of every registered function. Draft comparisons only; original assembly remains linked.",
+      "evidence": "Registers only SFILTER_remove, the partial whose original bytes remain linked. See the unit row and holdout source-form row in evidence.tsv. SFILTER_add links from untouched compiler instructions through the approved holdout profile.",
       "sections": [
         {
           "section": ".text",
@@ -32921,11 +32024,6 @@
         }
       ],
       "functions": [
-        {
-          "symbol": "SFILTER_add",
-          "start": "0x80279D90",
-          "end": "0x80279DF8"
-        },
         {
           "symbol": "SFILTER_remove",
           "start": "0x80279DF8",
@@ -33242,13 +32340,25 @@
     {
       "source": "src/engine/saemsamb.c",
       "profile": "sound_cxx",
-      "evidence": "evidence.tsv provisional unit row 0x802697D8-0x802699F4 (src/engine/saemsamb.c); draft comparisons only, original assembly remains linked. Part of the former src/engine/cu_80266A2C.c (split by c16a).",
+      "evidence": "evidence.tsv provisional unit and source-form rows 0x802697D8-0x80269990, sound_cxx and constructor and sndaems data rows. Compares the one non-exact add function that retains original bytes. The linked native initializer and wrapper provide the original .ctors entry and BSS state.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x802697D8",
           "end": "0x802699F4"
+        },
+        {
+          "section": ".bss",
+          "placement": ".bss",
+          "start": "0x803A6BCC",
+          "end": "0x803A6C04"
+        },
+        {
+          "section": ".ctors",
+          "placement": ".data2",
+          "start": "0x80289B4C",
+          "end": "0x80289B50"
         }
       ],
       "functions": [
@@ -33256,23 +32366,13 @@
           "symbol": "SNDAEMS_addmodulebank",
           "start": "0x802697D8",
           "end": "0x80269990"
-        },
-        {
-          "symbol": "fn_80269990",
-          "start": "0x80269990",
-          "end": "0x802699C8"
-        },
-        {
-          "symbol": "fn_802699C8",
-          "start": "0x802699C8",
-          "end": "0x802699F4"
         }
       ]
     },
     {
       "source": "src/engine/spchrule.c",
       "profile": "speech_cxx",
-      "evidence": "evidence.tsv provisional unit row 0x801B1CFC-0x801B23A0 (src/engine/spchrule.c), the speech_cxx compiler row and the compiler, source-form, type and external rows 0x801AE3E4-0x801B2AD4, and the function and name rows of every registered function. Draft comparisons only; original assembly remains linked and data is referenced through external labels.",
+      "evidence": "evidence.tsv unit row 0x801B1CFC-0x801B23A0, the speech_cxx comparison profile and evidence.tsv source-form 0x801B22E0-0x801B2368. The other fifteen native routines link through units.json.",
       "sections": [
         {
           "section": ".text",
@@ -33283,84 +32383,9 @@
       ],
       "functions": [
         {
-          "symbol": "fn_801B1CFC",
-          "start": "0x801B1CFC",
-          "end": "0x801B1D0C"
-        },
-        {
-          "symbol": "fn_801B1D0C",
-          "start": "0x801B1D0C",
-          "end": "0x801B1D18"
-        },
-        {
-          "symbol": "fn_801B1D18",
-          "start": "0x801B1D18",
-          "end": "0x801B1D20"
-        },
-        {
-          "symbol": "fn_801B1D20",
-          "start": "0x801B1D20",
-          "end": "0x801B1D30"
-        },
-        {
-          "symbol": "fn_801B1D30",
-          "start": "0x801B1D30",
-          "end": "0x801B1D44"
-        },
-        {
-          "symbol": "fn_801B1D44",
-          "start": "0x801B1D44",
-          "end": "0x801B1D60"
-        },
-        {
-          "symbol": "fn_801B1D60",
-          "start": "0x801B1D60",
-          "end": "0x801B1DAC"
-        },
-        {
-          "symbol": "fn_801B1DAC",
-          "start": "0x801B1DAC",
-          "end": "0x801B1E58"
-        },
-        {
-          "symbol": "fn_801B1E58",
-          "start": "0x801B1E58",
-          "end": "0x801B1EC8"
-        },
-        {
-          "symbol": "fn_801B1EC8",
-          "start": "0x801B1EC8",
-          "end": "0x801B1FD8"
-        },
-        {
-          "symbol": "fn_801B1FD8",
-          "start": "0x801B1FD8",
-          "end": "0x801B2190"
-        },
-        {
-          "symbol": "fn_801B2190",
-          "start": "0x801B2190",
-          "end": "0x801B2250"
-        },
-        {
-          "symbol": "fn_801B2250",
-          "start": "0x801B2250",
-          "end": "0x801B22B0"
-        },
-        {
-          "symbol": "iSPCH_GetSampleParmAddr",
-          "start": "0x801B22B0",
-          "end": "0x801B22E0"
-        },
-        {
-          "symbol": "fn_801B22E0",
+          "symbol": "iSPCH_GetSampleSizeData",
           "start": "0x801B22E0",
           "end": "0x801B2368"
-        },
-        {
-          "symbol": "fn_801B2368",
-          "start": "0x801B2368",
-          "end": "0x801B23A0"
         }
       ]
     },
@@ -33989,7 +33014,7 @@
     {
       "source": "src/engine/srender.c",
       "profile": "sound_cxx",
-      "evidence": "evidence.tsv provisional unit row 0x802796DC-0x80279798 (src/engine/srender.c), the sound_cxx compiler rows and the function, name and source-form rows of SNDI_validrendermode. The body is 184 bytes versus the target's 188 (85.00% objdiff); separate mask comparisons and loop register allocation remain different. The whole target extent remains registered and original executable bytes stay linked.",
+      "evidence": "evidence.tsv provisional unit row 0x802796DC-0x80279798 (src/engine/srender.c), the sound_cxx compiler rows and the function, name and source-form rows of SNDI_validrendermode. The separate comparisons now emit, at 89.21% objdiff and 192 bytes versus the target's 188. Their predicates and loop register allocation remain different. The original code stays linked.",
       "sections": [
         {
           "section": ".text",
@@ -34009,7 +33034,7 @@
     {
       "source": "src/engine/sfir.c",
       "profile": "sound_cxx",
-      "evidence": "evidence.tsv provisional unit row 0x80279E74-0x8027A21C (src/engine/sfir.c), the sound_cxx compiler rows and the function and name rows of every registered function and the data rows of its .rodata 0x802C21C0-0x802C21F0. Draft comparisons only; original assembly remains linked.",
+      "evidence": "evidence.tsv provisional unit row 0x80279E74-0x8027A21C (src/engine/sfir.c), the sound_cxx compiler rows, the function, name and source-form rows of calcFIRCoeffs, and the data row of its .rodata 0x802C21C0-0x802C21F0. The sinc loops, window and center update match. The final normalization uses a direct center load where the target indexes the coefficient array. The executable uses the original bytes.",
       "sections": [
         {
           "section": ".text",

@@ -201,8 +201,8 @@ void PlyrMoveCmdClear(PlyrMoveCmd_t *pObject);
 void fn_800AF804(void *p);
 void SortListAdd(Object_8003DEC4 *pObject, short a, unsigned short b, int index);
 int fn_8009C328(Object_80039F5C *pA, Object_80039F5C *pB);
-int fn_80238258(const void *pA, const void *pB, unsigned int size);
-int fn_80238278(const void *p, int size, int seed);
+int SyncStateCompareBytes(const void *pA, const void *pB, unsigned int size);
+int Crc32Update(const void *p, int size, int seed);
 int fn_800ABDA4(int team);
 void *SyncStateGetData(void *pHandle);
 int PlyrMgrCompareSnapshot(PlyrMgr_t *pA, PlyrMgr_t *pB);
@@ -356,21 +356,21 @@ extern "C" int PlyrMgrCompareSnapshot(PlyrMgr_t *pA, PlyrMgr_t *pB)
             result |= CollideCompareObjects((CollideObject_t *)((char *)a->mpUnknown3092 + ((char *)pA - (char *)_PlyrMgr_pManager)),
                                   (CollideObject_t *)((char *)b->mpUnknown3092 + ((char *)pB - (char *)_PlyrMgr_pManager)),
                                   (CollideObject_t *)a->mpUnknown3092);
-            result |= fn_80238258(&a->mBlock1032, &b->mBlock1032, 0x80C);
+            result |= SyncStateCompareBytes(&a->mBlock1032, &b->mBlock1032, 0x80C);
         }
     } else {
         int value;
 
-        result = fn_80238278(pA, sizeof(PlyrMgr_t), 0);
+        result = Crc32Update(pA, sizeof(PlyrMgr_t), 0);
         for (i = 0; i < pA->mCount; i++) {
             a = (Object_80039F5C *)((char *)&pA->mpPlayers[i] + ((char *)pA - (char *)_PlyrMgr_pManager));
 
-            result = fn_80238278(&a->mUnknown2900, 0xC0, result);
+            result = Crc32Update(&a->mUnknown2900, 0xC0, result);
         }
         value = fn_800ABDA4(0);
-        result = fn_80238278(&value, sizeof(value), result);
+        result = Crc32Update(&value, sizeof(value), result);
         value = fn_800ABDA4(1);
-        result = fn_80238278(&value, sizeof(value), result);
+        result = Crc32Update(&value, sizeof(value), result);
     }
     return result;
 }
@@ -971,6 +971,7 @@ extern "C" Object_80039F5C *PlyrFindNearest(Vector_80039F5C *pPos, float *pOut, 
     return pBest;
 }
 
+/* Shows or hides a player's route arrow at the formation or live position. */
 extern "C" void PlyrRouteShow(int on, int team, int index)
 {
     Object_80039F5C *p = &_PlyrMgr_pManager->mpPlayers[index + team * _PlyrMgr_pManager->mPerTeam].mObject;
@@ -987,9 +988,8 @@ extern "C" void PlyrRouteShow(int on, int team, int index)
 
             offset = fn_80177FE0();
             if (fn_80178308() == ((p->mId >> 8) & 0xFF)) {
+                pos.mX = (pPlay->mUnknown8.mUnknownF == 1 ? &pEntry->mUnknown18 : &pEntry->mUnknown10)->mX;
                 Point_8017886C *pPos = &pos;
-
-                pPos->mX = (pPlay->mUnknown8.mUnknownF == 1 ? &pEntry->mUnknown18 : &pEntry->mUnknown10)->mX;
                 pPos->mY = (pPlay->mUnknown8.mUnknownF == 1 ? &pEntry->mUnknown18 : &pEntry->mUnknown10)->mY;
                 Vec2Add(pPos, pPos, &offset);
             } else {

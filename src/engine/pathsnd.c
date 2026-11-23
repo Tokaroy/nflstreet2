@@ -28,7 +28,7 @@ typedef struct Record_8027E2D0 {
     unsigned char mUnknown20[4];
 } Record_8027E2D0;
 
-struct Class_801B44BC {
+struct IPathTrack {
     int m0;
     unsigned char mUnknown4[4];
     int m8;
@@ -43,7 +43,7 @@ struct Class_801B44BC {
     int m58;
     unsigned char mUnknown5C[8];
     Record_8027E2D0 *m64;
-    virtual ~Class_801B44BC();
+    virtual ~IPathTrack();
     virtual void vfn_02();
     virtual void vfn_03();
     virtual int vfn_04();
@@ -80,7 +80,7 @@ struct Class_801B44BC {
     virtual int vfn_35();
 };
 
-struct Object_8027D6E8 : Class_801B44BC {
+struct Object_8027D6E8 : IPathTrack {
     virtual ~Object_8027D6E8();
     Record_8027D9FC m6C;
     Record_8027EC7C m7C;
@@ -142,8 +142,8 @@ struct Object_8027E518 : Object_8027D6E8 {
 
 extern "C" {
 
-void *fn_801B2C40(int size);
-void fn_801B3A88(void);
+void *PATHI_memalloc(int size);
+void PATHI_servicetask(void);
 void SNDSYS_entercritical(void);
 void SNDSYS_leavecritical(void);
 int SNDSTRM_pitchmult(int handle, int value);
@@ -161,16 +161,16 @@ int SNDbankheadersize(int handle);
 int SNDbankheadercopy(void *dest, int handle);
 int SNDstop(int handle);
 int fn_8026E388(int handle);
-void fn_801B2C94(void *p);
+void PATHI_memfree(void *p);
 
 void *fn_8027D5CC(int size)
 {
-    return fn_801B2C40(size);
+    return PATHI_memalloc(size);
 }
 
 void fn_8027D5EC(void *p)
 {
-    fn_801B2C94(p);
+    PATHI_memfree(p);
 }
 
 int fn_8027D960(Object_8027D6E8 *p)
@@ -243,12 +243,12 @@ extern "C" {
 
 void *fn_8027DAA4(int size)
 {
-    return fn_801B2C40(size);
+    return PATHI_memalloc(size);
 }
 
 void fn_8027DAC4(void *p)
 {
-    fn_801B2C94(p);
+    PATHI_memfree(p);
 }
 
 }
@@ -402,7 +402,7 @@ int Object_8027DAE4::vfn_33(int key)
     if (record != 0 && record->m18 != -1) {
         if (record->m14 == 0) {
             result = SNDbankremove(record->m18);
-            fn_801B2C94(record->m1C);
+            PATHI_memfree(record->m1C);
         }
         memset(record, 0, sizeof(*record));
         record->m18 = -1;
@@ -416,11 +416,11 @@ int Object_8027DAE4::vfn_32(int key, int mode)
     void *data;
     Record_8027E2D0 *record = vfn_28(key);
     if (record != 0 && record->m18 != -1 && mode == 7) {
-        data = fn_801B2C40(SNDbankheadersize(record->m18));
+        data = PATHI_memalloc(SNDbankheadersize(record->m18));
         if (data != 0) {
             SNDbankheadercopy(data, record->m18);
             result = 0;
-            fn_801B2C94(record->m1C);
+            PATHI_memfree(record->m1C);
             record->m1C = data;
         }
     }
@@ -431,12 +431,12 @@ extern "C" {
 
 void *fn_8027E4D8(int size)
 {
-    return fn_801B2C40(size);
+    return PATHI_memalloc(size);
 }
 
 void fn_8027E4F8(void *p)
 {
-    fn_801B2C94(p);
+    PATHI_memfree(p);
 }
 
 }

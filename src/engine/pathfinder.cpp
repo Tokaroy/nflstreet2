@@ -51,12 +51,12 @@ TiburonIAllocator13Impl *_Pathfinder_pAllocator = 0;
 unsigned char _Pathfinder_bInit = 0;
 
 void PATH_setallocator(TiburonIAllocator13Impl *pAllocator, TagValuePair *pConfig);
-int fn_801B2B58(void);
+int PATH_shutdown(void);
 int PATH_addmapfile(int a);
 int PATH_destroy(int id);
-int fn_801B3AD0(int id, PathfinderTrackData_t *pData, int a);
+int PATH_createstreamtrack(int id, PathfinderTrackData_t *pData, int a);
 void *PATH_createstreamimp(int id, int a, float b);
-int fn_801B3D28(int id, PathfinderTrackData_t *pData, int a);
+int PATH_createbanktrack(int id, PathfinderTrackData_t *pData, int a);
 void *PATH_createbankobject(int id);
 void PATH_volume(int id, signed char value);
 void PATH_fade(int a, int b, int c, int d);
@@ -144,7 +144,7 @@ void PathfinderShutdown(void)
         }
         DSDelList(_Pathfinder_State.mpPool0);
     }
-    fn_801B2B58();
+    PATH_shutdown();
     if (_Pathfinder_pAllocator) {
         delete _Pathfinder_pAllocator;
     }
@@ -209,7 +209,7 @@ int PathfinderCreateTrack(PathfinderTrackDesc_t *pDesc)
         pItem->mUnknown8 = pDesc->mUnknown24;
         SndSetHeap((SndBankHeap_t *)SndGetBankTable(), pDesc->mUnknown10);
         if (pDesc->mUnknown24) {
-            result = fn_801B3D28(pDesc->mId, &pDesc->mUnknown14, pDesc->mUnknown20);
+            result = PATH_createbanktrack(pDesc->mId, &pDesc->mUnknown14, pDesc->mUnknown20);
             if (result >= 0) {
                 pItem->mpUnknown4 = PATH_createbankobject(pDesc->mId);
                 if (!pItem->mpUnknown4) {
@@ -217,7 +217,7 @@ int PathfinderCreateTrack(PathfinderTrackDesc_t *pDesc)
                 }
             }
         } else {
-            result = fn_801B3AD0(pDesc->mId, &pDesc->mUnknown14, pDesc->mUnknown04);
+            result = PATH_createstreamtrack(pDesc->mId, &pDesc->mUnknown14, pDesc->mUnknown04);
             if (result >= 0) {
                 pItem->mpUnknown4 = PATH_createstreamimp(pDesc->mId, pDesc->mUnknown08, pDesc->mUnknown0C);
                 if (!pItem->mpUnknown4) {
