@@ -1,9 +1,9 @@
 /* Comparison fragment of src/engine/cu_8021A438.c: fn_80220D3C and its literal pool. */
 #include "engine/cu_8021A438.h"
 
-extern Color_80223C4C *lbl_803EBF50;
+extern UIGMaterialColorState_t *lbl_803EBF50;
 extern Int32 lbl_803ED00C;
-extern Color_80223C4C lbl_8039F878[];
+extern UIGMaterialColorState_t lbl_8039F878[];
 
 void fn_80220CFC(Int32 a);
 
@@ -40,8 +40,8 @@ static inline unsigned char fn_80220DA4_ToByte(Float32 v)
 
 void fn_80220DA4(Float32 *pMul, Float32 *pScale)
 {
-    Color_80223C4C *pCur;
-    Color_80223C4C *pNext;
+    UIGMaterialColorState_t *pCur;
+    UIGMaterialColorState_t *pNext;
 
     pCur = &lbl_8039F878[lbl_803ED00C];
     pNext = pCur + 1;
@@ -59,14 +59,14 @@ void fn_80220DA4(Float32 *pMul, Float32 *pScale)
     if (!(pNext->unk_00[3] > 0.0f)) {
         pNext->unk_00[3] = 0.0f;
     }
-    pNext->unk_20.r = fn_80220DA4_ToByte(pNext->unk_00[0] * 255.0f);
-    pNext->unk_20.g = fn_80220DA4_ToByte(pNext->unk_00[1] * 255.0f);
-    pNext->unk_20.b = fn_80220DA4_ToByte(pNext->unk_00[2] * 255.0f);
-    pNext->unk_20.a = fn_80220DA4_ToByte(pNext->unk_00[3] * 255.0f);
-    pNext->unk_24.r = fn_80220DA4_ToByte(pNext->unk_00[4] * 255.0f);
-    pNext->unk_24.g = fn_80220DA4_ToByte(pNext->unk_00[5] * 255.0f);
-    pNext->unk_24.b = fn_80220DA4_ToByte(pNext->unk_00[6] * 255.0f);
-    pNext->unk_24.a = fn_80220DA4_ToByte(pNext->unk_00[7] * 255.0f);
+    pNext->mMaterialColor.r = fn_80220DA4_ToByte(pNext->unk_00[0] * 255.0f);
+    pNext->mMaterialColor.g = fn_80220DA4_ToByte(pNext->unk_00[1] * 255.0f);
+    pNext->mMaterialColor.b = fn_80220DA4_ToByte(pNext->unk_00[2] * 255.0f);
+    pNext->mMaterialColor.a = fn_80220DA4_ToByte(pNext->unk_00[3] * 255.0f);
+    pNext->mLightColor.r = fn_80220DA4_ToByte(pNext->unk_00[4] * 255.0f);
+    pNext->mLightColor.g = fn_80220DA4_ToByte(pNext->unk_00[5] * 255.0f);
+    pNext->mLightColor.b = fn_80220DA4_ToByte(pNext->unk_00[6] * 255.0f);
+    pNext->mLightColor.a = fn_80220DA4_ToByte(pNext->unk_00[7] * 255.0f);
     lbl_803ED00C++;
     lbl_803EBF50++;
     fn_80220CFC(0);
