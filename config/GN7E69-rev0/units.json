@@ -1549,6 +1549,22 @@
     "_PerJoy_aPadStatus": {
       "address": "0x803E92CC",
       "evidence": "evidence.tsv data/name rows for _PerJoy_aPadStatus; external array retains original storage."
+    },
+    "_f_bss": {
+      "address": "0x803064C0",
+      "evidence": "Linker-defined start of .bss: __start forms it with lis/ori at 0x80003134-0x80003164 and passes the span to memset; no object storage claimed."
+    },
+    "_e_bss": {
+      "address": "0x803EA28C",
+      "evidence": "Linker-defined end of .bss: __start forms it with lis/ori at 0x80003134-0x80003164 and passes the span to memset; no object storage claimed."
+    },
+    "_f_sbss": {
+      "address": "0x803EC5E0",
+      "evidence": "Linker-defined start of .sbss: __start forms it with lis/ori at 0x80003134-0x80003164 and passes the span to memset; no object storage claimed."
+    },
+    "_e_sbss": {
+      "address": "0x803ED681",
+      "evidence": "Linker-defined end of .sbss: __start forms it with lis/ori at 0x80003134-0x80003164 and passes the span to memset; no object storage claimed."
     }
   },
   "units": [
@@ -19191,19 +19207,13 @@
     },
     {
       "source": "src/game/PlyrMgr.cpp",
-      "profile": "game_cpp_holdouts",
-      "evidence": "evidence.tsv unit row 0x8003830C-0x8003AEA8. PlyrRouteShow links with the two adjacent runs. PlyrUpdateControlFlag keeps its original bytes. The whole native data sections remain linked.",
+      "profile": "game_cpp",
+      "evidence": "evidence.tsv unit row 0x8003830C-0x8003AEA8; the whole file is linked: all 54 functions exact, with the native .rodata, .data and .sdata sections.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x8003830C",
-          "end": "0x8003962C"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x8003977C",
           "end": "0x8003AEA8"
         },
         {
@@ -19224,16 +19234,7 @@
           "start": "0x803EA3F0",
           "end": "0x803EA3FC"
         }
-      ],
-      "holdouts": {
-        "functions": [
-          {
-            "function": "PlyrUpdateControlFlag",
-            "evidence": "evidence.tsv source-form 0x8003962C-0x8003977C"
-          }
-        ],
-        "evidence": "evidence.tsv source-form 0x8003962C-0x8003977C records the boundary with the shared PreSnap return declaration."
-      }
+      ]
     },
     {
       "source": "src/game/PlyrRender.cpp",
@@ -21641,6 +21642,25 @@
           "placement": ".sbss",
           "start": "0x803ED614",
           "end": "0x803ED618"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/crt0.c",
+      "profile": "engine_c",
+      "evidence": "evidence.tsv unit row 0x80003100-0x80003468 (src/engine/crt0.c) and its function, name, data and assembly rows; the whole file is linked: the six .init routines 0x80003100-0x80003468 with their zero constants, and the libsn banner strings and version word 0x802C2A00-0x802C2A50.",
+      "sections": [
+        {
+          "section": ".init",
+          "placement": ".init",
+          "start": "0x80003100",
+          "end": "0x80003468"
+        },
+        {
+          "section": ".data",
+          "placement": ".data4",
+          "start": "0x802C2A00",
+          "end": "0x802C2A50"
         }
       ]
     },
