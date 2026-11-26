@@ -1930,6 +1930,100 @@
       ]
     },
     {
+      "source": "src/engine/llangle.c",
+      "profile": "engine_c",
+      "evidence": "evidence.tsv provisional unit row 0x801CF944-0x801CFF34 (src/engine/llangle.c), its compiler, function and name rows and the exact data rows of all its storage: .rodata 0x802AF548-0x802AF5D0, .data _Math_ArcTanTable 0x802F7B0C-0x802F7B30, the file-static .bss _Math_TaylorConst 0x803847A0-0x803847C0 and the uninitialized global _Math_Taylor (COMMON) placed by the storage map at 0x803E9288-0x803E92AC. All 15 functions exact; the two paired-single routines _MathSin and _MathSinCos16 are C functions whose bodies are asm blocks.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x801CF944",
+          "end": "0x801CFF34"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802AF548",
+          "end": "0x802AF5D0"
+        },
+        {
+          "section": ".data",
+          "placement": ".data4",
+          "start": "0x802F7B0C",
+          "end": "0x802F7B30"
+        },
+        {
+          "section": ".bss",
+          "placement": ".bss",
+          "start": "0x803847A0",
+          "end": "0x803847C0"
+        }
+      ],
+      "storage": [
+        {
+          "symbol": "_Math_Taylor",
+          "start": "0x803E9288",
+          "end": "0x803E92AC"
+        }
+      ]
+    },
+    {
+      "source": "src/engine/Memory.c",
+      "profile": "engine_c_holdouts",
+      "evidence": "evidence.tsv unit row 0x801D134C-0x801D34C4 (src/engine/Memory.c), its compiler, type, source-form and function rows; linked with holdouts (owner ruling of 2026-11-20): 34 of 39 functions exact, the holdouts fn_801D177C, fn_801D18A0, fn_801D1C14, fn_801D2130 and fn_801D2478 keep the original bytes. The file compiles no data of its own: the heap list, default heap, address table, state words, lock and strings stay external at their original addresses.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x801D134C",
+          "end": "0x801D177C"
+        },
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x801D1ACC",
+          "end": "0x801D1C14"
+        },
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x801D1E30",
+          "end": "0x801D2130"
+        },
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x801D2570",
+          "end": "0x801D34C4"
+        }
+      ],
+      "holdouts": {
+        "functions": [
+          {
+            "function": "fn_801D177C",
+            "evidence": "evidence.tsv source-form 0x801D177C-0x801D18A0"
+          },
+          {
+            "function": "fn_801D18A0",
+            "evidence": "evidence.tsv source-form 0x801D18A0-0x801D1ACC"
+          },
+          {
+            "function": "fn_801D1C14",
+            "evidence": "evidence.tsv source-form 0x801D1C14-0x801D1E30"
+          },
+          {
+            "function": "fn_801D2130",
+            "evidence": "evidence.tsv source-form 0x801D2130-0x801D2478"
+          },
+          {
+            "function": "fn_801D2478",
+            "evidence": "evidence.tsv source-form 0x801D2478-0x801D2570"
+          }
+        ],
+        "evidence": "round-3 lane-6 merge notes (PR #1452 holdouts table): src/engine/Memory.c holds out fn_801D177C, fn_801D18A0, fn_801D1C14, fn_801D2130 and fn_801D2478."
+      }
+    },
+    {
       "source": "src/engine/TibNew.cpp",
       "profile": "engine_cpp_nosda",
       "evidence": "evidence.tsv unit row 0x801D3BD0-0x801D3C68 (src/engine/TibNew.cpp) and its function rows; every function exact, promoted from comparison-only.",
@@ -28592,6 +28686,50 @@
           }
         ],
         "evidence": "lane-6 round-2 merge notes (PR #1442 holdouts table): src/engine/lzh.c holds out fn_802822E0, fn_802824A8, fn_80282654, fn_80282740, fn_8028291C, fn_80282D70, fn_80282F24, fn_802830F0, fn_802832CC, fn_80283660, fn_80283E48, fn_80284030, fn_8028410C, fn_80284E70, fn_80284FB8, fn_802855EC."
+      }
+    },
+    {
+      "source": "src/engine/physbroadphase.cpp",
+      "profile": "game_cpp_holdouts",
+      "evidence": "evidence.tsv unit row 0x801E9F70-0x801EADD8 (src/engine/physbroadphase.cpp), its compiler, type, function and name rows and the exact data row of its whole .rodata, the BroadPhase vtable 0x802B1708-0x802B1720; linked with holdouts (owner ruling of 2026-11-20): 20 of 22 functions exact, the holdouts BroadPhase::GetOverlapIndex and BroadPhase::InsertEndpoint keep the original bytes.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x801E9F70",
+          "end": "0x801EA668"
+        },
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x801EA6C0",
+          "end": "0x801EAB60"
+        },
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x801EAC98",
+          "end": "0x801EADD8"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802B1708",
+          "end": "0x802B1720"
+        }
+      ],
+      "holdouts": {
+        "functions": [
+          {
+            "function": "GetOverlapIndex__10BroadPhaseUsUs",
+            "evidence": "evidence.tsv source-form 0x801EA668-0x801EA6C0"
+          },
+          {
+            "function": "InsertEndpoint__10BroadPhaseiUs",
+            "evidence": "evidence.tsv source-form 0x801EAB60-0x801EAC98"
+          }
+        ],
+        "evidence": "round-3 lane-6 merge notes (PR #1452 holdouts table): src/engine/physbroadphase.cpp holds out BroadPhase::GetOverlapIndex and BroadPhase::InsertEndpoint."
       }
     }
   ]
