@@ -235,13 +235,13 @@ void HairListOpen(DbCursor *pObject);
 void HairListClose(DbCursor *pObject);
 int PlayerDbGetId(Object_8008044C *pObject);
 int PlayerDbGetHairStyle(Object_8008044C *pObject);
-int fn_800872E8(int a);
-int fn_8008731C(int a, int id, int *pOut1, int *pOut2, char *pBuffer, int size);
-int fn_8008736C(int a, int b);
-void fn_80087600(int a, int b);
-int fn_800876C0(void);
-int fn_80087704(void);
-int fn_80087BA0(int index);
+int StoreGetItemCount(int a);
+int StoreGetItemByRow(int a, int id, int *pOut1, int *pOut2, char *pBuffer, int size);
+int StoreIsItemLocked(int a, int b);
+void StoreUnlockItem(int a, int b);
+int StoreClose(void);
+int StoreOpen(void);
+int StoreGetTattooLocation(int index);
 unsigned int UserInfoGetPoints(int a);
 void UserInfoSpendPoints(int a, int b);
 Object_8008044C *EditMenuGetPlayerCursor(void);
@@ -299,11 +299,11 @@ static void _ShopPreviewItem(int index, int value);
 void ShopItemList::Enter(int a, int *pCount, int *pOut)
 {
     ShopGetState()->mPrice = -1;
-    fn_80087704();
+    StoreOpen();
     _ShopResetView();
     _ShopSaveLook(&_Shop_sSavedLook);
     _Shop_iMannequinPads = GearDbFindIdByGbst(9, "MANNEQUINSHIRTPADS");
-    *pCount = fn_800872E8(mCategory);
+    *pCount = StoreGetItemCount(mCategory);
     if (*pCount == 0) {
         mOutOfStock = 1;
         *pCount = 1;
@@ -322,7 +322,7 @@ int ShopItemList::Leave(int a, int b, void **pOut)
     _ShopRestoreLook(&_Shop_sSavedLook);
     FEPlyrLoadRequestReload(FEPlyrGetBackIndex(), 15);
     FEPlyrRequestSwap();
-    fn_800876C0();
+    StoreClose();
     ShopGetState()->mPrice = 0;
     EditMenuMovePlayers(0);
     _Shop_iPreviewLogo = result;
@@ -348,8 +348,8 @@ void ShopItemList::GetItem(int id, MenuEntry_t *pOut)
         int price;
 
         pOut->mUnknown40 = 0;
-        fn_8008731C(mCategory, id, &item, &price, pOut->mName, 22);
-        if (!fn_8008736C(mCategory, item) || UserInfoGetPoints(DbUserGetCurrent()) < price) {
+        StoreGetItemByRow(mCategory, id, &item, &price, pOut->mName, 22);
+        if (!StoreIsItemLocked(mCategory, item) || UserInfoGetPoints(DbUserGetCurrent()) < price) {
             pOut->mUnknown30 = 0;
         } else {
             pOut->mUnknown30 = 1;
@@ -365,9 +365,9 @@ void ShopItemList::Highlight(int id)
         int item;
         int price;
 
-        fn_8008731C(mCategory, id, &item, &price, 0, 0);
+        StoreGetItemByRow(mCategory, id, &item, &price, 0, 0);
         _ShopPreviewItem(mCategory, item);
-        if (fn_8008736C(mCategory, item)) {
+        if (StoreIsItemLocked(mCategory, item)) {
             if (price == 0) {
                 ShopGetState()->mPrice = -2;
             } else {
@@ -384,7 +384,7 @@ void ShopStoreMenu::Enter(int a, int *pCount, int *pOut)
 {
     MenuListScreen::Enter(a, pCount, pOut);
     ShopGetState()->mPrice = 0;
-    fn_80087704();
+    StoreOpen();
     if (a == 1) {
         int value;
 
@@ -821,8 +821,8 @@ static void _ShopPreviewItem(int index, int value)
             PlayerLookSetGear(1, 10, 0);
         case 20:
         case 21:
-            PlayerLookSetPartVariant(0, fn_80087BA0(index), value);
-            PlayerLookSetPartVariant(1, fn_80087BA0(index), value);
+            PlayerLookSetPartVariant(0, StoreGetTattooLocation(index), value);
+            PlayerLookSetPartVariant(1, StoreGetTattooLocation(index), value);
             break;
         }
     }
@@ -851,9 +851,9 @@ extern "C" void ShopBuyItem(int id)
     int price;
     char buffer[8];
 
-    fn_8008731C(ShopGetState()->mCategory, id, &item, &price, buffer, 8);
+    StoreGetItemByRow(ShopGetState()->mCategory, id, &item, &price, buffer, 8);
     ShopGetState()->mBought = 1;
-    fn_80087600(ShopGetState()->mCategory, item);
+    StoreUnlockItem(ShopGetState()->mCategory, item);
     UserInfoSpendPoints(DbUserGetCurrent(), price);
 }
 
