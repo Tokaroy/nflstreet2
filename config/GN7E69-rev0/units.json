@@ -4147,6 +4147,131 @@
       }
     },
     {
+      "source": "src/game/cu_80086C10.cpp",
+      "profile": "game_cpp_holdouts",
+      "evidence": "evidence.tsv unit row 0x80086C10-0x80087BE4 (src/game/cu_80086C10.cpp), its function, name and data rows and the linker row of the discarded StoreGetStringById; linked with holdouts (owner ruling of 2026-11-20), the seven holdouts keeping their original bytes.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80086C10",
+          "end": "0x80086D0C"
+        },
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x800872E8",
+          "end": "0x8008736C"
+        },
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x800876C0",
+          "end": "0x8008775C"
+        },
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x80087880",
+          "end": "0x80087BE4"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x80294B38",
+          "end": "0x80294F0C"
+        },
+        {
+          "section": ".data",
+          "placement": ".data4",
+          "start": "0x802D6B8C",
+          "end": "0x802D6BD8"
+        },
+        {
+          "section": ".sdata",
+          "placement": ".data5",
+          "start": "0x803EA808",
+          "end": "0x803EA80C"
+        }
+      ],
+      "holdouts": {
+        "functions": [
+          {
+            "function": "fn_80086D0C",
+            "evidence": "evidence.tsv source-form 0x80086D0C-0x80087128"
+          },
+          {
+            "function": "fn_80087128",
+            "evidence": "evidence.tsv source-form 0x80087128-0x800872E8"
+          },
+          {
+            "function": "fn_8008736C",
+            "evidence": "evidence.tsv source-form 0x8008736C-0x80087460"
+          },
+          {
+            "function": "fn_80087460",
+            "evidence": "evidence.tsv source-form 0x80087460-0x8008754C"
+          },
+          {
+            "function": "fn_8008754C",
+            "evidence": "evidence.tsv source-form 0x8008754C-0x80087600"
+          },
+          {
+            "function": "fn_80087600",
+            "evidence": "evidence.tsv source-form 0x80087600-0x800876C0"
+          },
+          {
+            "function": "fn_8008775C",
+            "evidence": "evidence.tsv source-form 0x8008775C-0x80087880"
+          }
+        ],
+        "evidence": "merge notes of the pull request that links the file (round 2 lane 3 holdout table)"
+      },
+      "link_roots": {
+        "discarded": [
+          "StoreGetStringById"
+        ],
+        "evidence": "evidence.tsv linker row 0x80294C1C-0x80294C50 (StoreGetStringById, discarded; only its query string survives)"
+      }
+    },
+    {
+      "source": "src/game/cu_800D760C.cpp",
+      "profile": "game_cpp_holdouts",
+      "evidence": "evidence.tsv unit row 0x800D760C-0x800D8140 (src/game/cu_800D760C.cpp), its function, name and data rows and the linker rows of its four discarded file-static functions; linked with holdouts (owner ruling of 2026-11-20), the holdout fn_800D7E9C keeping its original bytes.",
+      "sections": [
+        {
+          "section": ".text",
+          "placement": ".text",
+          "start": "0x800D760C",
+          "end": "0x800D7E9C"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x8029D678",
+          "end": "0x8029D7B8"
+        }
+      ],
+      "holdouts": {
+        "functions": [
+          {
+            "function": "fn_800D7E9C",
+            "evidence": "evidence.tsv source-form 0x800D7E9C-0x800D8140"
+          }
+        ],
+        "evidence": "merge notes of the pull request that links the file (round 2 lane 3 holdout table)"
+      },
+      "link_roots": {
+        "discarded": [
+          "_StrippedFramesToTime",
+          "_StrippedPrintBlankName",
+          "_StrippedCheckDownOpcodes",
+          "_StrippedGetHoldWeight"
+        ],
+        "evidence": "evidence.tsv linker rows 0x8029D678-0x8029D684, 0x8029D684-0x8029D6BC, 0x8029D6C8-0x8029D758 and 0x8029D75C-0x8029D77C: file-static functions SN linker discarded; only their pools and strings remain"
+      }
+    },
+    {
       "source": "src/game/gsflowman.cpp",
       "profile": "game_cpp",
       "evidence": "evidence.tsv unit row 0x80032340-0x800324B0 (src/game/gsflowman.cpp) and its data rows.",
@@ -12906,12 +13031,6 @@
           "section": ".text",
           "placement": ".text",
           "start": "0x8008EB18",
-          "end": "0x8008EBBC"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x8008F78C",
           "end": "0x8008FF44"
         },
         {
@@ -13026,12 +13145,6 @@
           "section": ".text",
           "placement": ".text",
           "start": "0x800A0230",
-          "end": "0x800A06F4"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x800A0EB8",
           "end": "0x800A46D8"
         },
         {
@@ -13218,12 +13331,6 @@
           "section": ".text",
           "placement": ".text",
           "start": "0x800CA14C",
-          "end": "0x800CA9B4"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x800CAA6C",
           "end": "0x800CDE50"
         },
         {
@@ -13286,10 +13393,6 @@
           {
             "function": "fn_8008E9B0",
             "evidence": "evidence.tsv source-form 0x8008E9B0-0x8008EB18"
-          },
-          {
-            "function": "fn_8008EBBC",
-            "evidence": "evidence.tsv source-form 0x8008EBBC-0x8008F78C"
           },
           {
             "function": "fn_8008FF44",
@@ -13378,10 +13481,6 @@
           {
             "function": "fn_800A0134",
             "evidence": "evidence.tsv source-form 0x800A0134-0x800A0230"
-          },
-          {
-            "function": "fn_800A06F4",
-            "evidence": "evidence.tsv source-form 0x800A06F4-0x800A0EB8"
           },
           {
             "function": "fn_800A46D8",
@@ -13520,10 +13619,6 @@
             "evidence": "evidence.tsv source-form 0x800C9FC0-0x800CA14C"
           },
           {
-            "function": "fn_800CA9B4",
-            "evidence": "evidence.tsv source-form 0x800CA9B4-0x800CAA6C"
-          },
-          {
             "function": "fn_800CDE50",
             "evidence": "evidence.tsv source-form 0x800CDE50-0x800CE158"
           },
@@ -13532,7 +13627,7 @@
             "evidence": "evidence.tsv source-form 0x800CE218-0x800CE2B8"
           }
         ],
-        "evidence": "comparisons.json partials of src/game/cu_8008E978.cpp: the 62 functions whose compiled bytes differ from the target keep the original bytes; each names its HOLDOUT: source-form row (owner rulings of 2026-11-19 and 2026-11-20)."
+        "evidence": "comparisons.json partials of src/game/cu_8008E978.cpp: the 59 functions whose compiled bytes differ from the target keep the original bytes; each names its HOLDOUT: source-form row (owner rulings of 2026-11-19 and 2026-11-20)."
       },
       "link_roots": {
         "discarded": [
