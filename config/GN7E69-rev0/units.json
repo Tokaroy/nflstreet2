@@ -16049,7 +16049,7 @@
     {
       "source": "src/engine/memcardmgr.c",
       "profile": "engine_c_holdouts",
-      "evidence": "evidence.tsv unit row 0x801D5D30-0x801D86B4 (src/engine/memcardmgr.c), its compiler, function and name rows and the exact data rows of its .rodata 0x802AFEC8-0x802AFF40, .data 0x802F7B64-0x802F7BA0, .sdata 0x803EBD00-0x803EBD44, .sbss 0x803ECF10-0x803ECF1C and .bss 0x80398DE0-0x80399100; linked with holdouts (owner ruling of 2026-11-20): 62 exact functions and all of the file's data linked, the holdouts fn_801D654C, MemCardMgrUpdate, MemCardMgrFormatDate and fn_801D8618 keep the original bytes.",
+      "evidence": "evidence.tsv unit row 0x801D5D30-0x801D86B4 (src/engine/memcardmgr.c), its compiler, function and name rows and the exact data rows of its .rodata 0x802AFEC8-0x802AFF40, .data 0x802F7B64-0x802F7BA0, .sdata 0x803EBD00-0x803EBD44, .sbss 0x803ECF10-0x803ECF1C and .bss 0x80398DE0-0x80399100; linked with holdouts (owner ruling of 2026-11-20): 62 exact functions and all of the file's data linked, the holdouts MemCardMgrEnablePolling, MemCardMgrUpdate, MemCardMgrFormatDate and MemCardMgrGetFileSize keep the original bytes.",
       "sections": [
         {
           "section": ".text",
@@ -16115,7 +16115,7 @@
       "holdouts": {
         "functions": [
           {
-            "function": "fn_801D654C",
+            "function": "MemCardMgrEnablePolling",
             "evidence": "evidence.tsv source-form 0x801D654C-0x801D65B4"
           },
           {
@@ -16127,11 +16127,11 @@
             "evidence": "evidence.tsv source-form 0x801D84DC-0x801D85A8"
           },
           {
-            "function": "fn_801D8618",
+            "function": "MemCardMgrGetFileSize",
             "evidence": "evidence.tsv source-form 0x801D8618-0x801D8658"
           }
         ],
-        "evidence": "w2f merge notes (PR body holdout table, wave w2 lane w2f): src/engine/memcardmgr.c holds out fn_801D654C, MemCardMgrUpdate, MemCardMgrFormatDate and fn_801D8618."
+        "evidence": "w2f merge notes (PR body holdout table, wave w2 lane w2f): src/engine/memcardmgr.c holds out MemCardMgrEnablePolling (was fn_801D654C), MemCardMgrUpdate, MemCardMgrFormatDate and MemCardMgrGetFileSize (was fn_801D8618)."
       }
     },
     {
@@ -29441,9 +29441,9 @@
       ]
     },
     {
-      "source": "src/engine/cu_801C3EFC.c",
+      "source": "src/engine/charik.c",
       "profile": "engine_c_holdouts",
-      "evidence": "evidence.tsv unit row of src/engine/cu_801C3EFC.c (0x801C3EFC-0x801C4960) and the data rows of its whole data sections; linked with holdouts (owner ruling of 2026-11-20): 6 of 7 functions exact, the 1 holdout keeps the original bytes.",
+      "evidence": "evidence.tsv unit row of src/engine/charik.c (0x801C3EFC-0x801C4960) and the data rows of its whole data sections; linked with holdouts (owner ruling of 2026-11-20): 6 of 7 functions exact, the 1 holdout keeps the original bytes.",
       "sections": [
         {
           "section": ".text",
@@ -29467,11 +29467,11 @@
       "holdouts": {
         "functions": [
           {
-            "function": "fn_801C4010",
+            "function": "CharIKSolveCCD",
             "evidence": "evidence.tsv source-form 0x801C4010-0x801C447C"
           }
         ],
-        "evidence": "lane-6 round-2 merge notes (PR #1442 holdouts table): src/engine/cu_801C3EFC.c holds out fn_801C4010."
+        "evidence": "lane-6 round-2 merge notes (PR #1442 holdouts table): src/engine/charik.c holds out CharIKSolveCCD."
       }
     },
     {
