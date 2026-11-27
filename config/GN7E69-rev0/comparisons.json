@@ -3376,47 +3376,6 @@
       ]
     },
     {
-      "source": "src/game/TeamTables.cpp",
-      "profile": "game_cpp",
-      "evidence": "evidence.tsv src/game/TeamTables.cpp bounded unit, exact function and query-pool rows, declarations, source forms and compiler profile. The source is linked with holdouts (units.json); the one non-exact function stays registered here as its partial.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x8018C344",
-          "end": "0x8018C688"
-        },
-        {
-          "section": ".rodata",
-          "placement": ".data3",
-          "start": "0x802AA1FC",
-          "end": "0x802AA334"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "TeamTablesCopy",
-          "start": "0x8018C344",
-          "end": "0x8018C3EC"
-        },
-        {
-          "symbol": "TeamTablesDestroy",
-          "start": "0x8018C3EC",
-          "end": "0x8018C438"
-        },
-        {
-          "symbol": "TeamTablesDeleteTeamPlayers",
-          "start": "0x8018C438",
-          "end": "0x8018C48C"
-        },
-        {
-          "symbol": "TeamTablesPurgeCreated",
-          "start": "0x8018C48C",
-          "end": "0x8018C688"
-        }
-      ]
-    },
-    {
       "source": "src/game/Assign.cpp",
       "profile": "game_cpp",
       "evidence": "evidence.tsv unit row 0x800EFC68-0x80125F3C (src/game/Assign.cpp), its data rows and the linker/source-form rows of its three discarded stand-ins. The 79 comparison fragments of the range are merged into this one translation unit (all 631 functions in address order); the source is linked with holdouts (units.json), and the non-exact functions stay registered here as its partials.",
@@ -11264,7 +11223,7 @@
     {
       "source": "src/game/PlayerQuery.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv unit row 0x8007FA48-0x800808F8 (src/game/PlayerQuery.cpp), its function, name and data rows. The source is linked with holdouts (units.json, owner ruling of 2026-11-20); the non-exact PlayerRecordFindFreeIds, PlayerRecordWriteById and PlayerQueryOpen stay registered here as its partials (their HOLDOUT source-form rows).",
+      "evidence": "evidence.tsv unit row 0x8007FA48-0x800808F8 (src/game/PlayerQuery.cpp), its function, name and data rows. The source is linked with holdouts (units.json, owner ruling of 2026-11-20); the non-exact PlayerRecordFindFreeIds and PlayerRecordWriteById stay registered here as its partials (their HOLDOUT source-form rows).",
       "sections": [
         {
           "section": ".text",
@@ -23163,7 +23122,7 @@
     {
       "source": "src/game/PlayAlign.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv unit row 0x80164568-0x80166110 (src/game/PlayAlign.cpp), its function rows and the data rows 0x802A4610-0x802A4850, 0x803EB3B0-0x803EB3B8 and 0x8031D2B8-0x8031D370. The source is linked with holdouts (units.json); the six non-exact functions stay registered here as its partials.",
+      "evidence": "evidence.tsv unit row 0x80164568-0x80166110 (src/game/PlayAlign.cpp), its function rows and the data rows 0x802A4610-0x802A4850, 0x803EB3B0-0x803EB3B8 and 0x8031D2B8-0x8031D370. The source is linked with holdouts (units.json); its one non-exact function, PlayAlignIssuePlayerRoute, stays registered here as its partial.",
       "sections": [
         {
           "section": ".text",
@@ -23295,53 +23254,6 @@
           "symbol": "PlayAlignBuildSegmentStrip",
           "start": "0x801660A0",
           "end": "0x80166110"
-        }
-      ]
-    },
-    {
-      "source": "src/game/PlayArt.cpp",
-      "profile": "game_cpp",
-      "evidence": "evidence.tsv unit row 0x80166110-0x80167910 (src/game/PlayArt.cpp). Draft comparisons of the unlinked functions 0x80166110-0x80167094 behind DECOMP_COMPARE; the linked tail 0x80167094-0x80167910 keeps its units.json placement and the original bytes stay linked for the drafts.",
-      "sections": [
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x80166110",
-          "end": "0x80167910"
-        },
-        {
-          "section": ".rodata",
-          "placement": ".data3",
-          "start": "0x802A4850",
-          "end": "0x802A4908"
-        },
-        {
-          "section": ".bss",
-          "placement": ".bss",
-          "start": "0x8031D38C",
-          "end": "0x8036167C"
-        }
-      ],
-      "functions": [
-        {
-          "symbol": "PlayArtBuildArrowQuad",
-          "start": "0x80166110",
-          "end": "0x801662A8"
-        },
-        {
-          "symbol": "PlayArtAddQuad",
-          "start": "0x801662A8",
-          "end": "0x8016631C"
-        },
-        {
-          "symbol": "PlayArtBuildRoute",
-          "start": "0x8016631C",
-          "end": "0x80166BE8"
-        },
-        {
-          "symbol": "PlayArtSetPlayerColors",
-          "start": "0x80166BE8",
-          "end": "0x80167094"
         }
       ]
     },

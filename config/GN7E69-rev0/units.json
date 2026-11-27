@@ -547,10 +547,6 @@
     }
   },
   "externals": {
-    "PlayArtBuildRoute": {
-      "address": "0x8016631C",
-      "evidence": "evidence.tsv function and name rows at 0x8016631C. PlayArtBuild in the linked PlayArt.cpp range calls the original-byte PlayArtBuildRoute (a PlayArt.cpp holdout registered in comparisons.json)."
-    },
     "YUV_convert": {
       "address": "0x801DB900",
       "evidence": "evidence.tsv function and related name rows at 0x801DB900 (YUV_convert, a registered holdout of src/engine/yuvconv.c, original bytes linked). render.c calls it by name."
@@ -1243,14 +1239,14 @@
     },
     {
       "source": "src/game/TeamTables.cpp",
-      "profile": "game_cpp_holdouts",
-      "evidence": "evidence.tsv unit row 0x8018C344-0x8018C688 (src/game/TeamTables.cpp), its function rows and the query-pool row 0x802AA1FC-0x802AA334; linked with holdouts (owner ruling of 2026-11-20), the one holdout TeamTablesPurgeCreated keeping its original bytes (two before round 5 lane 1, 2026-11-27); the .rodata linked whole.",
+      "profile": "game_cpp",
+      "evidence": "evidence.tsv unit row 0x8018C344-0x8018C688 (src/game/TeamTables.cpp), its function rows and the query-pool row 0x802AA1FC-0x802AA334; the whole file linked (its last holdout TeamTablesPurgeCreated exact in round 6 lane 3, 2026-11-27; linked with holdouts from round 2 lane 5).",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x8018C344",
-          "end": "0x8018C48C"
+          "end": "0x8018C688"
         },
         {
           "section": ".rodata",
@@ -1258,16 +1254,7 @@
           "start": "0x802AA1FC",
           "end": "0x802AA334"
         }
-      ],
-      "holdouts": {
-        "functions": [
-          {
-            "function": "TeamTablesPurgeCreated",
-            "evidence": "evidence.tsv source-form 0x8018C48C-0x8018C688"
-          }
-        ],
-        "evidence": "merge notes of the pull request that links the file (close files round 2, lane 5, holdouts table)"
-      }
+      ]
     },
     {
       "source": "src/game/Loading.cpp",
@@ -14128,7 +14115,7 @@
     {
       "source": "src/game/PlayAlign.cpp",
       "profile": "game_cpp_holdouts",
-      "evidence": "evidence.tsv unit row 0x80164568-0x80166110 (src/game/PlayAlign.cpp), its function rows and data rows 0x802A4610-0x802A4624, 0x802A4624-0x802A4850, 0x803EB3B0-0x803EB3B8 and 0x8031D2B8-0x8031D370; linked with holdouts (owner ruling of 2026-11-20), the two holdouts keeping their original bytes; every data section linked whole.",
+      "evidence": "evidence.tsv unit row 0x80164568-0x80166110 (src/game/PlayAlign.cpp), its function rows and data rows 0x802A4610-0x802A4624, 0x802A4624-0x802A4850, 0x803EB3B0-0x803EB3B8 and 0x8031D2B8-0x8031D370; linked with holdouts (owner ruling of 2026-11-20), the holdout keeping its original bytes; every data section linked whole.",
       "sections": [
         {
           "section": ".text",
@@ -14140,12 +14127,6 @@
           "section": ".text",
           "placement": ".text",
           "start": "0x80164E30",
-          "end": "0x80165464"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x80165770",
           "end": "0x80166110"
         },
         {
@@ -14172,10 +14153,6 @@
           {
             "function": "PlayAlignIssuePlayerRoute",
             "evidence": "evidence.tsv source-form 0x80164CE4-0x80164E30"
-          },
-          {
-            "function": "PlayAlignLoadPlayRoutes",
-            "evidence": "evidence.tsv source-form 0x80165464-0x80165770"
           }
         ],
         "evidence": "merge notes of the pull request that links the file (close files round 2, lane 5, holdouts table)"
@@ -14376,13 +14353,43 @@
     {
       "source": "src/game/PlayArt.cpp",
       "profile": "game_cpp",
-      "evidence": "evidence.tsv provisional source unit and membership row, exact individual function extents, direct reset storage extents and inferred types.",
+      "evidence": "evidence.tsv unit row 0x80166110-0x80167910 (src/game/PlayArt.cpp), its function rows and the data rows 0x802A4850-0x802A4908 and 0x8031D38C-0x8036167C.",
+      "link_roots": {
+        "symbols": [
+          "PlayArtBuildArrowQuad",
+          "PlayArtAddQuad",
+          "PlayArtBuildRoute",
+          "PlayArtSetPlayerColors",
+          "PlayArtReadPositions",
+          "PlayArtReadRoutes",
+          "PlayArtBuild",
+          "PlayArtDraw",
+          "PlayArtStart",
+          "PlayArtSetFlip",
+          "PlayArtStop",
+          "PlayArtMemInit",
+          "PlayArtMemShutdown",
+          "PlayArtResetAll",
+          "PlayArtResetTeam"
+        ],
+        "discarded": [
+          "PlayArtLoadRouteId",
+          "PlayArtLoadPlayRoutes"
+        ],
+        "evidence": "evidence.tsv linker row 0x802A4884-0x802A4908: the target keeps every listed function, all reached from outside the unit or from each other; PlayArtLoadRouteId and PlayArtLoadPlayRoutes have no code in the target, while their two query strings remain in rodata."
+      },
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
-          "start": "0x80166BE8",
+          "start": "0x80166110",
           "end": "0x80167910"
+        },
+        {
+          "section": ".rodata",
+          "placement": ".data3",
+          "start": "0x802A4850",
+          "end": "0x802A4908"
         },
         {
           "section": ".bss",
@@ -19967,7 +19974,7 @@
     {
       "source": "src/game/PlayerQuery.cpp",
       "profile": "game_cpp_holdouts",
-      "evidence": "evidence.tsv unit row 0x8007FA48-0x800808F8 (src/game/PlayerQuery.cpp), its function, name and data rows; linked with holdouts (owner ruling of 2026-11-20), the three holdouts keeping their original bytes.",
+      "evidence": "evidence.tsv unit row 0x8007FA48-0x800808F8 (src/game/PlayerQuery.cpp), its function, name and data rows; linked with holdouts (owner ruling of 2026-11-20), the two holdouts keeping their original bytes.",
       "sections": [
         {
           "section": ".text",
@@ -19979,12 +19986,6 @@
           "section": ".text",
           "placement": ".text",
           "start": "0x80080138",
-          "end": "0x8008058C"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x8008079C",
           "end": "0x800808F8"
         },
         {
@@ -20009,10 +20010,6 @@
           {
             "function": "PlayerRecordWriteById",
             "evidence": "evidence.tsv source-form 0x80080084-0x80080138"
-          },
-          {
-            "function": "PlayerQueryOpen",
-            "evidence": "evidence.tsv source-form 0x8008058C-0x8008079C"
           }
         ],
         "evidence": "merge notes of the pull request that links the file (round 2 lane 2 holdout table)"
