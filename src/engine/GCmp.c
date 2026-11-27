@@ -22,7 +22,7 @@ void GCmpStop(GCmpStream_t *pStream);
 
 extern void *fn_801D2BB0(int a, int size, int c, int d);
 extern int fn_801D2BD0(void *p);
-extern void *fn_801D310C(void *allocation, int size, int c, int d);
+extern void *MemReallocMem(void *allocation, int size, int c, int d);
 extern void SysSetLastErrorFunc(int err);
 extern char *strnzcpy(char *pDest, const char *pSource, int size);
 extern int fn_801C2D88(char *pBuffer, int size, const char *pFormat, ...);
@@ -31,7 +31,6 @@ static unsigned char _GCmpModuleActive = 0;
 static int _GCmpNumTypes = 0;
 static GCmpCodec_t **_GCmpTypes;
 static char _GCmp_szLabel[32] = "GCMP.LIB";
-extern GCmpCodec_t lbl_80301940;
 extern GCmpCodec_t lbl_80301968;
 
 int GCmpInit(int count)
@@ -45,7 +44,7 @@ int GCmpInit(int count)
         GCmpRegisterType(0, &GCmpTypeNONE);
         GCmpRegisterType(1, &GCmpTypeRLE);
         GCmpRegisterType(2, &GCmpTypeHuffman);
-        GCmpRegisterType(3, &lbl_80301940);
+        GCmpRegisterType(3, &GCmpTypeLZM);
         GCmpRegisterType(5, &lbl_80301968);
         _GCmpTypes[4] = 0;
         for (i = 0; i <= 5 && err == 0; i++) {
@@ -108,7 +107,7 @@ void GCmpCompress(int codec, GCmpBuffer_t *pSrc, GCmpBuffer_t *pDst)
             case 2:
                 break;
             case 3:
-                pDst->mpData = fn_801D310C(pDst->mpData, pDst->mSize * 2, 0, 0);
+                pDst->mpData = MemReallocMem(pDst->mpData, pDst->mSize * 2, 0, 0);
                 pDst->mSize *= 2;
                 pStream->mOwnsDst = 1;
                 pStream->mStatus = 0;
@@ -132,7 +131,7 @@ void GCmpDecompress(int codec, GCmpBuffer_t *pSrc, GCmpBuffer_t *pDst)
             case 2:
                 break;
             case 3:
-                pDst->mpData = fn_801D310C(pDst->mpData, pDst->mSize * 2, 0, 0);
+                pDst->mpData = MemReallocMem(pDst->mpData, pDst->mSize * 2, 0, 0);
                 pDst->mSize *= 2;
                 pStream->mOwnsDst = 1;
                 pStream->mStatus = 0;
@@ -216,7 +215,7 @@ void GCmpStop(GCmpStream_t *pStream)
     }
     pStream->mpDst->mSize = pStream->mpDst->mPos;
     if (pStream->mOwnsDst) {
-        pStream->mpDst->mpData = fn_801D310C(pStream->mpDst->mpData, pStream->mpDst->mSize, 0, 0);
+        pStream->mpDst->mpData = MemReallocMem(pStream->mpDst->mpData, pStream->mpDst->mSize, 0, 0);
     }
     fn_801D2BD0(pStream);
 }
@@ -306,7 +305,7 @@ int GCmpWrite(GCmpBuffer_t *pBuffer, void *pIn, unsigned int size)
     unsigned char *pSrc = pIn;
 
     while (pBuffer->mPos + size > pBuffer->mSize) {
-        pBuffer->mpData = fn_801D310C(pBuffer->mpData, pBuffer->mSize * 2, 0, 0);
+        pBuffer->mpData = MemReallocMem(pBuffer->mpData, pBuffer->mSize * 2, 0, 0);
         pBuffer->mSize *= 2;
     }
     while (size--) {

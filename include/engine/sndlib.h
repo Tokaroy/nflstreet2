@@ -71,6 +71,14 @@ public:
 
 struct MpegScaleFactorBandIndex_t;
 
+/* Count-1 (quadruple) codebook descriptor of src/engine/mpeghufftables.cpp: the codebook and
+   two halfwords whose use is not established (no retained code reads them). */
+struct MpegHuffCountTable_t {
+    const short *mpTable;
+    unsigned short mUnknown4;
+    unsigned short mUnknown6;
+};
+
 class CMpegLayer3Base : public CMpegBase {
 public:
     unsigned char mUnknown54[0x15C];
@@ -86,6 +94,9 @@ public:
     static const float sAntiAliasCoefficients[2][8];
     static const float sStereoFactors[6];
     static const float sImdctFactors[37];
+    static const short *const sHuffTables[32];
+    static const unsigned char sHuffTableLinearBits[32];
+    static const MpegHuffCountTable_t sHuffCountTables[2];
 };
 
 struct SndDrvMixChannel_t {
@@ -176,12 +187,15 @@ struct State_803A8D60 {
     int m9DEC;
     unsigned char mUnknown9DF0[0x40];
     Transfer_803B2B90 m9E30[64];
-    unsigned char mUnknownAE30[0x1218];
+    unsigned char mUnknownAE30[0x1000];
+    OSMutex mBE30;
+    unsigned char mUnknownBE48[0x200];
     unsigned char mC048;
     unsigned char mC049;
     unsigned char mUnknownC04A[6];
     void *mC050[6];
     void *mC068[4];
+    unsigned char mUnknownC078[0x48];
 };
 
 struct Struct_80270E04 {
@@ -284,7 +298,7 @@ extern int MPEGuse_MMX;
 
 extern "C" {
 extern unsigned short SNDDRV_dolbypl2balances[256][4];
-extern State_803A8D60 lbl_803A8D60;
+extern State_803A8D60 snddrv;
 extern int sndmixwritelog;
 extern void (*MIXoutputfn)(void **outputs, int count);
 extern int _Mix_iUnused;
@@ -297,7 +311,6 @@ extern void (*MIXplayfn)(int index);
 extern void (*MIXstopfn)(int index);
 extern void (*MIXsetpitchfn)(int index, int value);
 extern int lbl_8030002C;
-extern OSMutex lbl_803B4B90;
 extern Node_803B4E20 **fxBusesLinkList;
 /* The effect bus state of sfxrevc.c (8 bytes): the per-bus wet buffers and a word the
    mixer clears after mixing a voice into a bus. */

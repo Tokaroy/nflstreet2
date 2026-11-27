@@ -14,7 +14,7 @@
 #include "game/GameModeType.h"
 #include "game/MemCardUtil.h"
 #include "game/fn_80218FC4.h"
-#include "game/fn_8021D7B8.h"
+#include "game/UISProcessHint.h"
 
 extern "C" {
 extern char gMainFEGroup[];
@@ -67,7 +67,7 @@ void FileDebugProcess(void);
 void GlibSwapBuffers(void);
 void GlibSyncFrame(void);
 int GlibGetWidescreenMode(void);
-void fn_801D6F58(void);
+void MemCardMgrUpdate(void);
 void ResTrackLabel(const char *pText);
 void fn_8021956C(void *p, int a, int b, int c);
 void fn_80219650(void *p, unsigned short *pA, unsigned short *pB);
@@ -370,7 +370,7 @@ unsigned char FELoop::Update()
 
     BootUpdateReset();
     UISGameRefreshAll();
-    fn_801D6F58();
+    MemCardMgrUpdate();
     ConUpdateChannel(-1);
     ConProcessChannel(-1);
     FEPlyrUpdate();
@@ -392,7 +392,7 @@ unsigned char FELoop::Update()
         }
         if (MsgMainMenuIsShown() || MsgStartScreenIsShown()) {
             if (++_FELoop_uIdleFrames > (int)(60.0f / gFrameTimeScale) * 75) {
-                fn_8021D7B8(gUISMainInfo, 0x80000038, 0, 0);
+                UISProcessHint(gUISMainInfo, 0x80000038, 0, 0);
                 SndgMusicFadeOut(0xFA, 1);
                 _FELoop_bIdleTimeout = 1;
             }
