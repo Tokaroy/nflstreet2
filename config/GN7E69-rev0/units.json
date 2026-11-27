@@ -29482,18 +29482,12 @@
     {
       "source": "src/engine/pathvol.c",
       "profile": "path_cxx_holdouts",
-      "evidence": "evidence.tsv unit row of src/engine/pathvol.c (0x801B45D0-0x801B51AC) and the data rows of its whole data sections; linked with holdouts (owner ruling of 2026-11-20): 5 of 9 functions exact, the 4 holdouts keep the original bytes.",
+      "evidence": "evidence.tsv unit row of src/engine/pathvol.c (0x801B45D0-0x801B51AC) and the data rows of its whole data sections; linked with holdouts (owner ruling of 2026-11-20): 6 of 9 functions exact, the 3 holdouts keep the original bytes.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x801B45D0",
-          "end": "0x801B4824"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x801B4898",
           "end": "0x801B4A24"
         },
         {
@@ -29505,10 +29499,6 @@
       ],
       "holdouts": {
         "functions": [
-          {
-            "function": "fn_801B4824",
-            "evidence": "evidence.tsv source-form 0x801B4824-0x801B4898"
-          },
           {
             "function": "PATHI_setfadevolume",
             "evidence": "evidence.tsv source-form 0x801B4A24-0x801B4CE4"
@@ -29522,7 +29512,7 @@
             "evidence": "evidence.tsv source-form 0x801B4F50-0x801B51AC"
           }
         ],
-        "evidence": "lane-6 round-2 merge notes (PR #1442 holdouts table): src/engine/pathvol.c holds out fn_801B4824, PATHI_setfadevolume, PATHI_setsfxfadevolume, PATHI_setdrylevelfadevolume."
+        "evidence": "lane-6 round-2 merge notes (PR #1442 holdouts table): src/engine/pathvol.c holds out PATHI_setfadevolume, PATHI_setsfxfadevolume, PATHI_setdrylevelfadevolume."
       }
     },
     {
@@ -29811,61 +29801,25 @@
     {
       "source": "src/engine/spchpick.c",
       "profile": "speech_cxx_holdouts",
-      "evidence": "evidence.tsv provisional spchpick.c unit 0x801AF75C-0x801B1A3C; all67 functions and all32 initialized/1280 BSS bytes reconstructed. Twelve documented holdouts retain original code; all other code links through the existing owner-approved named profile.",
+      "evidence": "evidence.tsv provisional spchpick.c unit 0x801AF75C-0x801B1A3C; all67 functions and all32 initialized/1280 BSS bytes reconstructed. Four documented holdouts (iSPCH_GetPhraseBank, iSPCH_ChooseSamples, iSPCH_MakeSampleRequests, iSPCH_EACrandom) retain original code; all other code links through the existing owner-approved named profile.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x801AF75C",
-          "end": "0x801AFA14"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x801AFA70",
           "end": "0x801AFD04"
         },
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x801AFDFC",
-          "end": "0x801AFEE8"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x801AFF74",
           "end": "0x801B0050"
         },
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x801B01E8",
-          "end": "0x801B0208"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x801B029C",
-          "end": "0x801B0474"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x801B04D4",
-          "end": "0x801B05E4"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x801B07A0",
-          "end": "0x801B08DC"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x801B0A18",
-          "end": "0x801B0D5C"
+          "end": "0x801B0EA4"
         },
         {
           "section": ".text",
@@ -29889,44 +29843,12 @@
       "holdouts": {
         "functions": [
           {
-            "function": "VoxEvent_GetSentenceParmMask",
-            "evidence": "evidence.tsv source-form 0x801AFA14-0x801AFA70"
-          },
-          {
             "function": "iSPCH_GetPhraseBank",
             "evidence": "evidence.tsv source-form 0x801AFD04-0x801AFDFC"
           },
           {
-            "function": "iSPCH_SampleExists",
-            "evidence": "evidence.tsv source-form 0x801AFEE8-0x801AFF74"
-          },
-          {
             "function": "iSPCH_ChooseSamples",
             "evidence": "evidence.tsv source-form 0x801B0050-0x801B01E8"
-          },
-          {
-            "function": "iSPCH_SentenceLength",
-            "evidence": "evidence.tsv source-form 0x801B0208-0x801B029C"
-          },
-          {
-            "function": "iSPCH_ShortRuleStatus",
-            "evidence": "evidence.tsv source-form 0x801B0474-0x801B04D4"
-          },
-          {
-            "function": "iSPCH_TestMatchParms",
-            "evidence": "evidence.tsv source-form 0x801B05E4-0x801B07A0"
-          },
-          {
-            "function": "iSPCH_RandomizeSentencePicks",
-            "evidence": "evidence.tsv source-form 0x801B08DC-0x801B0974"
-          },
-          {
-            "function": "iSPCH_IterateChoice",
-            "evidence": "evidence.tsv source-form 0x801B0974-0x801B0A18"
-          },
-          {
-            "function": "iSPCH_ConstantRuleSet",
-            "evidence": "evidence.tsv source-form 0x801B0D5C-0x801B0EA4"
           },
           {
             "function": "iSPCH_MakeSampleRequests",
@@ -29981,20 +29903,20 @@
         {
           "section": ".text",
           "placement": ".text",
-          "start": "0x801B67F8",
+          "start": "0x801B6780",
           "end": "0x801B6A18"
         },
         {
           "section": ".text",
           "placement": ".text",
-          "start": "0x801B6D20",
+          "start": "0x801B6CB4",
           "end": "0x801B6ED0"
         },
         {
           "section": ".text",
           "placement": ".text",
           "start": "0x801B7178",
-          "end": "0x801B7460"
+          "end": "0x801B7778"
         },
         {
           "section": ".rodata",
@@ -30007,24 +29929,12 @@
       "holdouts": {
         "functions": [
           {
-            "function": "PATHI_sampleoffset",
-            "evidence": "evidence.tsv source-form 0x801B6780-0x801B67F8"
-          },
-          {
             "function": "PATHI_choosesynchtime",
             "evidence": "evidence.tsv source-form 0x801B6A18-0x801B6CB4"
           },
           {
-            "function": "PATHI_timeremaining",
-            "evidence": "evidence.tsv source-form 0x801B6CB4-0x801B6D20"
-          },
-          {
             "function": "PATHI_enternode",
             "evidence": "evidence.tsv source-form 0x801B6ED0-0x801B7178"
-          },
-          {
-            "function": "PATHI_queuenode",
-            "evidence": "evidence.tsv source-form 0x801B7460-0x801B7778"
           }
         ],
         "evidence": "PR1461 merge notes list each measured partial; existing owner holdouts ruling of 2026-11-20. All native data sections kept whole."

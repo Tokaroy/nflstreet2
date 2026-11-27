@@ -24156,7 +24156,7 @@
     {
       "source": "src/engine/spchpick.c",
       "profile": "speech_cxx",
-      "evidence": "Complete spchpick.c reconstructed and named. Twelve full partial bodies keep their original providers in the linked file and remain measured with the existing speech_cxx profile; units.json links every exact function and whole native data through speech_cxx_holdouts. Each partial has a HOLDOUT source-form row.",
+      "evidence": "Complete spchpick.c reconstructed and named. Four full partial bodies keep their original providers in the linked file and remain measured with the existing speech_cxx profile; units.json links every exact function and whole native data through speech_cxx_holdouts. Each partial has a HOLDOUT source-form row.",
       "sections": [
         {
           "section": ".text",
@@ -24179,54 +24179,14 @@
       ],
       "functions": [
         {
-          "symbol": "VoxEvent_GetSentenceParmMask",
-          "start": "0x801AFA14",
-          "end": "0x801AFA70"
-        },
-        {
           "symbol": "iSPCH_GetPhraseBank",
           "start": "0x801AFD04",
           "end": "0x801AFDFC"
         },
         {
-          "symbol": "iSPCH_SampleExists",
-          "start": "0x801AFEE8",
-          "end": "0x801AFF74"
-        },
-        {
           "symbol": "iSPCH_ChooseSamples",
           "start": "0x801B0050",
           "end": "0x801B01E8"
-        },
-        {
-          "symbol": "iSPCH_SentenceLength",
-          "start": "0x801B0208",
-          "end": "0x801B029C"
-        },
-        {
-          "symbol": "iSPCH_ShortRuleStatus",
-          "start": "0x801B0474",
-          "end": "0x801B04D4"
-        },
-        {
-          "symbol": "iSPCH_TestMatchParms",
-          "start": "0x801B05E4",
-          "end": "0x801B07A0"
-        },
-        {
-          "symbol": "iSPCH_RandomizeSentencePicks",
-          "start": "0x801B08DC",
-          "end": "0x801B0974"
-        },
-        {
-          "symbol": "iSPCH_IterateChoice",
-          "start": "0x801B0974",
-          "end": "0x801B0A18"
-        },
-        {
-          "symbol": "iSPCH_ConstantRuleSet",
-          "start": "0x801B0D5C",
-          "end": "0x801B0EA4"
         },
         {
           "symbol": "iSPCH_MakeSampleRequests",
@@ -27122,11 +27082,6 @@
           "end": "0x801B4824"
         },
         {
-          "symbol": "fn_801B4824",
-          "start": "0x801B4824",
-          "end": "0x801B4898"
-        },
-        {
           "symbol": "PATHI_fade",
           "start": "0x801B4898",
           "end": "0x801B4960"
@@ -27178,29 +27133,14 @@
       ],
       "functions": [
         {
-          "symbol": "PATHI_sampleoffset",
-          "start": "0x801B6780",
-          "end": "0x801B67F8"
-        },
-        {
           "symbol": "PATHI_choosesynchtime",
           "start": "0x801B6A18",
           "end": "0x801B6CB4"
         },
         {
-          "symbol": "PATHI_timeremaining",
-          "start": "0x801B6CB4",
-          "end": "0x801B6D20"
-        },
-        {
           "symbol": "PATHI_enternode",
           "start": "0x801B6ED0",
           "end": "0x801B7178"
-        },
-        {
-          "symbol": "PATHI_queuenode",
-          "start": "0x801B7460",
-          "end": "0x801B7778"
         }
       ]
     },
