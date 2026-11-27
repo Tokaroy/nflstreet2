@@ -88,12 +88,15 @@ static inline void _DbOccpSetColCol(TDbExpr_t *pExpr, int op, unsigned long long
 /* column op integer */
 static inline void _DbOccpSetColInt(TDbExpr_t *pExpr, int op, unsigned long long col, int value)
 {
-    /* FAKEMATCH: store order found by a permutation search for DbOccpQueryKicking's schedule; the same five fields are set. */
+    int *pValue;
+
     pExpr->mOp = op;
-    pExpr->mRight.mValue.i = value;
+    pExpr->mLeft.mType = TDB_TYPE_COLUMN;
     pExpr->mLeft.mValue.l = col;
     pExpr->mRight.mType = TDB_TYPE_INT;
-    pExpr->mLeft.mType = TDB_TYPE_COLUMN;
+    /* FAKEMATCH: the integer stored through a pointer to the value field, for the target's frame-based store address; the same field is set. */
+    pValue = &pExpr->mRight.mValue.i;
+    *pValue = value;
 }
 
 /* sub-expression op column */
@@ -372,6 +375,7 @@ int DbOccpQueryDefense(const char *pWhere, int b, unsigned long long orderKey, i
     return err;
 }
 
+/* Kicking statistics: copies the kickers' stats into a scratch table, adds field goal and extra point percentages, and opens a sorted cursor on it. */
 int DbOccpQueryKicking(const char *pWhere, int b, unsigned long long orderKey, int orderDir, struct QueryCursor *pCursor)
 {
     unsigned long long aKeys[3];
