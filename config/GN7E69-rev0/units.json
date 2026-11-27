@@ -826,6 +826,10 @@
     "__CTOR_LIST__": {
       "address": "0x80289A20",
       "evidence": "evidence.tsv external and name rows at 0x80289A20: the 0xFFFFFFFF-headed .ctors list that libgcc2_main.c's __do_global_ctors walks; the linker-built section keeps its original bytes."
+    },
+    "SNDI_parsetimbre": {
+      "address": "0x80270E04",
+      "evidence": "evidence.tsv function and related name rows at 0x80270E04 (SNDI_parsetimbre, the registered holdout of src/engine/stpparse.c, original bytes linked). sbremove.c, sresopat.c and stagpat.c call it by name through the sndbank.h prototype."
     }
   },
   "units": [
@@ -25640,19 +25644,13 @@
     {
       "source": "src/engine/saems.c",
       "profile": "sound_cxx_holdouts",
-      "evidence": "evidence.tsv unit row 0x80266E88-0x802697D8 (src/engine/saems.c, NASCAR 2005 saems.c), its function, name and data rows (.rodata 0x802B77C8-0x802B78A0, .data 0x802FFB3C-0x802FFC90) and the sound_cxx compiler row; linked with holdouts (owner ruling of 2026-11-20, config README Holdouts): 68 of 74 functions exact, the 6 holdouts keep the original bytes and stay registered partials; the whole .rodata and .data are linked.",
+      "evidence": "evidence.tsv unit row 0x80266E88-0x802697D8 (src/engine/saems.c, NASCAR 2005 saems.c), its function, name and data rows (.rodata 0x802B77C8-0x802B78A0, .data 0x802FFB3C-0x802FFC90) and the sound_cxx compiler row; linked with holdouts (owner ruling of 2026-11-20, config README Holdouts): 71 of 74 functions exact, the 3 holdouts keep the original bytes and stay registered partials; the whole .rodata and .data are linked.",
       "sections": [
         {
           "section": ".text",
           "placement": ".text",
-          "start": "0x80267114",
-          "end": "0x802671D0"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
           "start": "0x80266E88",
-          "end": "0x80266EC0"
+          "end": "0x802671D0"
         },
         {
           "section": ".text",
@@ -25664,18 +25662,6 @@
           "section": ".text",
           "placement": ".text",
           "start": "0x80268DA8",
-          "end": "0x80269084"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x80269260",
-          "end": "0x802692B8"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x80269484",
           "end": "0x802694AC"
         },
         {
@@ -25694,10 +25680,6 @@
       "holdouts": {
         "functions": [
           {
-            "function": "SNDAEMSI_updatedestroy",
-            "evidence": "evidence.tsv source-form 0x80266EC0-0x80267114"
-          },
-          {
             "function": "UpdateControlClass",
             "evidence": "evidence.tsv source-form 0x802671D0-0x8026739C"
           },
@@ -25706,19 +25688,11 @@
             "evidence": "evidence.tsv source-form 0x80268B88-0x80268DA8"
           },
           {
-            "function": "SNDAEMSI_CreateModuleInstance",
-            "evidence": "evidence.tsv source-form 0x80269084-0x80269260"
-          },
-          {
-            "function": "SNDAEMS_removemodulebank",
-            "evidence": "evidence.tsv source-form 0x802692B8-0x80269484"
-          },
-          {
             "function": "SNDAEMSI_resolvemodulebank",
             "evidence": "evidence.tsv source-form 0x802694AC-0x802697D8"
           }
         ],
-        "evidence": "merge notes of the e2a pull request: src/engine/saems.c holds out SNDAEMSI_updatedestroy, UpdateControlClass, SNDAEMSI_updateoscillator, SNDAEMSI_CreateModuleInstance, SNDAEMS_removemodulebank, SNDAEMSI_resolvemodulebank (lane 8 merge notes, 2026-11-27: UpdateCallFunction, SNDAEMSI_updateenvelope, SNDAEMSI_updatetable, SNDAEMSI_playerupdatebank, SNDAEMSI_updateplayer and SNDAEMSI_updateramp made exact); their HOLDOUT: source-form rows in evidence.tsv list the forms tried and the cause."
+        "evidence": "merge notes of the e2a pull request: src/engine/saems.c holds out UpdateControlClass, SNDAEMSI_updateoscillator and SNDAEMSI_resolvemodulebank (lane 8 merge notes, 2026-11-27: UpdateCallFunction, SNDAEMSI_updateenvelope, SNDAEMSI_updatetable, SNDAEMSI_playerupdatebank, SNDAEMSI_updateplayer and SNDAEMSI_updateramp made exact; round 5 lane 5 merge notes, 2026-11-27: SNDAEMSI_updatedestroy, SNDAEMSI_CreateModuleInstance and SNDAEMS_removemodulebank made exact); their HOLDOUT: source-form rows in evidence.tsv list the forms tried and the cause."
       }
     },
     {
