@@ -13329,12 +13329,6 @@
           "section": ".text",
           "placement": ".text",
           "start": "0x800BC83C",
-          "end": "0x800BCF7C"
-        },
-        {
-          "section": ".text",
-          "placement": ".text",
-          "start": "0x800BD184",
           "end": "0x800BE808"
         },
         {
@@ -13543,7 +13537,7 @@
             "evidence": "evidence.tsv source-form 0x800A9D84-0x800A9F4C"
           },
           {
-            "function": "fn_800B1AAC",
+            "function": "_PenaltyCallPromptUpdate",
             "evidence": "evidence.tsv source-form 0x800B1AAC-0x800B1BF8"
           },
           {
@@ -13551,23 +13545,23 @@
             "evidence": "evidence.tsv source-form 0x800B4798-0x800B4900"
           },
           {
-            "function": "fn_800B4A88",
+            "function": "PlyrAnimInstallGameHandlers",
             "evidence": "evidence.tsv source-form 0x800B4A88-0x800B4D7C"
           },
           {
-            "function": "fn_800B6868",
+            "function": "PlyrCtrlCycle",
             "evidence": "evidence.tsv source-form 0x800B6868-0x800B6988"
           },
           {
-            "function": "fn_800B7378",
+            "function": "PlyrCtrlIsInPursuitWindow",
             "evidence": "evidence.tsv source-form 0x800B7378-0x800B76E8"
           },
           {
-            "function": "fn_800B78DC",
+            "function": "PlyrCtrlDefenseInput",
             "evidence": "evidence.tsv source-form 0x800B78DC-0x800B7CA4"
           },
           {
-            "function": "fn_800B7CA4",
+            "function": "PlyrCtrlOffenseInput",
             "evidence": "evidence.tsv source-form 0x800B7CA4-0x800B7E60"
           },
           {
@@ -13579,7 +13573,7 @@
             "evidence": "evidence.tsv source-form 0x800BA3F0-0x800BA570"
           },
           {
-            "function": "fn_800BB5DC",
+            "function": "PreGameIntroShowPlayers",
             "evidence": "evidence.tsv source-form 0x800BB5DC-0x800BB694"
           },
           {
@@ -13587,35 +13581,31 @@
             "evidence": "evidence.tsv source-form 0x800BC5DC-0x800BC83C"
           },
           {
-            "function": "fn_800BCF7C",
-            "evidence": "evidence.tsv source-form 0x800BCF7C-0x800BD184"
-          },
-          {
-            "function": "fn_800BE808",
+            "function": "PreSnapEnterLookMode",
             "evidence": "evidence.tsv source-form 0x800BE808-0x800BE8E4"
           },
           {
-            "function": "fn_800C0910",
+            "function": "PassLaneRateReceiver",
             "evidence": "evidence.tsv source-form 0x800C0910-0x800C1180"
           },
           {
-            "function": "fn_800C146C",
+            "function": "PassLaneSolveTarget",
             "evidence": "evidence.tsv source-form 0x800C146C-0x800C1C34"
           },
           {
-            "function": "fn_800C2150",
+            "function": "PlyrSwing9Update",
             "evidence": "evidence.tsv source-form 0x800C2150-0x800C2788"
           },
           {
-            "function": "fn_800C2884",
+            "function": "PlyrSwing5Update",
             "evidence": "evidence.tsv source-form 0x800C2884-0x800C2EC0"
           },
           {
-            "function": "fn_800C3404",
+            "function": "PlyrCheckSidelineNeighbor",
             "evidence": "evidence.tsv source-form 0x800C3404-0x800C34B0"
           },
           {
-            "function": "fn_800C34B0",
+            "function": "GameStartSetupClock",
             "evidence": "evidence.tsv source-form 0x800C34B0-0x800C3610"
           },
           {
@@ -13623,15 +13613,15 @@
             "evidence": "evidence.tsv source-form 0x800C3BEC-0x800C4184"
           },
           {
-            "function": "fn_800C5DE4",
+            "function": "PlyrContactCanHit",
             "evidence": "evidence.tsv source-form 0x800C5DE4-0x800C5F80"
           },
           {
-            "function": "fn_800C68BC",
+            "function": "PlyrContactIsCompatible",
             "evidence": "evidence.tsv source-form 0x800C68BC-0x800C6A3C"
           },
           {
-            "function": "fn_800C6DF8",
+            "function": "PlyrContactTryTackleAnim",
             "evidence": "evidence.tsv source-form 0x800C6DF8-0x800C7084"
           },
           {
@@ -13639,11 +13629,11 @@
             "evidence": "evidence.tsv source-form 0x800C9FC0-0x800CA14C"
           },
           {
-            "function": "fn_800CDE50",
+            "function": "PlyrContactStartTriple",
             "evidence": "evidence.tsv source-form 0x800CDE50-0x800CE158"
           }
         ],
-        "evidence": "comparisons.json partials of src/game/cu_8008E978.cpp: the 47 functions whose compiled bytes differ from the target keep the original bytes; each names its HOLDOUT: source-form row (owner rulings of 2026-11-19 and 2026-11-20)."
+        "evidence": "comparisons.json partials of src/game/cu_8008E978.cpp: the 46 functions whose compiled bytes differ from the target keep the original bytes; each names its HOLDOUT: source-form row (owner rulings of 2026-11-19 and 2026-11-20)."
       },
       "link_roots": {
         "discarded": [
